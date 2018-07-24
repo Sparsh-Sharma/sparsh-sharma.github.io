@@ -3,7 +3,7 @@
 I pursuing my Ph.D. jointly at the Brandenburg Technical University and the Technical University-Berlin. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
 
-### Markdown
+### Research
 
 My primary area of research is Computational Fluid Dynamics (CFD) and Computational Aeroacoustics (CAA). I prefer the Lagrangian approach to solve the fluid flow equations.
 
@@ -13,10 +13,23 @@ My primary area of research is Computational Fluid Dynamics (CFD) and Computatio
 - Synthetic Turbulence Modelling
 - Aeroacoustics
 - Vortex Sound
+- Stochastic Modelling
+- Evolutionary Algorithms
+- Monte-Carlo Methods and Uncertainity Quantification
 - Parallel Computing
  
+### Research Projects
 
-### Markdown
+- Stochastic Modelling of Leading-Edge Noise [(GRS)](https://www.b-tu.de/researchschool/cluster/cluster-3-stochmethod)
+- High-Fidelity Simulations of flow inside the Porous Materials [AIAA Publication](https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwi_hJ22u7jcAhWGKVAKHfaSB2MQFjAAegQIABAB&url=https%3A%2F%2Farc.aiaa.org%2Fdoi%2Fabs%2F10.2514%2F6.2018-3472&usg=AOvVaw0eLhBQyFuI-UqnKwdPerLM)
+- Hamiltonian Dynamics
+- Synthetic Turbulence Modelling
+- Aeroacoustics
+- Vortex Sound
+- Stochastic Modelling
+- Evolutionary Algorithms
+- Monte-Carlo Methods and Uncertainity Quantification
+- Parallel Computing
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
