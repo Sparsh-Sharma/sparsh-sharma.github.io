@@ -1,6 +1,6 @@
-## Welcome to GitHub Pages
+## Welcome to my website
 
-You can use the [editor on GitHub](https://github.com/Sparsh-Sharma/sparsh-sharma.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+I pursuing my Ph.D. jointly at the Brandenburg Technical University and the Technical University-Berlin. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
