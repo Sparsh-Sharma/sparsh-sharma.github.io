@@ -1,6 +1,6 @@
 ## Welcome to my website
 
-I pursuing my Ph.D. jointly at the Brandenburg Technical University and the Technical University-Berlin. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
+I am pursuing my Ph.D. jointly at the Brandenburg Technical University and the Technical University-Berlin. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
 
 ### Research
