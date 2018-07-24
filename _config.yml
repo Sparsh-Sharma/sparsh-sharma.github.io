@@ -1,2 +1,5 @@
 theme: jekyll-theme-minimal
 title: SPARSH SHARMA
+logo: /capture.JPG
+show_downloads: true
+google_analytics:
