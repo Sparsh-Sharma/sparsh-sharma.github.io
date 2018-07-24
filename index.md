@@ -2,7 +2,19 @@
 
 I pursuing my Ph.D. jointly at the Brandenburg Technical University and the Technical University-Berlin. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+
+### Markdown
+
+My primary area of research is Computational Fluid Dynamics (CFD) and Computational Aeroacoustics (CAA). I prefer the Lagrangian approach to solve the fluid flow equations.
+
+- Vortex Dynamics
+- Meshless Methods
+- Hamiltonian Dynamics
+- Synthetic Turbulence Modelling
+- Aeroacoustics
+- Vortex Sound
+- Parallel Computing
+ 
 
 ### Markdown
 
