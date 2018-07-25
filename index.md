@@ -23,7 +23,7 @@ Directivity pattern of sound pressure level around a symmterical airfoil
 ![Alt Text](./grayscale11.gif)
 Fluctuating pressure at the leading edge of a NACA0012 airfoil, ExtendedDelayed Detached Eddy Simulation of NACA0012 (Incompressible,M=0.2), stagnation point (x=0, y=0), length of the airfoil= 1
 
-![Alt Text](./grayscale2.gif)
+![Alt Text](./grayscale12.gif)
 Fluctuating pressure at the leading edge of a NACA0012 airfoil, ExtendedDelayed Detached Eddy Simulation of NACA0012 (Incompressible,M=0.2), stagnation point (x=0, y=0), length of the airfoil= 1
 
 ### CAA Flate plate
