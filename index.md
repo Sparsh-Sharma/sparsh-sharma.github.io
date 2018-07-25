@@ -27,6 +27,18 @@ Fluctuating pressure at the leading edge of a NACA0012 airfoil, ExtendedDelayed 
 ![Alt Text](./grayscale3.gif)
 Fluctuating pressure at the leading edge of a flat plate, ExtendedDelayed Detached Eddy Simulation of a Flat Plate (Incompressible,M=0.2), stagnation point (x=0, y=0), length of the plate= 1
 
+### Detached Eddy Simulation of cylinder with a porous cover
+![Alt Text](./grayscale4.gif)
+
+### Velocity fluctuations at the surface of a cylinder for CAA
+![Alt Text](./grayscale5.gif)
+
+### TKE of the flow around a cylinder
+![Alt Text](./grayscale6.mp4)
+
+### Vorticity around a cylinder
+![Alt Text](./grayscale8.mp4)
+
 ## Research
 
 My primary area of research is Computational Fluid Dynamics (CFD) and Computational Aeroacoustics (CAA). I prefer the Lagrangian approach to solve the fluid flow equations.
