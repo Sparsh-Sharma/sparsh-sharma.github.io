@@ -12,5 +12,5 @@ Fluctuating pressure at the leading edge of a NACA0012 airfoil, ExtendedDelayed 
 
 ### CAA Flate plate
 
-![Alt Text](https://streamable.com/zd7dh)
+![Alt Text](./grayscale3.gif)
 Fluctuating pressure at the leading edge of a flat plate, ExtendedDelayed Detached Eddy Simulation of a Flat Plate (Incompressible,M=0.2), stagnation point (x=0, y=0), length of the plate= 1
