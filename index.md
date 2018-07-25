@@ -22,6 +22,7 @@ My primary area of research is Computational Fluid Dynamics (CFD) and Computatio
 
 - Stochastic Modelling of Leading-Edge Noise [(GRS)](https://www.b-tu.de/researchschool/cluster/cluster-3-stochmethod)
 - High-Fidelity Simulations of flow inside the Porous Materials
+- Projekt [SHEFAE2](https://ec.europa.eu/inea/en/horizon-2020/projects/h2020-transport/aviation/shefae-2) (Surface Heat Exchanger For Aero Engine 2) Rolls-Royce Deutscheland
 
 
 ### Publications
