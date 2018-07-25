@@ -14,7 +14,20 @@ Turbulent inflow generation using the Gaussian shape profiles vortices
 
 ![Alt Text](./basic_animation.gif)
 
-### Research
+### CAA NACA0012
+
+![Alt Text](./grayscale.gif)
+Fluctuating pressure at the leading edge of a NACA0012 airfoil, ExtendedDelayed Detached Eddy Simulation of NACA0012 (Incompressible,M=0.2), stagnation point (x=0, y=0), length of the airfoil= 1
+
+![Alt Text](./grayscale2.gif)
+Fluctuating pressure at the leading edge of a NACA0012 airfoil, ExtendedDelayed Detached Eddy Simulation of NACA0012 (Incompressible,M=0.2), stagnation point (x=0, y=0), length of the airfoil= 1
+
+### CAA Flate plate
+
+![Alt Text](./grayscale3.gif)
+Fluctuating pressure at the leading edge of a flat plate, ExtendedDelayed Detached Eddy Simulation of a Flat Plate (Incompressible,M=0.2), stagnation point (x=0, y=0), length of the plate= 1
+
+## Research
 
 My primary area of research is Computational Fluid Dynamics (CFD) and Computational Aeroacoustics (CAA). I prefer the Lagrangian approach to solve the fluid flow equations.
 
@@ -29,14 +42,13 @@ My primary area of research is Computational Fluid Dynamics (CFD) and Computatio
 - Monte-Carlo Methods and Uncertainity Quantification
 - Parallel Computing
  
-### [Projects](./another-page.html)
+## [Projects](./another-page.html)
 
 - Stochastic Modelling of Leading-Edge Noise [(GRS)](https://www.b-tu.de/researchschool/cluster/cluster-3-stochmethod)
 - High-Fidelity Simulations of flow inside the Porous Materials
 - Projekt [SHEFAE2](https://ec.europa.eu/inea/en/horizon-2020/projects/h2020-transport/aviation/shefae-2) (Surface Heat Exchanger For Aero Engine 2) Rolls-Royce Deutscheland
 
-
-### Publications
+## Publications
 
 - T Geyer, S Sharma, E Sarradj, "Detached Eddy Simulation of the Flow Noise Generation of Cylinders with Porous Cover", 2018 AIAA/CEAS Aeroacoustics Conference, AIAA AVIATION Forum, [(AIAA 2018-3472)](https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwi_hJ22u7jcAhWGKVAKHfaSB2MQFjAAegQIABAB&url=https%3A%2F%2Farc.aiaa.org%2Fdoi%2Fabs%2F10.2514%2F6.2018-3472&usg=AOvVaw0eLhBQyFuI-UqnKwdPerLM)
 - S Sharma, E Sarradj, H Schmidt, "Low-Fidelity Stochastic Approach for Airfoil-Turbulence Interaction Noise", DAGA 2018 - 44. JAHRESTAGUNG FÜR AKUSTIK, München Germany, 1184-1187
