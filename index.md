@@ -7,6 +7,10 @@ Turbulent inflow generation using the Gaussian shape profiles vortices
 
 ![Alt Text](./gauss.jpg)
 
+### Vortex Particle Solver
+2d Euler equations solver based on the Lagrangian approach
+
+![Alt Text](./basic_animation.gif)
 
 ### Research
 
