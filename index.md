@@ -11,9 +11,13 @@ Turbulent inflow generation using the Gaussian shape profiles vortices
 
 ### [Vortex Particle Solver](https://github.com/Sparsh-Sharma/Lagrangian-Solver-for-Euler-Equations)
 2d Euler equations solver based on the Lagrangian approach
-
 ![Alt Text](./basic_animation.gif)
 
+### [Ffowcs Williams - Hawkings Acoustic Solver](https://github.com/Sparsh-Sharma/Ffowcs-Williams-Hawkings-Acoustic-analogy)
+![Alt Text](./acoustics.JPG)
+Directivity pattern of sound pressure level around a symmterical airfoil
+
+## Results
 ### CAA NACA0012
 
 ![Alt Text](./grayscale.gif)
@@ -21,10 +25,6 @@ Fluctuating pressure at the leading edge of a NACA0012 airfoil, ExtendedDelayed 
 
 ![Alt Text](./grayscale2.gif)
 Fluctuating pressure at the leading edge of a NACA0012 airfoil, ExtendedDelayed Detached Eddy Simulation of NACA0012 (Incompressible,M=0.2), stagnation point (x=0, y=0), length of the airfoil= 1
-
-### [Ffowcs Williams - Hawkings Acoustic Solver](https://github.com/Sparsh-Sharma/Ffowcs-Williams-Hawkings-Acoustic-analogy)
-![Alt Text](./acoustics.JPG)
-Directivity pattern of sound pressure level around a symmterical airfoil
 
 ### CAA Flate plate
 
