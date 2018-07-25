@@ -4,12 +4,12 @@ I am pursuing my Ph.D. jointly at the Brandenburg Technical University and the T
 
 ## Code Development Projects
 
-### Synthetic-Vorton-Turbulence-Model
+### [Synthetic-Vorton-Turbulence-Model](https://github.com/Sparsh-Sharma/Synthetic-Vorton-Turbulence-Model)
 Turbulent inflow generation using the Gaussian shape profiles vortices
 
 ![Alt Text](./gauss.jpg)
 
-### Vortex Particle Solver
+### [Vortex Particle Solver](https://github.com/Sparsh-Sharma/Lagrangian-Solver-for-Euler-Equations)
 2d Euler equations solver based on the Lagrangian approach
 
 ![Alt Text](./basic_animation.gif)
