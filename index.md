@@ -33,11 +33,8 @@ Fluctuating pressure at the leading edge of a flat plate, ExtendedDelayed Detach
 ### Velocity fluctuations at the surface of a cylinder for CAA
 ![Alt Text](./grayscale5.gif)
 
-### TKE of the flow around a cylinder
-![Alt Text](./grayscale6.mp4)
-
 ### Vorticity around a cylinder
-![Alt Text](./grayscale8.mp4)
+![Alt Text](./grayscale9.gif)
 
 ## Research
 
