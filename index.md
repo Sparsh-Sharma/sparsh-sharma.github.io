@@ -17,6 +17,10 @@ Turbulent inflow generation using the Gaussian shape profiles vortices
 ![Alt Text](./acoustics.JPG)
 Directivity pattern of sound pressure level around a symmterical airfoil
 
+### Stochastic Optimisation - Genetic Algorithm 
+![Alt Text](./ezgif.com-video-to-gif (1).gif)
+Let’s help the snakes find the way from the hole to the food
+
 ## Results
 ### Internoise 2018, Chicago IL
 ![Alt Text](./IN18-Presentation-Template.jpg)
