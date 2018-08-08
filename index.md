@@ -1,6 +1,6 @@
 ## Welcome to my website
 
-I am pursuing my Ph.D. jointly at the Brandenburg Technical University and the Technical University-Berlin. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
+Thanks for visiting! I am currently a PhD student at the Brandenburg Technical University and the Technical University-Berlin working in the field of aeroacoustics and turbuelnce. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
 ## Code Development Projects
 
@@ -18,6 +18,9 @@ Turbulent inflow generation using the Gaussian shape profiles vortices
 Directivity pattern of sound pressure level around a symmterical airfoil
 
 ## Results
+### Internoise 2018, Chicago IL
+![Alt Text](./IN18-Presentation-Template.jpg)
+
 ### CAA NACA0012
 
 ![Alt Text](./grayscale11.gif)
