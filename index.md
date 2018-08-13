@@ -23,7 +23,7 @@ Let’s help the snakes find the way from the hole to the food
 
 ## Results
 ### Internoise 2018, Chicago IL
-![Alt Text](./IN18-Presentation-Template.jpg)
+![Alt Text](./inter.jpg)
 
 ### CAA NACA0012
 
