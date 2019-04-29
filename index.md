@@ -11,6 +11,7 @@ Turbulent inflow generation using the Gaussian shape profiles vortices
 
 ### Delayed Detached Eddy Simulation using SU2
 ![Alt Text](./rod-airfoil.gif)
+![Alt Text](./7_3d_mach.png)
 
 ### [Vortex Particle Solver](https://github.com/Sparsh-Sharma/Lagrangian-Solver-for-Euler-Equations)
 2d Euler equations solver based on the Lagrangian approach
