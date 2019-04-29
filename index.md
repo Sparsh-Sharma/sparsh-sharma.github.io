@@ -1,6 +1,6 @@
 ## Welcome to my website
 
-Thanks for visiting! I am currently a PhD student at the Brandenburg Technical University and the Technical University-Berlin working in the field of aeroacoustics and turbuelnce. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
+Thanks for visiting! I am currently a Research Associate at the Brandenburg Technical University and the Technical University-Berlin working in the field of aeroacoustics and turbuelnce. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
 ## Code Development Projects
 
