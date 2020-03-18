@@ -2,6 +2,8 @@
 
 Thanks for visiting! I am currently a Research Associate at the Brandenburg Technical University and the Technical University-Berlin working in the field of aeroacoustics and turbulence. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
+## Doctoral Thesis: [Stochastic modelling of leading-edge noise in time-domain using vortex particles](https://doi.org/10.26127/BTUOpen-5085)
+
 ## Code Development Projects
 
 ### [Synthetic-Vorton-Turbulence-Model](https://github.com/Sparsh-Sharma/Synthetic-Vorton-Turbulence-Model)
