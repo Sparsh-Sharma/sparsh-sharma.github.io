@@ -2,6 +2,11 @@
 
 Thanks for visiting! I am currently a Research Associate at the Brandenburg Technical University and the Technical University-Berlin working in the field of aeroacoustics and turbulence. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
+## One-Dimensional Turbulence (ODT) - Autonomous Microstructure Evolution
+### Channel Flow:
+streamwise mean velocity profiles of temporally evolved realization
+![Alt Text](./f9.pdf)
+
 ## Large eddy Simulations for Aeroacoustics (Simulations running at the moment)
 ![Alt Text](./naca0012.gif)
 
