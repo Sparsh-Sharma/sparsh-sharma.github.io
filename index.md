@@ -3,8 +3,10 @@
 Thanks for visiting! I am currently a Research Associate at the Brandenburg Technical University and the Technical University-Berlin working in the field of aeroacoustics and turbulence. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
 ## One-Dimensional Turbulence (ODT) - Autonomous Microstructure Evolution
-### Channel Flow:
+### Pipe flow:
 <a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/tRv44vPF/ezgif-com-crop.gif' border='0' alt='ezgif-com-crop'/></a>
+
+### Channel flow:
 streamwise mean velocity profiles of temporally evolved realization
 ![Alt Text](./f9-1.jpg)
 
