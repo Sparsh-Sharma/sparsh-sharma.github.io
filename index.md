@@ -4,6 +4,7 @@ Thanks for visiting! I am currently a Research Associate at the Brandenburg Tech
 
 ## One-Dimensional Turbulence (ODT) - Autonomous Microstructure Evolution
 ### Channel Flow:
+<a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/tRv44vPF/ezgif-com-crop.gif' border='0' alt='ezgif-com-crop'/></a>
 streamwise mean velocity profiles of temporally evolved realization
 ![Alt Text](./f9-1.jpg)
 
