@@ -8,7 +8,7 @@ Thanks for visiting! I am currently a Research Associate at the Brandenburg Tech
 
 ### Channel flow:
 streamwise mean velocity profiles of temporally evolved realization
-![Alt Text](./f9-1.jpg)
+<a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/J4BKyWZW/Channel-flow-Re-tau-550-d-2-d-Pdx-1-u-tau-1.gif' border='0' alt='Channel-flow-Re-tau-550-d-2-d-Pdx-1-u-tau-1'/></a>
 
 ## Large eddy Simulations for Aeroacoustics (Simulations running at the moment)
 ![Alt Text](./naca0012.gif)
