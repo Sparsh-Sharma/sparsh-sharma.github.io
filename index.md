@@ -3,6 +3,10 @@
 Thanks for visiting! I am currently a Research Associate at the Brandenburg Technical University and the Technical University-Berlin working in the field of aeroacoustics and turbulence. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
 ## One-Dimensional Turbulence (ODT) - Autonomous Microstructure Evolution
+
+### Jet
+![Alt Text](./jet.jpg)
+
 ### Pipe flow:
 <a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/Hn5CYFLT/output1.gif' border='0' alt='output1'/></a>
 
