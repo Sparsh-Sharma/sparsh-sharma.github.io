@@ -4,6 +4,7 @@ Thanks for visiting! I am currently a Research Associate at the Brandenburg Tech
 
 ### Recent Publication in the Journal of Sound and Vibration
 [Stochastic modelling of leading-edge noise in time-domain using vortex particles](https://www.sciencedirect.com/science/article/pii/S0022460X20304867)
+
 If you are unable to download the paper, then please write to me. I will be happy to e-mail you the PDF.
 
 ## One-Dimensional Turbulence (ODT) - Autonomous Microstructure Evolution
