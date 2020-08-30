@@ -3,7 +3,8 @@
 Thanks for visiting! I am currently a Research Associate at the Brandenburg Technical University and the Technical University-Berlin working in the field of aeroacoustics and turbulence. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
 
 ### Recent Publication in the Journal of Sound and Vibration
-[chastic modelling of leading-edge noise in time-domain using vortex particles](https://www.sciencedirect.com/science/article/pii/S0022460X20304867)
+[Stochastic modelling of leading-edge noise in time-domain using vortex particles](https://www.sciencedirect.com/science/article/pii/S0022460X20304867)
+If you are unable to download the paper, then please write to me. I will be happy to e-mail you the PDF.
 
 ## One-Dimensional Turbulence (ODT) - Autonomous Microstructure Evolution
 
