@@ -8,9 +8,9 @@ Thanks for visiting! I am currently a Research Associate at the Brandenburg Tech
 If you are unable to download the paper, then please write to me. I will be happy to e-mail you the PDF.
 
 ## One-Dimensional Turbulence (ODT) - Autonomous Microstructure Evolution
-![Alt Text](./odtles.png)
 
 ### ODTLES (SGS for Large Eddy Simulations)
+![Alt Text](./odtles.png)
 
 ### Jet
 ![Alt Text](./jet.jpg)
