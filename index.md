@@ -1,6 +1,6 @@
 ## Welcome to my website
 
-Thanks for visiting! I am currently a Research Associate at the Brandenburg Technical University and the Technical University-Berlin working in the field of aeroacoustics and turbulence. My research group's official page is [here](https://www.b-tu.de/fg-akustik/).
+Thanks for visiting! I am currently a Research Associate at the Brandenburg Technical University and the Technical University-Berlin working in the field of turbulence and aeroacoustics. My research group's official page is [here](https://www.b-tu.de/fg-stroemungsmodellierung/).
 
 ### Recent Publication in the [Journal of Sound and Vibration](https://www.sciencedirect.com/science/article/pii/S0022460X20304867)
 [Stochastic modelling of leading-edge noise in time-domain using vortex particles](https://www.sciencedirect.com/science/article/pii/S0022460X20304867)
