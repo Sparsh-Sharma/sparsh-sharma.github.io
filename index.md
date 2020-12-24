@@ -7,6 +7,10 @@ Thanks for visiting! I am currently a Research Associate at the Brandenburg Tech
 
 If you are unable to download the paper, then please write to me. I will be happy to e-mail you the PDF.
 
+## OpenFOAM
+[V7](https://openfoam.org/download/7-source/)
+Please download V7 from the above link and install it using [Singularity](https://singularity.lbl.gov/) on the Cluster. Cluster 'Euler' already has V7 installed, however if you are a developer, use Singularity to build your dev. 
+
 ## One-Dimensional Turbulence (ODT) - Autonomous Microstructure Evolution
 
 ### ODTLES (SGS for Large Eddy Simulations)
