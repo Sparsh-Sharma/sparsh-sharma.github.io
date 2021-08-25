@@ -21,6 +21,9 @@ Please download V7 from the above link and install it using [Singularity](https:
 
 Cluster 'Euler' already has V7 on it, however if you are a developer and using your own FOAM, use Singularity to build your solver.  
 
+### Turbulent round jet at Re=94000
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qHuFF20aQBo?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## One-Dimensional Turbulence (ODT) - Autonomous Microstructure Evolution
 
 ### ODTLES (SGS for Large Eddy Simulations)
