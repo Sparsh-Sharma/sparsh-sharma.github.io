@@ -3,7 +3,7 @@
 Thanks for visiting! I am currently a Postdoc fellow at DAMTP, University of Cambridge working in the field of turbulence and aeroacoustics. My research group's official page is [here](https://www.damtp.cam.ac.uk/research/waves/).
 
 ### Recent Publication in the [Physics of Fluids](https://doi.org/10.1063/5.0101270)
-[Stochastic modelling of leading-edge noise in time-domain using vortex particles](https://doi.org/10.1063/5.0101270)
+[Features of far-downstream asymptotic velocity fluctuations in a round jet: A one-dimensional turbulence study](https://doi.org/10.1063/5.0101270)
 
 ### Recent Publication in the [Journal of Sound and Vibration](https://www.sciencedirect.com/science/article/pii/S0022460X20304867)
 [Stochastic modelling of leading-edge noise in time-domain using vortex particles](https://www.sciencedirect.com/science/article/pii/S0022460X20304867)
