@@ -14,7 +14,8 @@ Thanks for visiting! I am currently a Postdoc fellow at DAMTP, University of Cam
 
 ## Presentations
 ### Intrenoise 2023
-![Alt Text](./2_6_2.pptx)
+<iframe src='https://view.officeapps.live.com/op/embed.aspx?src=[[https://www.your_website/file_name.pptx](https://github.com/Sparsh-Sharma/sparsh-sharma.github.io/blob/master/2_6_2.pptx)]' width='100%' height='600px' frameborder='0'>
+
 
 
 <!-- Accepted papers:
