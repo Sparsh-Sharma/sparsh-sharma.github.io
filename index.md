@@ -4,8 +4,6 @@ Thanks for visiting! I am currently a Postdoc fellow at DAMTP, University of Cam
 
 Here’s how you can integrate the referenced paper and the visualization into an engaging section for your GitHub website:
 
----
-
 ## 🌟 **Recent Publication**  
 ### Published in [Journal of Physics: Conference Series](https://iopscience.iop.org/article/10.1088/1742-6596/2767/2/022059)
 
