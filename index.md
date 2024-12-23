@@ -7,7 +7,7 @@ Here’s how you can integrate the referenced paper and the visualization into a
 ## 🌟 **Recent Publication**  
 ### Published in [Journal of Physics: Conference Series](https://iopscience.iop.org/article/10.1088/1742-6596/2767/2/022059)
 
-![Porous Coating and Noise Control Visualization](your-image-url)  
+![Porous Coating and Noise Control Visualization](./visual_element.png)  
 *Figure: Schematic illustrating the dynamics of vortex injection, turbulence, and noise emission around an airfoil.*  
 
 📄 **[Efficient Prediction of Turbulent Inflow and Leading-Edge Interaction Noise Using a Vortex Particle Method with Look-up Table Approach](https://iopscience.iop.org/article/10.1088/1742-6596/2767/2/022059)**  
