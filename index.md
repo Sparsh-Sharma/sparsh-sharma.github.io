@@ -12,6 +12,7 @@ Feel free to check out my research group's page [here](https://www.damtp.cam.ac.
 ### **Published in [Journal of Sound and Vibration](https://doi.org/10.1016/j.jsv.2023.117563)**  
 ![Porous Coating Visualization](https://ars.els-cdn.com/content/image/1-s2.0-S0022460X23000135-gr11_lrg.jpg)  
 *Figure: Contours of the normalized streamwise mean velocity.* 
+
 📄 **[On the Influence of Porous Coating Thickness and Permeability on Passive Flow and Noise Control of Cylinders](https://doi.org/10.1016/j.jsv.2023.117563)**  
 
 ### **Published in [Physics of Fluids](https://doi.org/10.1063/5.0101270)**  
