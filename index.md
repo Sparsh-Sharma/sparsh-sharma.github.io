@@ -2,6 +2,19 @@
 
 Thanks for visiting! I am currently a Postdoc fellow at DAMTP, University of Cambridge working in the field of turbulence and aeroacoustics. My research group's official page is [here](https://www.damtp.cam.ac.uk/research/waves/).
 
+Here’s how you can integrate the referenced paper and the visualization into an engaging section for your GitHub website:
+
+---
+
+## 🌟 **Recent Publication**  
+### Published in [Journal of Physics: Conference Series](https://iopscience.iop.org/article/10.1088/1742-6596/2767/2/022059)
+
+![Porous Coating and Noise Control Visualization](your-image-url)  
+*Figure: Schematic illustrating the dynamics of vortex injection, turbulence, and noise emission around an airfoil.*  
+
+📄 **[Efficient Prediction of Turbulent Inflow and Leading-Edge Interaction Noise Using a Vortex Particle Method with Look-up Table Approach](https://doi.org/10.1016/j.jsv.2023.117563](https://iopscience.iop.org/article/10.1088/1742-6596/2767/2/022059)**  
+
+
 ### Recent Publication in the [Journal of Sound and Vibration](https://doi.org/10.1016/j.jsv.2023.117563)
 [On the influence of porous coating thickness and permeability on passive flow and noise control of cylinders](https://doi.org/10.1016/j.jsv.2023.117563)
 
