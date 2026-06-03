@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Sparsh Sharma — Turbulence · Aeroacoustics · Mathematical Physics</title>
+<meta name="description" content="Research scientist at DLR Braunschweig developing stochastic, Lagrangian, and computational frameworks for turbulent noise. 35+ publications, DFG Walter Benjamin Fellow, Cambridge postdoc.">
+<meta name="keywords" content="turbulence, aeroacoustics, leading-edge noise, stochastic modelling, LES, ODT, vortex particle method, wind turbine noise, DLR, Sparsh Sharma">
+<meta property="og:title" content="Dr. Sparsh Sharma — The Mathematics of Turbulent Noise">
+<meta property="og:description" content="Research scientist at DLR Braunschweig. 35+ publications, DFG Walter Benjamin Fellow.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080b10;
+  --bg2: #0d1117;
+  --bg3: #111820;
+  --surface: #141c26;
+  --surface2: #1a2535;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.14);
+  --text: #e8eaf0;
+  --text2: #8b96a8;
+  --text3: #4a5568;
+  --accent: #4fc3f7;
+  --accent2: #0288d1;
+  --gold: #f5a623;
+  --gold2: #c67c10;
+  --warm: #ff7043;
+  --green: #26a69a;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --max: 1140px;
+  --nav: 60px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--surface2);}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background:rgba(8,11,16,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 2rem;width:100%;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--mono);font-size:12px;letter-spacing:0.12em;color:var(--accent);text-decoration:none;font-weight:500;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:10px;}
+.nav-logo-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+.nav-links{display:flex;gap:0;list-style:none;}
+.nav-links a{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:400;color:var(--text2);text-decoration:none;transition:color 0.2s;cursor:pointer;padding:0.5rem 1rem;}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+.hamburger span{display:block;width:20px;height:1px;background:var(--text2);margin:5px 0;transition:0.3s;}
+
+/* ── PAGES ── */
+.page{display:none;padding-top:var(--nav);}
+.page.active{display:block;}
+
+/* ── SHARED ── */
+.container{max-width:var(--max);margin:0 auto;padding:0 2rem;}
+.label{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.label::before{content:'';width:24px;height:1px;background:var(--accent);display:inline-block;flex-shrink:0;}
+h1{font-family:var(--serif);font-weight:500;}
+h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.2;}
+h3{font-family:var(--serif);font-weight:400;font-size:1.4rem;line-height:1.3;}
+h4{font-family:var(--sans);font-weight:500;font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text2);}
+p{color:var(--text2);line-height:1.8;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{color:var(--accent2);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+canvas#turbulence{position:absolute;inset:0;width:100%;height:100%;opacity:0.35;}
+.hero-content{position:relative;z-index:2;padding:0 2rem;max-width:var(--max);margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.hero-kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;display:flex;align-items:center;gap:12px;}
+.hero-kicker::before{content:'';width:32px;height:1px;background:var(--accent);}
+.hero h1{font-size:clamp(3rem,5.5vw,5rem);line-height:1.05;font-weight:700;margin-bottom:2rem;letter-spacing:-0.02em;}
+.hero h1 em{font-style:italic;color:var(--accent);}
+.hero h1 span{color:var(--text3);}
+.hero-desc{font-size:1.05rem;color:var(--text2);line-height:1.8;margin-bottom:2.5rem;max-width:480px;}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;}
+.cta-primary{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:0.8rem 2rem;background:var(--accent);color:var(--bg);border:none;cursor:pointer;font-weight:500;transition:all 0.2s;}
+.cta-primary:hover{background:#81d4fa;color:var(--bg);}
+.cta-ghost{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:0.8rem 2rem;background:transparent;color:var(--text);border:1px solid var(--border2);cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+.cta-ghost:hover{border-color:var(--accent);color:var(--accent);}
+
+/* HERO RIGHT — equation panel */
+.eq-panel{border:1px solid var(--border2);padding:2rem;position:relative;background:rgba(20,28,38,0.6);}
+.eq-panel-label{position:absolute;top:-0.55rem;left:1.5rem;background:var(--bg);padding:0 0.75rem;font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);}
+.eq-block{margin-bottom:1.5rem;}
+.eq-block:last-child{margin-bottom:0;}
+.eq-tag{font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem;display:block;}
+.eq{font-family:var(--mono);font-size:13px;color:var(--text);line-height:1.6;border-left:2px solid var(--accent);padding-left:1rem;}
+.eq.dim{border-color:var(--surface2);color:var(--text2);}
+.eq-note{font-size:12px;color:var(--text3);margin-top:0.5rem;font-family:var(--mono);}
+.eq-divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
+
+/* ── STATS BAND ── */
+.stats-band{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem 0;}
+.stats-inner{max-width:var(--max);margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:repeat(5,1fr);gap:2rem;}
+.stat{text-align:center;}
+.stat-n{font-family:var(--serif);font-size:2.4rem;font-weight:500;color:var(--accent);line-height:1;display:block;margin-bottom:0.25rem;}
+.stat-l{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+
+/* ── SECTION SHARED ── */
+.section{padding:6rem 0;}
+.section-hd{margin-bottom:4rem;}
+
+/* ── HOME INTRO ── */
+.home-intro{display:grid;grid-template-columns:3fr 2fr;gap:6rem;align-items:start;}
+.intro-body h2{margin-bottom:1.5rem;}
+.intro-body .big-q{font-family:var(--serif);font-size:1.5rem;font-style:italic;color:var(--text);line-height:1.5;margin-bottom:1.5rem;padding-left:1.5rem;border-left:2px solid var(--gold);}
+.aside-box{border:1px solid var(--border);padding:1.75rem;background:var(--surface);}
+.aside-box h4{margin-bottom:1rem;}
+.aside-item{display:flex;justify-content:space-between;align-items:flex-start;padding:0.7rem 0;border-bottom:1px solid var(--border);gap:1rem;}
+.aside-item:last-child{border-bottom:none;}
+.aside-key{font-family:var(--mono);font-size:11px;color:var(--text3);flex-shrink:0;}
+.aside-val{font-size:13px;color:var(--text2);text-align:right;}
+
+/* ── THREADS ── */
+.threads-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.thread{background:var(--bg2);padding:2rem;transition:background 0.25s;position:relative;overflow:hidden;cursor:pointer;}
+.thread::before{content:attr(data-n);font-family:var(--serif);font-size:5rem;font-weight:700;color:var(--surface2);position:absolute;top:-1rem;right:1rem;line-height:1;pointer-events:none;transition:color 0.25s;}
+.thread:hover{background:var(--surface);}
+.thread:hover::before{color:var(--surface2);opacity:0.5;}
+.thread-tag{font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem;display:block;}
+.thread h3{font-size:1.05rem;color:var(--text);margin-bottom:0.75rem;position:relative;}
+.thread p{font-size:0.85rem;color:var(--text2);line-height:1.65;position:relative;}
+.thread-arrow{font-family:var(--mono);font-size:11px;color:var(--gold);margin-top:1.25rem;display:inline-block;position:relative;}
+
+/* ── SELECTED PAPERS HOME ── */
+.paper-feed{border-top:1px solid var(--border);}
+.paper-item{display:grid;grid-template-columns:auto 1fr auto;gap:2rem;align-items:start;padding:2rem 0;border-bottom:1px solid var(--border);}
+.paper-yr{font-family:var(--mono);font-size:11px;color:var(--text3);padding-top:0.2rem;min-width:36px;}
+.paper-venue{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem;}
+.paper-title{color:var(--text);font-size:1rem;margin-bottom:0.3rem;font-family:var(--serif);font-weight:400;line-height:1.4;}
+.paper-auth{font-size:0.85rem;color:var(--text3);font-style:italic;}
+.paper-note{font-size:12.5px;color:var(--text2);margin-top:0.6rem;padding:0.5rem 0.9rem;border-left:2px solid var(--surface2);line-height:1.55;}
+.paper-doi{font-family:var(--mono);font-size:10px;color:var(--accent);margin-top:0.5rem;display:inline-block;letter-spacing:0.05em;}
+.paper-badge{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;background:var(--accent);color:var(--bg);padding:0.2rem 0.5rem;display:inline-block;margin-left:0.5rem;vertical-align:middle;}
+.paper-badge.lbm{background:var(--gold);color:var(--bg);}
+.paper-links{display:flex;flex-direction:column;gap:0.5rem;align-items:flex-end;padding-top:0.3rem;}
+.paper-link-btn{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;color:var(--text3);border:1px solid var(--border);padding:0.3rem 0.7rem;transition:all 0.15s;white-space:nowrap;text-align:center;}
+.paper-link-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── RESEARCH PAGE ── */
+.page-hero-dark{padding:5rem 0 4rem;border-bottom:1px solid var(--border);}
+.page-hero-dark .container{display:grid;grid-template-columns:3fr 2fr;gap:5rem;align-items:end;}
+.methods-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin:3rem 0;}
+.method-cell{background:var(--bg2);padding:1.5rem 1.25rem;}
+.method-cell h4{color:var(--accent);font-size:0.8rem;margin-bottom:0.6rem;}
+.method-cell p{font-size:0.8rem;line-height:1.6;}
+
+.theme-block{padding:4rem 0;border-bottom:1px solid var(--border);}
+.theme-block:last-child{border-bottom:none;}
+.theme-inner{display:grid;grid-template-columns:3fr 2fr;gap:5rem;margin-top:2rem;}
+.theme-q{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--text);line-height:1.6;padding:1.25rem 1.5rem;border-left:2px solid var(--gold);background:var(--surface);margin:1.5rem 0;}
+.aside-l{font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);margin-bottom:0.6rem;display:block;}
+.aside-ul{list-style:none;}
+.aside-ul li{font-size:13px;color:var(--text2);padding:0.35rem 0;border-bottom:1px solid var(--border);line-height:1.5;}
+.aside-ul li:last-child{border-bottom:none;}
+.aside-group{margin-bottom:2rem;}
+
+/* ── PUBLICATIONS ── */
+.pub-metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);margin-bottom:3rem;}
+.pub-metric{background:var(--surface);padding:1.5rem;text-align:center;}
+.pub-metric .n{font-family:var(--serif);font-size:2rem;font-weight:500;color:var(--accent);display:block;line-height:1;}
+.pub-metric .l{font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-top:0.4rem;}
+
+.pub-filters{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:2rem;}
+.pf{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:0.4rem 1rem;background:transparent;border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all 0.15s;}
+.pf:hover,.pf.on{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+
+.pub-group{margin-bottom:2.5rem;}
+.pub-year-hd{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border);padding-bottom:0.6rem;margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+.pub-year-hd::after{content:'';flex:1;height:1px;background:var(--border);}
+.pub-entry{padding:1.25rem 0;border-bottom:1px solid var(--border);}
+.pub-entry:last-child{border-bottom:none;}
+.pub-meta-row{display:flex;gap:0.75rem;align-items:center;margin-bottom:0.4rem;flex-wrap:wrap;}
+.jbadge{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid var(--accent);color:var(--accent);}
+.jbadge.conf{border-color:var(--text3);color:var(--text3);}
+.pub-entry h4{font-family:var(--serif);font-weight:400;font-size:0.98rem;color:var(--text);line-height:1.45;margin-bottom:0.3rem;text-transform:none;letter-spacing:0;}
+.pub-authors{font-size:0.85rem;color:var(--text3);font-style:italic;}
+.pub-why{font-size:12.5px;color:var(--text2);margin-top:0.6rem;padding:0.4rem 0.8rem;border-left:2px solid var(--surface2);line-height:1.55;}
+.pdoi{font-family:var(--mono);font-size:10px;color:var(--accent);margin-top:0.4rem;display:inline-block;}
+
+/* ── ABOUT ── */
+.about-layout{display:grid;grid-template-columns:300px 1fr;gap:5rem;padding-top:3rem;}
+.about-sidebar{}
+.pos-card{border:1px solid var(--border);padding:1.5rem;background:var(--surface);margin-bottom:2rem;}
+.pos-card .inst{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem;}
+.pos-card .role{font-size:1rem;color:var(--text);margin-bottom:0.3rem;font-family:var(--serif);}
+.pos-card .period{font-family:var(--mono);font-size:10px;color:var(--text3);}
+.sb-section{margin-bottom:2rem;}
+.sb-h{font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border);padding-bottom:0.5rem;margin-bottom:0.75rem;}
+.award-row{display:flex;justify-content:space-between;align-items:flex-start;padding:0.5rem 0;border-bottom:1px solid var(--border);gap:1rem;}
+.award-row:last-child{border-bottom:none;}
+.award-name{font-size:12.5px;color:var(--text2);}
+.award-yr{font-family:var(--mono);font-size:10px;color:var(--text3);}
+.tag-wrap{display:flex;flex-wrap:wrap;gap:0.35rem;}
+.tag{font-family:var(--mono);font-size:9px;padding:0.2rem 0.5rem;border:1px solid var(--border);color:var(--text3);}
+.rev-list{list-style:none;}
+.rev-list li{font-size:12.5px;color:var(--text2);padding:0.35rem 0;border-bottom:1px solid var(--border);}
+.rev-list li:last-child{border-bottom:none;}
+
+.about-main h2{margin-bottom:1.5rem;}
+.about-main p{margin-bottom:1.2rem;}
+.timeline{margin:3rem 0;}
+.tl{display:grid;grid-template-columns:120px 1fr;gap:1.5rem;padding:1.25rem 0;border-bottom:1px solid var(--border);}
+.tl:first-child{border-top:1px solid var(--border);}
+.tl-yr{font-family:var(--mono);font-size:11px;color:var(--text3);line-height:1.5;padding-top:0.15rem;}
+.tl-role{font-size:0.95rem;color:var(--text);margin-bottom:0.2rem;font-family:var(--serif);}
+.tl-note{font-size:12.5px;color:var(--text3);font-family:var(--sans);}
+.tl-badge{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;background:var(--accent);color:var(--bg);padding:0.15rem 0.5rem;display:inline-block;margin-bottom:0.3rem;}
+
+/* ── TALKS ── */
+.talks-list{}
+.talk-row{display:grid;grid-template-columns:1fr auto;gap:2rem;padding:1.5rem 0;border-bottom:1px solid var(--border);align-items:start;}
+.talk-row:first-child{border-top:1px solid var(--border);}
+.talk-t{font-family:var(--serif);font-size:1rem;color:var(--text);margin-bottom:0.3rem;font-weight:400;}
+.talk-venue{font-family:var(--mono);font-size:11px;color:var(--text3);}
+.talk-chip{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid;padding:0.2rem 0.6rem;white-space:nowrap;}
+.talk-chip.inv{border-color:var(--accent);color:var(--accent);}
+.talk-chip.conf{border-color:var(--border2);color:var(--text3);}
+
+/* ── CODE ── */
+.code-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem;}
+.code-card{border:1px solid var(--border);padding:1.75rem;background:var(--surface);transition:border-color 0.2s;}
+.code-card:hover{border-color:var(--accent);}
+.code-card-tag{font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
+.code-card h3{font-size:1rem;margin-bottom:0.6rem;color:var(--text);font-family:var(--serif);font-weight:400;}
+.code-card p{font-size:0.85rem;color:var(--text2);line-height:1.6;margin-bottom:1rem;}
+.code-card-foot{display:flex;align-items:center;justify-content:space-between;}
+.lang-pills{display:flex;gap:0.3rem;}
+.lang-pill{font-family:var(--mono);font-size:9px;padding:0.15rem 0.4rem;border:1px solid var(--border2);color:var(--text3);}
+.code-link{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.05em;}
+
+/* ── CONTACT ── */
+.contact-layout{display:grid;grid-template-columns:3fr 2fr;gap:5rem;margin-top:3rem;}
+.contact-links-list{list-style:none;border-top:1px solid var(--border);}
+.contact-links-list li{display:grid;grid-template-columns:90px 1fr;gap:1rem;padding:1.1rem 0;border-bottom:1px solid var(--border);align-items:center;}
+.c-key{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.c-val{font-size:0.9rem;}
+.collab-panel{border:1px solid var(--border);padding:2rem;background:var(--surface);margin-bottom:1.5rem;}
+.collab-panel h3{font-family:var(--serif);font-size:1.2rem;margin-bottom:1rem;color:var(--text);}
+.collab-panel ul{list-style:none;}
+.collab-panel ul li{font-size:13px;color:var(--text2);padding:0.4rem 0;padding-left:1.2rem;position:relative;border-bottom:1px solid var(--border);}
+.collab-panel ul li:last-child{border-bottom:none;}
+.collab-panel ul li::before{content:'→';position:absolute;left:0;color:var(--gold);font-family:var(--mono);font-size:10px;}
+
+/* ── FOOTER ── */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem 0;}
+.footer-inner{max-width:var(--max);margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-id{font-family:var(--mono);font-size:11px;color:var(--text3);}
+.footer-links{display:flex;gap:1.5rem;list-style:none;}
+.footer-links a{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;color:var(--text3);text-decoration:none;cursor:pointer;text-transform:uppercase;}
+.footer-links a:hover{color:var(--accent);}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  .hero-content,.home-intro,.page-hero-dark .container,.theme-inner,.about-layout,.contact-layout{grid-template-columns:1fr;gap:3rem;}
+  .eq-panel{display:none;}
+  .stats-inner,.pub-metrics,.methods-row{grid-template-columns:repeat(2,1fr);}
+  .threads-grid,.code-grid{grid-template-columns:1fr;}
+  .paper-item{grid-template-columns:1fr;}
+  .nav-links{display:none;flex-direction:column;position:fixed;top:var(--nav);left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:1rem 2rem 2rem;gap:0.2rem;z-index:199;}
+  .nav-links.open{display:flex;}
+  .hamburger{display:block;}
+  .hero h1{font-size:2.6rem;}
+  .talk-row{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .container{padding:0 1.25rem;}
+  .section{padding:4rem 0;}
+  .tl{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo" onclick="showPage('home')">
+      <span class="nav-logo-dot"></span>S. Sharma
+    </span>
+    <ul class="nav-links" id="navlinks">
+      <li><a onclick="showPage('home')" data-page="home" class="active">Home</a></li>
+      <li><a onclick="showPage('research')" data-page="research">Research</a></li>
+      <li><a onclick="showPage('publications')" data-page="publications">Publications</a></li>
+      <li><a onclick="showPage('talks')" data-page="talks">Talks</a></li>
+      <li><a onclick="showPage('code')" data-page="code">Code</a></li>
+      <li><a onclick="showPage('about')" data-page="about">About</a></li>
+      <li><a onclick="showPage('contact')" data-page="contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ════════════ HOME ════════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <canvas id="turbulence"></canvas>
+    <div class="hero-content">
+      <div>
+        <div class="hero-kicker">DLR Braunschweig &nbsp;·&nbsp; ORCID 0009-0000-1911-9317</div>
+        <h1>The mathematics<br>of <em>turbulent</em><br><span>noise</span></h1>
+        <p class="hero-desc">I develop stochastic, Lagrangian, and computational frameworks to understand why turbulent flows generate sound — and how to make them quieter. Physics-first, always.</p>
+        <div class="hero-ctas">
+          <button class="cta-primary" onclick="showPage('research')">Research programme</button>
+          <a class="cta-ghost" onclick="showPage('publications')">35+ publications</a>
+          <a class="cta-ghost" href="https://scholar.google.com/citations?hl=en&user=W4-gqEwAAAAJ" target="_blank">Scholar ↗</a>
+        </div>
+      </div>
+      <div class="eq-panel" data-label="Lighthill (1952) / FW-H">
+        <div class="eq-panel-label">Governing equations</div>
+        <div class="eq-block">
+          <span class="eq-tag">Lighthill's analogy</span>
+          <div class="eq">∂²ρ′/∂t² − c₀²∇²ρ′ = ∂²Tᵢⱼ/∂xᵢ∂xⱼ</div>
+          <div class="eq-note">// quadrupole turbulence sources → acoustic field</div>
+        </div>
+        <hr class="eq-divider">
+        <div class="eq-block">
+          <span class="eq-tag">Stochastic vortex particle</span>
+          <div class="eq">dωₖ/dt = (ωₖ·∇)u + ν∇²ωₖ + σdW</div>
+          <div class="eq-note">// Lagrangian + Itô noise → leading-edge sound</div>
+        </div>
+        <hr class="eq-divider">
+        <div class="eq-block">
+          <span class="eq-tag">ODT turbulence model</span>
+          <div class="eq">∂u/∂t = −u∂u/∂x + ℒ{u}</div>
+          <div class="eq-note">// stochastic rearrangement → energy cascade</div>
+        </div>
+        <hr class="eq-divider">
+        <div class="eq-block">
+          <span class="eq-tag">Lattice Boltzmann (2026)</span>
+          <div class="eq dim">∂fᵢ/∂t + cᵢ·∇fᵢ = Ω(fᵢ)</div>
+          <div class="eq-note">// mesoscopic → turbulence distortion + coherence</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-band">
+    <div class="stats-inner">
+      <div class="stat"><span class="stat-n">35+</span><span class="stat-l">Total publications</span></div>
+      <div class="stat"><span class="stat-n">142+</span><span class="stat-l">Citations</span></div>
+      <div class="stat"><span class="stat-n">4k+</span><span class="stat-l">Reads</span></div>
+      <div class="stat"><span class="stat-n">DFG</span><span class="stat-l">Walter Benjamin Fellow</span></div>
+      <div class="stat"><span class="stat-n">7</span><span class="stat-l">Journals reviewed for</span></div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="home-intro">
+        <div class="intro-body">
+          <div class="label">Scientific identity</div>
+          <h2>Turbulence is not just a flow problem. It is a problem in stochastic mechanics, spectral theory, and statistical physics.</h2>
+          <p class="big-q">How does the chaotic, multiscale structure of turbulence produce sound — and can we predict, model, and control it without solving everything at once?</p>
+          <p>My research sits at the intersection of fluid mechanics, mathematical physics, and numerical methods. The approach spans three tracks: <strong style="color:var(--text);">mathematical modelling</strong> (stochastic Markov-chain turbulence, vortex particle methods, Lighthill's and Lattice Boltzmann analogies), <strong style="color:var(--text);">computational simulation</strong> (LES, DES, LBM, FW-H), and <strong style="color:var(--text);">physical experiments</strong> (Acoustic Wind Tunnel Braunschweig, porous coatings, airfoil–turbulence interaction).</p>
+          <p>The result is a programme that can move between a tensor identity and a wind turbine blade without losing rigour — or between a Markov chain and a microphone array without losing contact with experiment.</p>
+          <button class="cta-ghost" onclick="showPage('research')" style="margin-top:1.5rem;">Explore research →</button>
+        </div>
+        <div>
+          <div class="aside-box">
+            <h4>Current position</h4>
+            <div class="aside-item"><span class="aside-key">Role</span><span class="aside-val">Research Scientist</span></div>
+            <div class="aside-item"><span class="aside-key">Institute</span><span class="aside-val">DLR — Inst. of Aerodynamics & Flow Technology</span></div>
+            <div class="aside-item"><span class="aside-key">Group</span><span class="aside-val">Dr. Michaela Herr · Prof. Jan Delfs</span></div>
+            <div class="aside-item"><span class="aside-key">Location</span><span class="aside-val">Braunschweig, Germany</span></div>
+            <div class="aside-item"><span class="aside-key">Since</span><span class="aside-val">2023</span></div>
+          </div>
+          <div class="aside-box" style="margin-top:1rem;">
+            <h4>Profiles</h4>
+            <div class="aside-item"><span class="aside-key">Scholar</span><span class="aside-val"><a href="https://scholar.google.com/citations?hl=en&user=W4-gqEwAAAAJ" target="_blank">Google Scholar ↗</a></span></div>
+            <div class="aside-item"><span class="aside-key">ResearchGate</span><span class="aside-val"><a href="https://www.researchgate.net/profile/Sparsh-Sharma-6" target="_blank">Profile ↗</a></span></div>
+            <div class="aside-item"><span class="aside-key">GitHub</span><span class="aside-val"><a href="https://github.com/Sparsh-Sharma" target="_blank">Sparsh-Sharma ↗</a></span></div>
+            <div class="aside-item"><span class="aside-key">ORCID</span><span class="aside-val"><a href="https://orcid.org/0009-0000-1911-9317" target="_blank">0009-0000-1911-9317 ↗</a></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="label">Research threads</div>
+      <h2 style="margin-bottom:2.5rem;">Six connected problems</h2>
+      <div class="threads-grid">
+        <div class="thread" data-n="01" onclick="showPage('research')">
+          <span class="thread-tag">Leading-edge noise</span>
+          <h3>Turbulence–airfoil interaction noise</h3>
+          <p>Stochastic vortex particle methods for predicting broadband airfoil noise from incoming turbulence. Time-domain BEM validated against AWB experiments.</p>
+          <span class="thread-arrow">Explore →</span>
+        </div>
+        <div class="thread" data-n="02" onclick="showPage('research')">
+          <span class="thread-tag">Stochastic methods</span>
+          <h3>ODT & stochastic turbulence modelling</h3>
+          <p>One-dimensional turbulence as reduced-order model for jet self-noise. Markov-chain representations coupled to Lighthill's analogy with quantifiable uncertainty.</p>
+          <span class="thread-arrow">Explore →</span>
+        </div>
+        <div class="thread" data-n="03" onclick="showPage('research')">
+          <span class="thread-tag">Passive noise control</span>
+          <h3>Porous materials for flow & noise control</h3>
+          <p>How porous coatings and cross-sectional geometry control vortex shedding noise. Permeability, thickness, and shape as aeroacoustic design parameters.</p>
+          <span class="thread-arrow">Explore →</span>
+        </div>
+        <div class="thread" data-n="04" onclick="showPage('research')">
+          <span class="thread-tag">Lattice Boltzmann · 2026</span>
+          <h3>Turbulence distortion & LBM simulations</h3>
+          <p>Turbulence distortion and coherence effects in airfoil leading-edge noise via LBM. New computational frontier at DLR for mesoscopic aeroacoustics.</p>
+          <span class="thread-arrow">Explore →</span>
+        </div>
+        <div class="thread" data-n="05" onclick="showPage('research')">
+          <span class="thread-tag">Jet aeroacoustics</span>
+          <h3>Turbulent jets & jet noise prediction</h3>
+          <p>Self-similarity, far-downstream velocity statistics, and acoustic emission from turbulent round jets at high Reynolds number using ODT and LES.</p>
+          <span class="thread-arrow">Explore →</span>
+        </div>
+        <div class="thread" data-n="06" onclick="showPage('research')">
+          <span class="thread-tag">Wind energy</span>
+          <h3>Wind turbine aeroacoustics</h3>
+          <p>Turbulent inflow noise from wind turbine blades. AWB experiments, multi-scale LES, and noise prediction within DLR's HGF energy programme.</p>
+          <span class="thread-arrow">Explore →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="label">Selected publications</div>
+      <h2 style="margin-bottom:0.5rem;">Key papers</h2>
+      <p style="font-size:13px;color:var(--text3);margin-bottom:2rem;">Full annotated list → <span style="cursor:pointer;color:var(--accent);" onclick="showPage('publications')">Publications</span> · <a href="https://scholar.google.com/citations?hl=en&user=W4-gqEwAAAAJ" target="_blank">Google Scholar</a> · <a href="https://www.researchgate.net/profile/Sparsh-Sharma-6" target="_blank">ResearchGate</a></p>
+      <div class="paper-feed">
+
+        <div class="paper-item">
+          <div class="paper-yr">2026</div>
+          <div>
+            <div class="paper-venue">32nd AIAA/CEAS Aeroacoustics <span class="paper-badge lbm">New · LBM</span></div>
+            <div class="paper-title">Turbulence distortion and coherence effects in airfoil leading-edge noise: insights from Lattice Boltzmann simulations</div>
+            <div class="paper-auth">S. Sharma, M. Soni, A. Suryadi, M. Herr</div>
+            <div class="paper-note">A new computational frontier. LBM captures the mesoscopic-scale turbulence–airfoil coupling inaccessible to standard CFD — coherence effects and distortion physics that directly govern the broadband noise spectrum.</div>
+          </div>
+          <div class="paper-links"><a class="paper-link-btn" href="https://arc.aiaa.org" target="_blank">AIAA ↗</a></div>
+        </div>
+
+        <div class="paper-item">
+          <div class="paper-yr">2025</div>
+          <div>
+            <div class="paper-venue">11th Wind Turbine Noise Conf. · Copenhagen <span class="paper-badge">New</span></div>
+            <div class="paper-title">Multi-scale turbulence structures in grid-generated turbulence for leading-edge noise prediction</div>
+            <div class="paper-auth">S. Sharma, A. Suryadi, M. Herr</div>
+            <div class="paper-note">LES + AWB wind-tunnel experiments showing how turbulence decays, distorts, and regenerates through airfoil interaction — linking multi-scale flow dynamics directly to SPL spectra and far-field directivity.</div>
+            <a class="paper-doi" href="https://doi.org/10.11581/08042886-dea0-4511-b4bd-6c5403125735" target="_blank">doi:10.11581/08042886-dea0-4511-b4bd-6c5403125735</a>
+          </div>
+          <div class="paper-links"><a class="paper-link-btn" href="https://elib.dlr.de/214892/" target="_blank">DLR elib ↗</a></div>
+        </div>
+
+        <div class="paper-item">
+          <div class="paper-yr">2020</div>
+          <div>
+            <div class="paper-venue">Journal of Sound and Vibration</div>
+            <div class="paper-title">Stochastic modelling of leading-edge noise in time-domain using vortex particles</div>
+            <div class="paper-auth">S. Sharma, E. Sarradj, H. Schmidt</div>
+            <div class="paper-note">The doctoral thesis core result. Establishes the time-domain stochastic vortex particle method as a viable, physics-based alternative to high-fidelity LES — methodologically novel, orders of magnitude cheaper.</div>
+            <a class="paper-doi" href="https://doi.org/10.1016/j.jsv.2020.115656" target="_blank">doi:10.1016/j.jsv.2020.115656</a>
+          </div>
+          <div class="paper-links"><a class="paper-link-btn" href="https://doi.org/10.1016/j.jsv.2020.115656" target="_blank">Elsevier ↗</a></div>
+        </div>
+
+        <div class="paper-item">
+          <div class="paper-yr">2019</div>
+          <div>
+            <div class="paper-venue">Physical Review Fluids</div>
+            <div class="paper-title">Two-dimensional isotropic turbulent inflow conditions for the vortex particle method</div>
+            <div class="paper-auth">S. Sharma, E. Sarradj</div>
+            <div class="paper-note">Foundational paper. Derives mathematically consistent isotropic turbulent inflow statistics for Lagrangian solvers — the bedrock on which the entire leading-edge noise programme rests.</div>
+            <a class="paper-doi" href="https://doi.org/10.1103/PhysRevFluids.4.022701" target="_blank">doi:10.1103/PhysRevFluids.4.022701</a>
+          </div>
+          <div class="paper-links"><a class="paper-link-btn" href="https://doi.org/10.1103/PhysRevFluids.4.022701" target="_blank">APS ↗</a></div>
+        </div>
+
+      </div>
+      <div style="margin-top:2rem;"><button class="cta-ghost" onclick="showPage('publications')">Full publication list (35+) →</button></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-id">Dr. Sparsh Sharma · DLR Braunschweig · sparsh.sharma@dlr.de</div>
+      <ul class="footer-links"><li><a onclick="showPage('research')">Research</a></li><li><a onclick="showPage('publications')">Publications</a></li><li><a onclick="showPage('contact')">Contact</a></li></ul>
+      <div class="footer-id">© 2025–2026 · sparsh-sharma.github.io</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════ RESEARCH ════════════ -->
+<div class="page" id="page-research">
+  <div class="page-hero-dark">
+    <div class="container">
+      <div>
+        <div class="label">Research programme</div>
+        <h1 style="font-size:clamp(2.2rem,4vw,3.8rem);line-height:1.1;">Turbulence as a mathematical object,<br><em style="color:var(--accent);">sound</em> as its physical consequence</h1>
+      </div>
+      <div>
+        <p>Physics-based mathematical and computational frameworks for understanding, predicting, and controlling the noise generated by turbulent flows. The problems are fundamental; the tools are often novel — stochastic Lagrangian methods, mesoscopic Lattice Boltzmann, one-dimensional turbulence, and high-fidelity LES, always anchored in experiment.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="methods-row">
+      <div class="method-cell"><h4>Stochastic methods</h4><p>Markov chains, Langevin equations, Monte Carlo, ODT for turbulence statistics without resolving all scales.</p></div>
+      <div class="method-cell"><h4>Vortex particle / LBM</h4><p>Lagrangian meshless Euler/N-S solvers. Lattice Boltzmann for mesoscopic turbulence–sound coupling.</p></div>
+      <div class="method-cell"><h4>High-fidelity CFD</h4><p>LES, DES, DNS in OpenFOAM and SU2. Scale-resolving for aeroacoustic source analysis and model validation.</p></div>
+      <div class="method-cell"><h4>Acoustic analogies</h4><p>Lighthill, FW-H, BEM. Connecting flow solutions to far-field radiation in a mathematically rigorous way.</p></div>
+    </div>
+
+    <div class="theme-block">
+      <div class="label">Theme 01</div>
+      <div class="theme-inner">
+        <div>
+          <h3>Leading-edge noise & turbulence–airfoil interaction</h3>
+          <div class="theme-q">When a turbulent flow meets an airfoil's leading edge, how do we predict the radiated sound without resolving every vortex?</div>
+          <p>This thread runs from my doctoral thesis through the most recent DLR work. I developed a stochastic, time-domain approach using vortex particles as both a turbulence representation and an acoustic source model. A Lagrangian description of turbulence — individual vortex elements with prescribed statistics — is physically transparent and computationally tractable.</p>
+          <p>The framework produces broadband noise predictions comparing well with high-fidelity LES at orders-of-magnitude lower cost, validated against AWB wind-tunnel measurements. A look-up table extension (DLR, 2024) scales this to operational aircraft and wind turbine applications.</p>
+          <p>The most recent work (WTN 2025, AIAA/CEAS 2026 LBM paper) explores turbulence distortion and coherence effects through airfoil interaction using Lattice Boltzmann simulations — a new frontier where mesoscopic physics governs the broadband noise spectrum.</p>
+        </div>
+        <div>
+          <div class="aside-group">
+            <span class="aside-l">Key methods</span>
+            <ul class="aside-ul"><li>Lagrangian vortex particle method</li><li>Stochastic turbulence synthesis</li><li>Time-domain BEM</li><li>FW-H acoustic analogy</li><li>Lattice Boltzmann (ProLB / in-house)</li><li>LES (OpenFOAM) + AWB experiments</li></ul>
+          </div>
+          <div class="aside-group">
+            <span class="aside-l">Representative papers</span>
+            <ul class="aside-ul"><li>Sharma & Sarradj, Phys. Rev. Fluids (2019)</li><li>Sharma et al., JSV (2020)</li><li>Sharma & Herr, J. Phys.: Conf. Ser. (2024)</li><li>Sharma et al., WTN (2025)</li><li>Sharma, Soni et al., AIAA/CEAS (2026)</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="theme-block">
+      <div class="label">Theme 02</div>
+      <div class="theme-inner">
+        <div>
+          <h3>Stochastic turbulence modelling & one-dimensional turbulence</h3>
+          <div class="theme-q">Can a one-dimensional stochastic process — retaining turbulent intermittency, energy cascades, and self-similarity — serve as a faithful reduced-order model for aeroacoustic prediction?</div>
+          <p>One-Dimensional Turbulence (ODT) directly simulates turbulent advection via stochastic rearrangement events on a 1D domain, preserving the physics of the energy cascade without 3D DNS cost. My DFG Walter Benjamin work at Cambridge applied ODT to turbulent jet dynamics: self-similar velocity statistics, far-downstream fluctuations, and acoustic emission via Lighthill's equation.</p>
+          <p>Key result (GAMM 2023): ODT-resolved acoustic sources at high Reynolds number — bridging the gap between low-order turbulence models and the acoustic field with explicit probabilistic treatment of source fluctuations and quantifiable uncertainty.</p>
+        </div>
+        <div>
+          <div class="aside-group">
+            <span class="aside-l">Key methods</span>
+            <ul class="aside-ul"><li>One-dimensional turbulence (ODT)</li><li>Lighthill's acoustic analogy</li><li>Markov chain turbulence modelling</li><li>Statistical self-similarity analysis</li><li>FW-H post-processing</li></ul>
+          </div>
+          <div class="aside-group">
+            <span class="aside-l">Key papers</span>
+            <ul class="aside-ul"><li>Sharma, Klein & Schmidt, Phys. Fluids (2022)</li><li>Medina Méndez, Sharma et al., PAMM (2023)</li><li>Sharma, Ayton et al., INTER-NOISE (2023)</li><li>Sharma et al., GAMM (2023)</li></ul>
+          </div>
+          <div class="aside-group">
+            <span class="aside-l">Collaborators</span>
+            <ul class="aside-ul"><li>Prof. Marten Klein (BTU Cottbus)</li><li>Dr. Lorna Ayton (Cambridge)</li><li>Prof. Heiko Schmidt (BTU Cottbus)</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="theme-block">
+      <div class="label">Theme 03</div>
+      <div class="theme-inner">
+        <div>
+          <h3>Porous materials for passive flow & noise control</h3>
+          <div class="theme-q">How do porous coating microstructure, thickness, permeability, and bluff-body cross-sectional geometry interact to suppress vortex shedding noise?</div>
+          <p>Porous coatings offer a passive, structurally simple route to noise control. Owls fly nearly silently using porous wing structures. The engineering challenge is to understand the mechanism precisely enough to design effective coatings without trial and error.</p>
+          <p>My computational studies (DES, FW-H) on porous-coated cylinders show permeability and thickness act on distinct mechanisms. The optimal combination is Reynolds-number dependent. Recent work extends to non-circular cross-sections: trapezoidal cylinders (AIAA/CEAS 2023), and now square cylinders with porous coatings — both experimental and numerical investigations presented at AIAA/CEAS 2026. Applicable to airframe landing-gear and wind turbine strut noise.</p>
+        </div>
+        <div>
+          <div class="aside-group">
+            <span class="aside-l">Key methods</span>
+            <ul class="aside-ul"><li>DES (SU2, OpenFOAM)</li><li>FW-H acoustic analogy</li><li>Porous medium modelling</li><li>Open-jet wind tunnel</li><li>Microphone array beamforming</li></ul>
+          </div>
+          <div class="aside-group">
+            <span class="aside-l">Key papers</span>
+            <ul class="aside-ul"><li>Sharma, Geyer & Arcondoulis, JSV (2023)</li><li>Geyer, Velpula & Sharma, AIAA/CEAS (2023)</li><li>Geyer, Sharma & Mousavi, AIAA/CEAS (2026)</li><li>Sharma & Geyer, AIAA/CEAS (2026)</li><li>Mousavi, Geyer & Sharma (in prep.)</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="theme-block" style="padding-bottom:0;">
+      <div class="label">Theme 04</div>
+      <div class="theme-inner">
+        <div>
+          <h3>High-fidelity CFD & AWB turbulence characterisation</h3>
+          <div class="theme-q">How accurately can scale-resolving simulations predict aeroacoustic sources — and where do turbulence closures break down?</div>
+          <p>Complementing the modelling track: LES/DES in OpenFOAM and SU2, FW-H post-processing, and grid-generated turbulence simulations benchmarked against AWB wind-tunnel data. A dedicated study (STAB/DGLR 2024/2026) characterises airflow turbulence in the AWB using turbulence grids — providing the experimental ground truth against which all simulation approaches are validated.</p>
+        </div>
+        <div>
+          <div class="aside-group">
+            <span class="aside-l">Facility</span>
+            <ul class="aside-ul"><li>Acoustic Wind Tunnel Braunschweig (AWB)</li><li>DLR Turbulence grid experiments</li></ul>
+          </div>
+          <div class="aside-group">
+            <span class="aside-l">Key papers</span>
+            <ul class="aside-ul"><li>Sharma, Suryadi & Herr, WTN (2025)</li><li>Sharma, Suryadi & Herr, AIAA/CEAS (2024)</li><li>Sharma et al., STAB/DGLR proc. (2026)</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-id">Dr. Sparsh Sharma · DLR Braunschweig</div>
+      <ul class="footer-links"><li><a onclick="showPage('publications')">Publications</a></li><li><a onclick="showPage('contact')">Contact</a></li></ul>
+      <div class="footer-id">© 2025–2026</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════ PUBLICATIONS ════════════ -->
+<div class="page" id="page-publications">
+  <div class="page-hero-dark">
+    <div class="container" style="grid-template-columns:1fr;">
+      <div class="label">Academic work</div>
+      <h1 style="font-size:clamp(2.5rem,5vw,4rem);">Publications</h1>
+      <p style="margin-top:1rem;max-width:680px;">Organized by year, annotated for significance. Live profiles: <a href="https://scholar.google.com/citations?hl=en&user=W4-gqEwAAAAJ&view_op=list_works&sortby=pubdate" target="_blank">Google Scholar</a> · <a href="https://www.researchgate.net/profile/Sparsh-Sharma-6" target="_blank">ResearchGate</a> · ORCID <a href="https://orcid.org/0009-0000-1911-9317" target="_blank">0009-0000-1911-9317</a></p>
+    </div>
+  </div>
+  <div class="container" style="padding-top:3rem;padding-bottom:5rem;">
+    <div class="pub-metrics">
+      <div class="pub-metric"><span class="n">35+</span><span class="l">Total publications</span></div>
+      <div class="pub-metric"><span class="n">142+</span><span class="l">Citations</span></div>
+      <div class="pub-metric"><span class="n">4,099+</span><span class="l">Reads</span></div>
+      <div class="pub-metric"><span class="n">9</span><span class="l">Journal articles</span></div>
+      <div class="pub-metric"><span class="n">7</span><span class="l">Journals reviewed for</span></div>
+    </div>
+
+    <div class="pub-filters">
+      <button class="pf on" onclick="filterPubs('all',this)">All</button>
+      <button class="pf" onclick="filterPubs('journal',this)">Journals</button>
+      <button class="pf" onclick="filterPubs('conference',this)">Conferences</button>
+      <button class="pf" onclick="filterPubs('leading-edge',this)">Leading-edge noise</button>
+      <button class="pf" onclick="filterPubs('stochastic',this)">Stochastic / ODT</button>
+      <button class="pf" onclick="filterPubs('porous',this)">Porous materials</button>
+      <button class="pf" onclick="filterPubs('wind',this)">Wind turbine</button>
+      <button class="pf" onclick="filterPubs('lbm',this)">LBM · 2026</button>
+    </div>
+
+    <!-- 2026 -->
+    <div class="pub-group" data-group="2026">
+      <div class="pub-year-hd">2026</div>
+      <div class="pub-entry" data-tags="conference leading-edge lbm">
+        <div class="pub-meta-row"><span class="jbadge conf">32nd AIAA/CEAS</span><span style="font-family:var(--mono);font-size:9px;color:var(--gold);">New · LBM</span></div>
+        <h4>Turbulence distortion and coherence effects in airfoil leading-edge noise: insights from Lattice Boltzmann simulations</h4>
+        <div class="pub-authors">S. Sharma, M. Soni, A. Suryadi, M. Herr &nbsp;— AIAA 2026-3445</div>
+        <div class="pub-why">New computational frontier. LBM captures mesoscopic turbulence–airfoil coupling inaccessible to standard CFD — coherence effects and distortion physics that govern the broadband noise spectrum directly.</div>
+      </div>
+      <div class="pub-entry" data-tags="conference porous">
+        <div class="pub-meta-row"><span class="jbadge conf">32nd AIAA/CEAS</span><span style="font-family:var(--mono);font-size:9px;color:var(--gold);">New</span></div>
+        <h4>Experimental investigation of aerodynamic noise and wake flow produced by porous-coated square cylinders</h4>
+        <div class="pub-authors">T.F. Geyer, S. Sharma, T. Mousavi &nbsp;— AIAA 2026-3429</div>
+      </div>
+      <div class="pub-entry" data-tags="conference porous">
+        <div class="pub-meta-row"><span class="jbadge conf">32nd AIAA/CEAS</span><span style="font-family:var(--mono);font-size:9px;color:var(--gold);">New</span></div>
+        <h4>Numerical investigation of aerodynamic noise and wake flow produced by porous-coated square cylinders</h4>
+        <div class="pub-authors">S. Sharma, T.F. Geyer &nbsp;— AIAA 2026-3430</div>
+        <div class="pub-why">Companion numerical study to the experimental paper above. DES + FW-H analysis of porous square cylinders, extending the permeability/geometry control framework to square cross-sections.</div>
+      </div>
+      <div class="pub-entry" data-tags="conference leading-edge wind">
+        <div class="pub-meta-row"><span class="jbadge conf">STAB/DGLR Symposium 2024 Proc.</span></div>
+        <h4>Characterizing airflow turbulence in the Acoustic Wind Tunnel Braunschweig (AWB) using turbulence grids</h4>
+        <div class="pub-authors">S. Sharma, A. Suryadi, M. Herr &nbsp;— Springer Nature, Vol. 156, pp. 447</div>
+      </div>
+      <div class="pub-entry" data-tags="journal leading-edge lbm">
+        <div class="pub-meta-row"><span class="jbadge">Journal article (in prep.)</span></div>
+        <h4>Turbulence distortion effects in airfoil leading-edge noise: insights from Lattice Boltzmann simulations</h4>
+        <div class="pub-authors">S. Sharma, A. Suryadi, M. Soni, M. Herr</div>
+        <div class="pub-why">Journal version of the AIAA/CEAS 2026 paper — extended analysis of turbulence distortion and coherence effects.</div>
+      </div>
+    </div>
+
+    <!-- 2025 -->
+    <div class="pub-group" data-group="2025">
+      <div class="pub-year-hd">2025</div>
+      <div class="pub-entry" data-tags="conference leading-edge wind">
+        <div class="pub-meta-row"><span class="jbadge conf">11th Wind Turbine Noise Conf.</span></div>
+        <h4>Multi-scale turbulence structures in grid-generated turbulence for leading-edge noise prediction</h4>
+        <div class="pub-authors">S. Sharma, A. Suryadi, M. Herr &nbsp;— Copenhagen, pp. 430–440</div>
+        <div class="pub-why">LES + AWB experiments characterising how turbulence decays, distorts, and regenerates through airfoil interaction. Confirms grid-generated turbulence drives leading-edge noise through coherent-structure interactions.</div>
+        <a class="pdoi" href="https://doi.org/10.11581/08042886-dea0-4511-b4bd-6c5403125735" target="_blank">doi:10.11581/08042886-dea0-4511-b4bd-6c5403125735</a>
+      </div>
+    </div>
+
+    <!-- 2024 -->
+    <div class="pub-group" data-group="2024">
+      <div class="pub-year-hd">2024</div>
+      <div class="pub-entry" data-tags="journal leading-edge wind">
+        <div class="pub-meta-row"><span class="jbadge">J. Phys.: Conf. Ser.</span></div>
+        <h4>Efficient prediction of turbulent inflow and leading-edge interaction noise using a vortex particle method with look-up table approach</h4>
+        <div class="pub-authors">S. Sharma, M. Herr</div>
+        <div class="pub-why">Extends the vortex particle framework to operational scale via a look-up table. Dramatically reduced wall time while preserving accuracy for wind turbine and aircraft inflow noise.</div>
+        <a class="pdoi" href="https://iopscience.iop.org/article/10.1088/1742-6596/2767/2/022059" target="_blank">IOP Publishing link →</a>
+      </div>
+      <div class="pub-entry" data-tags="conference leading-edge wind">
+        <div class="pub-meta-row"><span class="jbadge conf">30th AIAA/CEAS</span></div>
+        <h4>Assessment of turbulence modeling in Navier–Stokes simulations for grid-generated turbulence and airfoil interaction</h4>
+        <div class="pub-authors">S. Sharma, A. Suryadi, M. Herr &nbsp;— AIAA 2024-3324</div>
+        <div class="pub-why">Comprehensive LES investigation assessing where turbulence models succeed and fail for aeroacoustic wind-tunnel predictions of airfoil–turbulence interaction noise.</div>
+      </div>
+    </div>
+
+    <!-- 2023 -->
+    <div class="pub-group" data-group="2023">
+      <div class="pub-year-hd">2023</div>
+      <div class="pub-entry" data-tags="journal porous">
+        <div class="pub-meta-row"><span class="jbadge">Journal of Sound and Vibration</span></div>
+        <h4>On the influence of porous coating thickness and permeability on passive flow and noise control of cylinders</h4>
+        <div class="pub-authors">S. Sharma, T.F. Geyer, E.J.G. Arcondoulis &nbsp;— JSV, p. 117563</div>
+        <div class="pub-why">Systematic parametric study isolating permeability and thickness as distinct aeroacoustic control parameters. Reynolds-number-dependent optimal coating design — a practically critical finding for airframe and strut noise.</div>
+        <a class="pdoi" href="https://doi.org/10.1016/j.jsv.2022.117563" target="_blank">doi:10.1016/j.jsv.2022.117563</a>
+      </div>
+      <div class="pub-entry" data-tags="journal stochastic">
+        <div class="pub-meta-row"><span class="jbadge">PAMM</span></div>
+        <h4>Toward the use of a reduced-order and stochastic turbulence model for assessment of far-field sound radiation: Low Mach number jet flows</h4>
+        <div class="pub-authors">J.A. Medina Méndez, S. Sharma, H. Schmidt, M. Klein &nbsp;— PAMM 23(3):e202300186</div>
+        <a class="pdoi" href="https://doi.org/10.1002/pamm.202300186" target="_blank">doi:10.1002/pamm.202300186</a>
+      </div>
+      <div class="pub-entry" data-tags="conference stochastic">
+        <div class="pub-meta-row"><span class="jbadge conf">GAMM Annual Meeting</span></div>
+        <h4>Estimation of ODT-resolved acoustic sources in high Reynolds number turbulent jets</h4>
+        <div class="pub-authors">S. Sharma, L. Ayton, M. Klein, H. Schmidt</div>
+      </div>
+      <div class="pub-entry" data-tags="conference stochastic">
+        <div class="pub-meta-row"><span class="jbadge conf">INTER-NOISE · Chiba, Japan</span></div>
+        <h4>A theoretical study of self-noise generation in turbulent jets using one-dimensional turbulence and Lighthill's acoustic analogy</h4>
+        <div class="pub-authors">S. Sharma, L. Ayton, M. Klein, J.A. Medina Méndez &nbsp;— pp. 282–293</div>
+      </div>
+      <div class="pub-entry" data-tags="conference porous">
+        <div class="pub-meta-row"><span class="jbadge conf">AIAA AVIATION 2023</span></div>
+        <h4>Experimental investigation of tonal noise radiation from trapezoidal cylinders in cross-flow</h4>
+        <div class="pub-authors">T.F. Geyer, R.V. Velpula, S. Sharma &nbsp;— AIAA 2023-3496</div>
+        <div class="pub-why">Non-circular cross-sections at incidence 0°–180°. Strong geometry and angle-of-attack effects on tonal noise — opening new passive control strategies for bluff-body aeroacoustics.</div>
+      </div>
+    </div>
+
+    <!-- 2022 -->
+    <div class="pub-group" data-group="2022">
+      <div class="pub-year-hd">2022</div>
+      <div class="pub-entry" data-tags="journal stochastic">
+        <div class="pub-meta-row"><span class="jbadge">Physics of Fluids</span></div>
+        <h4>Features of far-downstream asymptotic velocity fluctuations in a round jet: A one-dimensional turbulence study</h4>
+        <div class="pub-authors">S. Sharma, M. Klein, H. Schmidt &nbsp;— Phys. Fluids 34</div>
+        <div class="pub-why">ODT reproduces self-similar turbulent statistics in the far field of a round jet — validating the stochastic framework as a physics-faithful alternative to DNS for jet noise source characterisation.</div>
+        <a class="pdoi" href="https://doi.org/10.1063/5.0101270" target="_blank">doi:10.1063/5.0101270</a>
+      </div>
+      <div class="pub-entry" data-tags="conference porous">
+        <div class="pub-meta-row"><span class="jbadge conf">28th AIAA/CEAS · Southampton</span></div>
+        <h4>Effect of coating thickness on aerodynamic noise reduction by porous-coated cylinders</h4>
+        <div class="pub-authors">S. Sharma, T.F. Geyer, E.J.G. Arcondoulis</div>
+      </div>
+      <div class="pub-entry" data-tags="conference porous">
+        <div class="pub-meta-row"><span class="jbadge conf">28th AIAA/CEAS · Southampton</span></div>
+        <h4>Numerical investigation of aerodynamic noise generation by porous-coated staggered cylinders</h4>
+        <div class="pub-authors">S. Sharma, T.F. Geyer</div>
+      </div>
+    </div>
+
+    <!-- 2021 -->
+    <div class="pub-group" data-group="2021">
+      <div class="pub-year-hd">2021</div>
+      <div class="pub-entry" data-tags="journal porous">
+        <div class="pub-meta-row"><span class="jbadge">Frequenz</span></div>
+        <h4>Schallminderung an einer umströmten Tandem-Zylinder-Anordnung durch poröses Material</h4>
+        <div class="pub-authors">T.F. Geyer, S. Sharma, B. Calisci &nbsp;— Frequenz 101–103</div>
+        <div class="pub-why">German-language journal publication on noise reduction in tandem cylinder arrangements using porous material — connects computational and experimental work with industrial noise-reduction practice.</div>
+      </div>
+      <div class="pub-entry" data-tags="journal conference">
+        <div class="pub-meta-row"><span class="jbadge">Applied Acoustics</span></div>
+        <h4>Effect of geometric parameters on the noise generated by rod–airfoil configuration</h4>
+        <div class="pub-authors">S. Sharma, T.F. Geyer, J. Giesler &nbsp;— Appl. Acoustics 177:107908</div>
+      </div>
+      <div class="pub-entry" data-tags="conference leading-edge stochastic">
+        <div class="pub-meta-row"><span class="jbadge conf">AIAA AVIATION 2021</span></div>
+        <h4>Experimental validation of a lower-order model for leading-edge noise based on vortex method</h4>
+        <div class="pub-authors">S. Sharma, T.F. Geyer, E. Sarradj, H. Schmidt</div>
+      </div>
+      <div class="pub-entry" data-tags="conference stochastic">
+        <div class="pub-meta-row"><span class="jbadge conf">AIAA AVIATION 2021</span></div>
+        <h4>Modelling turbulent jets at high Reynolds number using one-dimensional turbulence</h4>
+        <div class="pub-authors">S. Sharma, M. Klein, H. Schmidt</div>
+      </div>
+    </div>
+
+    <!-- 2019–2020 -->
+    <div class="pub-group" data-group="2020">
+      <div class="pub-year-hd">2019–2020</div>
+      <div class="pub-entry" data-tags="journal leading-edge stochastic">
+        <div class="pub-meta-row"><span class="jbadge">Journal of Sound and Vibration</span></div>
+        <h4>Stochastic modelling of leading-edge noise in time-domain using vortex particles</h4>
+        <div class="pub-authors">S. Sharma, E. Sarradj, H. Schmidt &nbsp;— JSV 488:115656</div>
+        <div class="pub-why">Core doctoral thesis result. Methodologically novel: a physics-based time-domain stochastic framework that rivals LES for leading-edge noise prediction at a fraction of the cost.</div>
+        <a class="pdoi" href="https://doi.org/10.1016/j.jsv.2020.115656" target="_blank">doi:10.1016/j.jsv.2020.115656</a>
+      </div>
+      <div class="pub-entry" data-tags="journal leading-edge stochastic">
+        <div class="pub-meta-row"><span class="jbadge">Physical Review Fluids</span></div>
+        <h4>Two-dimensional isotropic turbulent inflow conditions for the vortex particle method</h4>
+        <div class="pub-authors">S. Sharma, E. Sarradj &nbsp;— Phys. Rev. Fluids 4:022701</div>
+        <div class="pub-why">Foundational paper. Derives mathematically consistent 2D isotropic turbulent inflow statistics for Lagrangian solvers — the bedrock on which the entire vortex particle noise programme rests.</div>
+        <a class="pdoi" href="https://doi.org/10.1103/PhysRevFluids.4.022701" target="_blank">doi:10.1103/PhysRevFluids.4.022701</a>
+      </div>
+      <div class="pub-entry" data-tags="conference leading-edge">
+        <div class="pub-meta-row"><span class="jbadge conf">25th AIAA/CEAS · Reston</span></div>
+        <h4>Numerical investigation of noise generation by rod–airfoil configuration using DES (SU2) and the FW-H analogy</h4>
+        <div class="pub-authors">S. Sharma, T.F. Geyer, E. Sarradj, H. Schmidt</div>
+      </div>
+    </div>
+
+    <!-- 2017–2018 -->
+    <div class="pub-group" data-group="early">
+      <div class="pub-year-hd">2017–2018</div>
+      <div class="pub-entry" data-tags="conference porous">
+        <div class="pub-meta-row"><span class="jbadge conf">AIAA/CEAS 2018</span></div>
+        <h4>Detached Eddy Simulation of the flow noise generation of cylinders with porous cover</h4>
+        <div class="pub-authors">T.F. Geyer, S. Sharma, E. Sarradj</div>
+      </div>
+      <div class="pub-entry" data-tags="conference leading-edge">
+        <div class="pub-meta-row"><span class="jbadge conf">ISUAAAT15 · Oxford</span></div>
+        <h4>Fluctuating inflow condition for time-domain BEM for airfoil–turbulence interaction noise</h4>
+        <div class="pub-authors">S. Sharma, E. Sarradj &nbsp;— 2018</div>
+      </div>
+      <div class="pub-entry" data-tags="conference leading-edge">
+        <div class="pub-meta-row"><span class="jbadge conf">INTER-NOISE 2018 · Chicago</span></div>
+        <h4>Time domain BEM for leading-edge noise subjected to linear vorticity</h4>
+        <div class="pub-authors">S. Sharma, T.F. Geyer, E. Sarradj</div>
+      </div>
+      <div class="pub-entry" data-tags="conference leading-edge stochastic">
+        <div class="pub-meta-row"><span class="jbadge conf">DAGA 2018 · Munich</span></div>
+        <h4>Low-fidelity stochastic approach for airfoil–turbulence interaction noise</h4>
+        <div class="pub-authors">S. Sharma, E. Sarradj, H. Schmidt &nbsp;— pp. 1184–1187</div>
+      </div>
+      <div class="pub-entry" data-tags="conference leading-edge">
+        <div class="pub-meta-row"><span class="jbadge conf">DAGA 2017 · Kiel</span></div>
+        <h4>Unsteady lift due to the interaction of incidence turbulence with an airfoil</h4>
+        <div class="pub-authors">S. Sharma, E. Sarradj, H. Schmidt</div>
+      </div>
+    </div>
+
+    <!-- THESIS -->
+    <div class="pub-group">
+      <div class="pub-year-hd">Doctoral thesis</div>
+      <div class="pub-entry">
+        <div class="pub-meta-row"><span class="jbadge">BTU Cottbus · summa cum laude · Best Thesis 2020</span></div>
+        <h4>Stochastic modelling of leading-edge noise in time-domain using vortex particles</h4>
+        <div class="pub-authors">S. Sharma — Supervisors: Prof. E. Sarradj, Prof. H. Schmidt, Prof. U. Harlander</div>
+        <div class="pub-why">Best Thesis Prize 2020 (BTU) and DEGA Young Scientist Award 2019. Open access via BTU repository.</div>
+        <a class="pdoi" href="https://doi.org/10.26127/BTUOpen-5085" target="_blank">doi:10.26127/BTUOpen-5085</a>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-id">Dr. Sparsh Sharma · DLR Braunschweig</div><div class="footer-id">© 2025–2026</div></div></footer>
+</div>
+
+<!-- ════════════ TALKS ════════════ -->
+<div class="page" id="page-talks">
+  <div class="page-hero-dark"><div class="container" style="grid-template-columns:1fr;"><div class="label">Talks & presentations</div><h1 style="font-size:clamp(2.5rem,5vw,4rem);">Scientific talks</h1></div></div>
+  <div class="container" style="padding-top:3rem;padding-bottom:5rem;">
+    <div class="label" style="margin-bottom:1.5rem;">Invited seminars</div>
+    <div class="talks-list">
+      <div class="talk-row"><div><div class="talk-t">Mathematics of noise in a turbulent jet</div><div class="talk-venue">Applied Mathematics Seminar · University of Cambridge, UK · 2022</div></div><div class="talk-chip inv">Invited</div></div>
+      <div class="talk-row"><div><div class="talk-t">Dominant sources of noise in a turbulent jet</div><div class="talk-venue">Fluid Mechanics Seminar · University of Cambridge, UK · 2022</div></div><div class="talk-chip inv">Invited</div></div>
+      <div class="talk-row"><div><div class="talk-t">Lighthill's equation and one-dimensional turbulence</div><div class="talk-venue">Research Seminar · TU Berlin, Germany · 2021</div></div><div class="talk-chip inv">Invited</div></div>
+      <div class="talk-row"><div><div class="talk-t">Stochastic modelling of leading-edge noise</div><div class="talk-venue">Aeroacoustics Seminar · IIT Jammu, India · 2019</div></div><div class="talk-chip inv">Invited</div></div>
+    </div>
+    <div class="label" style="margin-top:3rem;margin-bottom:1.5rem;">Conference presentations</div>
+    <div class="talks-list">
+      <div class="talk-row"><div><div class="talk-t">Turbulence distortion and coherence effects in airfoil leading-edge noise: LBM simulations</div><div class="talk-venue">32nd AIAA/CEAS Aeroacoustics Conference · 2026</div></div><div class="talk-chip conf">Conference</div></div>
+      <div class="talk-row"><div><div class="talk-t">Multi-scale turbulence structures in grid-generated turbulence for leading-edge noise prediction</div><div class="talk-venue">11th Wind Turbine Noise Conference · Copenhagen, Denmark · June 2025</div></div><div class="talk-chip conf">Conference</div></div>
+      <div class="talk-row"><div><div class="talk-t">Assessment of turbulence modeling for grid-generated turbulence and airfoil interaction</div><div class="talk-venue">30th AIAA/CEAS Aeroacoustics Conference · 2024</div></div><div class="talk-chip conf">Conference</div></div>
+      <div class="talk-row"><div><div class="talk-t">Self-similarity indications in a turbulent jet using one-dimensional turbulence</div><div class="talk-venue">14th European Fluid Mechanics Conference (EFMC14) · Athens · 2022</div></div><div class="talk-chip conf">Conference</div></div>
+      <div class="talk-row"><div><div class="talk-t">Fluctuating inflow condition for time-domain BEM for airfoil–turbulence interaction noise</div><div class="talk-venue">ISUAAAT15 · University of Oxford, UK · 2018</div></div><div class="talk-chip conf">Conference</div></div>
+      <div class="talk-row"><div><div class="talk-t">Fluctuating inflow condition for time-domain BEM for airfoil–turbulence interaction noise</div><div class="talk-venue">XNOISE · TU Vienna, Austria · 2017</div></div><div class="talk-chip conf">Conference</div></div>
+      <div class="talk-row"><div><div class="talk-t">Leading-edge noise</div><div class="talk-venue">Engineering Acoustics Seminar · TU Berlin, Germany · 2017</div></div><div class="talk-chip conf">Seminar</div></div>
+    </div>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-id">Dr. Sparsh Sharma · DLR Braunschweig</div><div class="footer-id">© 2025–2026</div></div></footer>
+</div>
+
+<!-- ════════════ CODE ════════════ -->
+<div class="page" id="page-code">
+  <div class="page-hero-dark"><div class="container" style="grid-template-columns:1fr;"><div class="label">Open code & tools</div><h1 style="font-size:clamp(2.5rem,5vw,4rem);">Software & code</h1><p style="margin-top:1rem;">Research code on <a href="https://github.com/Sparsh-Sharma" target="_blank">github.com/Sparsh-Sharma</a></p></div></div>
+  <div class="container" style="padding-top:3rem;padding-bottom:5rem;">
+    <div class="code-grid">
+      <div class="code-card"><div class="code-card-tag">Turbulence synthesis</div><h3>Synthetic Vorton Turbulence Model</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">NumPy</span></div><p>Generates turbulent inflow conditions using Gaussian-profile vortex elements. Produces statistically correct energy spectra for leading-edge noise simulations.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/Synthetic-Vorton-Turbulence-Model" target="_blank">GitHub →</a></div></div>
+      <div class="code-card"><div class="code-card-tag">Lagrangian solver</div><h3>Vortex Particle Solver (Euler Equations)</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">C++</span></div><p>2D meshless Lagrangian solver for incompressible Euler equations. Core tool for the time-domain leading-edge noise framework.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/Lagrangian-Solver-for-Euler-Equations" target="_blank">GitHub →</a></div></div>
+      <div class="code-card"><div class="code-card-tag">Aeroacoustics</div><h3>FW-H Acoustic Solver</h3><div class="lang-pills"><span class="lang-pill">Python</span></div><p>Computes directivity patterns of radiated sound pressure from airfoils using the Ffowcs Williams–Hawkings acoustic analogy.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/Ffowcs-Williams-Hawkings-Acoustic-analogy" target="_blank">GitHub →</a></div></div>
+    </div>
+    <div style="margin-top:3rem;border:1px solid var(--border);padding:2rem;background:var(--surface);">
+      <div class="label">Reproducibility</div>
+      <p>I believe computational results should be reproducible. Where journal policies and data agreements permit, code and data associated with published papers are made available. If you are trying to reproduce a specific result and cannot find the code, <span style="cursor:pointer;color:var(--accent);" onclick="showPage('contact')">get in touch</span>.</p>
+    </div>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-id">Dr. Sparsh Sharma · DLR Braunschweig</div><div class="footer-id">© 2025–2026</div></div></footer>
+</div>
+
+<!-- ════════════ ABOUT ════════════ -->
+<div class="page" id="page-about">
+  <div class="page-hero-dark"><div class="container" style="grid-template-columns:1fr;"><div class="label">About</div><h1 style="font-size:clamp(2.5rem,5vw,4rem);">Dr. Sparsh Sharma</h1></div></div>
+  <div class="container" style="padding-bottom:5rem;">
+    <div class="about-layout">
+      <div class="about-sidebar">
+        <div class="pos-card"><div class="inst">DLR Braunschweig</div><div class="role">Research Scientist</div><div class="period">Inst. of Aerodynamics & Flow Technology<br>Dr. Michaela Herr · Prof. Jan Delfs<br>2023 — present</div></div>
+        <div class="sb-section">
+          <div class="sb-h">Awards & Fellowships</div>
+          <div class="award-row"><span class="award-name">DFG Walter Benjamin Fellowship</span><span class="award-yr">2021</span></div>
+          <div class="award-row"><span class="award-name">Young Scientist Award — DEGA</span><span class="award-yr">2019</span></div>
+          <div class="award-row"><span class="award-name">Best Thesis Award — BTU</span><span class="award-yr">2020</span></div>
+          <div class="award-row"><span class="award-name">Revathy Iyer Award — SAE</span><span class="award-yr">2014</span></div>
+          <div class="award-row"><span class="award-name">NASA N+3 Best Design</span><span class="award-yr">2013</span></div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-h">Research areas</div>
+          <div class="tag-wrap"><span class="tag">Turbulence</span><span class="tag">Aeroacoustics</span><span class="tag">Vortex methods</span><span class="tag">LES / DES</span><span class="tag">LBM</span><span class="tag">ODT</span><span class="tag">Stochastic modelling</span><span class="tag">Leading-edge noise</span><span class="tag">Porous materials</span><span class="tag">Jet noise</span><span class="tag">Wind energy</span><span class="tag">FW-H</span><span class="tag">BEM</span></div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-h">Reviewer for</div>
+          <ul class="rev-list"><li>Journal of Fluid Mechanics</li><li>Physics of Fluids</li><li>Journal of Sound and Vibration</li><li>Aerospace Science and Technology</li><li>Applied Acoustics</li><li>Int. J. Heat and Fluid Flow</li><li>J. Wind Eng. &amp; Ind. Aerodyn.</li></ul>
+        </div>
+        <div class="sb-section">
+          <div class="sb-h">Memberships</div>
+          <ul class="rev-list"><li>AIAA</li><li>DEGA</li><li>SAE</li></ul>
+        </div>
+        <div class="sb-section">
+          <div class="sb-h">Supervised theses</div>
+          <ul class="rev-list"><li>B. Calisci (2020) — vortex shedding noise</li><li>S. Kumar (2021) — SGS modelling, jet noise</li><li>N. Krishna (2021) — wall-mounted wings</li><li>D. Bhatt (2022) — fan aeroacoustics</li></ul>
+        </div>
+      </div>
+      <div class="about-main" style="padding-top:3rem;">
+        <h2>Scientific biography</h2>
+        <p>I am a research scientist at the Institute of Aerodynamics and Flow Technology at DLR Braunschweig, working in the aeroacoustics group of Dr. Michaela Herr and Prof. Jan Delfs on turbulent noise from aircraft high-lift systems and wind turbines.</p>
+        <p>My research is unified by a single question: <em style="color:var(--text);">how does the chaotic, multi-scale structure of turbulence give rise to sound — and can we model this mathematically, without losing physical meaning?</em> This has led me to develop Lagrangian vortex particle methods, stochastic Markov-chain turbulence models, one-dimensional turbulence (ODT) approaches, and most recently Lattice Boltzmann simulations — each chosen for what it reveals about the turbulence–sound coupling, not for computational fashion.</p>
+        <p>Before DLR, I held a DFG Walter Benjamin Postdoctoral Fellowship at the Department of Applied Mathematics and Theoretical Physics at the University of Cambridge (2021–2023), working on the mathematics of jet noise with Dr. Lorna Ayton and Prof. Marten Klein. The Cambridge period deepened the connection between mathematical physics and turbulence modelling — particularly through ODT and Lighthill's acoustic analogy.</p>
+        <p>My PhD (summa cum laude, BTU Cottbus & TU Berlin, 2016–2019) established the time-domain stochastic vortex particle method for predicting leading-edge noise — recognised with the BTU Best Thesis Award 2020 and DEGA Young Scientist Award 2019. I studied Computational Mechanics at MIPT Moscow (M.Sc., 9.5/10) and Mechanical Engineering at VIT Vellore (B.Tech.), and worked at Rolls-Royce Aeroengines and ebm-papst on applied aeroacoustics between academic positions.</p>
+        <div class="timeline">
+          <div class="tl"><div class="tl-yr">2023–now</div><div><div class="tl-badge">Current</div><div class="tl-role">Research Scientist, DLR Braunschweig</div><div class="tl-note">Wind turbine & aircraft aeroacoustics. AWB experiments, LES, LBM, stochastic methods.</div></div></div>
+          <div class="tl"><div class="tl-yr">2021–2023</div><div><div class="tl-role">DFG Walter Benjamin Fellow, University of Cambridge</div><div class="tl-note">DAMTP. Jet noise, ODT, Lighthill's analogy. With Dr. Ayton & Prof. Klein.</div></div></div>
+          <div class="tl"><div class="tl-yr">2020–2021</div><div><div class="tl-role">Postdoctoral Researcher, BTU Cottbus</div><div class="tl-note">Jet turbulence modelling (ODT) with Prof. Schmidt.</div></div></div>
+          <div class="tl"><div class="tl-yr">2016–2019</div><div><div class="tl-role">PhD (summa cum laude), BTU Cottbus & TU Berlin</div><div class="tl-note">Stochastic vortex particle method for leading-edge noise. Best Thesis 2020. DEGA Award 2019.</div></div></div>
+          <div class="tl"><div class="tl-yr">2014–2016</div><div><div class="tl-role">M.Sc. Computational Mechanics, MIPT Moscow</div><div class="tl-note">9.5/10. Aerodynamics, CFD, aeroacoustics, numerical methods.</div></div></div>
+          <div class="tl"><div class="tl-yr">2010–2014</div><div><div class="tl-role">B.Tech. Mechanical Engineering, VIT Vellore</div><div class="tl-note">Honours in Automotive Engineering. SAE Revathy Iyer Award; NASA N+3 competition.</div></div></div>
+        </div>
+        <div style="margin-top:2.5rem;border:1px solid var(--border);padding:1.75rem;background:var(--surface);">
+          <div class="label">Teaching</div>
+          <p style="font-size:0.9rem;">Computational Fluid Dynamics (advanced postgraduate lecture course), BTU Cottbus — winter terms 2020/21, 2021/22, 2022/23. Workshop on CFD and Aeroacoustic Analogies (with Dr. T. Geyer), December 2020. Teaching assistant, Engineering Mathematics, BTU Cottbus, 2020–2021.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-id">Dr. Sparsh Sharma · DLR Braunschweig</div><ul class="footer-links"><li><a href="./CV_SS.pdf">CV (PDF)</a></li><li><a onclick="showPage('contact')">Contact</a></li></ul><div class="footer-id">© 2025–2026</div></div></footer>
+</div>
+
+<!-- ════════════ CONTACT ════════════ -->
+<div class="page" id="page-contact">
+  <div class="page-hero-dark"><div class="container" style="grid-template-columns:1fr;"><div class="label">Get in touch</div><h1 style="font-size:clamp(2.5rem,5vw,4rem);">Contact</h1></div></div>
+  <div class="container">
+    <div class="contact-layout">
+      <div>
+        <p style="font-size:1.1rem;color:var(--text);margin-bottom:2rem;">Based at DLR Braunschweig. Always open to scientific discussion, collaboration proposals, or speaking invitations.</p>
+        <ul class="contact-links-list">
+          <li><span class="c-key">Email</span><span class="c-val"><a href="mailto:sparsh.sharma@dlr.de">sparsh.sharma@dlr.de</a></span></li>
+          <li><span class="c-key">Institution</span><span class="c-val"><a href="https://www.dlr.de/as/en" target="_blank">DLR — Inst. of Aerodynamics & Flow Technology ↗</a></span></li>
+          <li><span class="c-key">Scholar</span><span class="c-val"><a href="https://scholar.google.com/citations?hl=en&user=W4-gqEwAAAAJ" target="_blank">Google Scholar profile ↗</a></span></li>
+          <li><span class="c-key">ResearchGate</span><span class="c-val"><a href="https://www.researchgate.net/profile/Sparsh-Sharma-6" target="_blank">ResearchGate profile ↗</a></span></li>
+          <li><span class="c-key">GitHub</span><span class="c-val"><a href="https://github.com/Sparsh-Sharma" target="_blank">github.com/Sparsh-Sharma ↗</a></span></li>
+          <li><span class="c-key">ORCID</span><span class="c-val"><a href="https://orcid.org/0009-0000-1911-9317" target="_blank">0009-0000-1911-9317 ↗</a></span></li>
+          <li><span class="c-key">Address</span><span class="c-val" style="font-size:0.85rem;color:var(--text2);">DLR Braunschweig · Lilienthalplatz 7 · 38108 Braunschweig, Germany</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="collab-panel">
+          <h3>Open to collaboration on</h3>
+          <ul>
+            <li>Turbulence–structure interaction noise (airfoil, blade, landing gear)</li>
+            <li>Wind energy aeroacoustics and noise mitigation</li>
+            <li>Stochastic turbulence modelling and reduced-order methods</li>
+            <li>Lattice Boltzmann methods for aeroacoustics</li>
+            <li>Machine learning emulators for turbulent noise</li>
+            <li>Porous material design for flow and noise control</li>
+            <li>High-fidelity LES/DNS for noise source characterisation</li>
+          </ul>
+        </div>
+        <div class="collab-panel">
+          <h3>For prospective students</h3>
+          <p>Interested in a master's thesis or internship in computational aeroacoustics or turbulence modelling? Send a brief note on your background and interests with your CV. Strong mathematical background and Python or C++ experience are particularly welcome.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer style="margin-top:5rem;"><div class="footer-inner"><div class="footer-id">Dr. Sparsh Sharma · DLR Braunschweig</div><div class="footer-id">© 2025–2026 · sparsh-sharma.github.io</div></div></footer>
+</div>
+
+<script>
+/* ── NAVIGATION ── */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.getAttribute('data-page')===id));
+  document.getElementById('navlinks').classList.remove('open');
+  window.scrollTo(0,0);
+}
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('navlinks').classList.toggle('open'));
+
+/* ── PUBLICATION FILTER ── */
+function filterPubs(tag,btn){
+  document.querySelectorAll('.pf').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.pub-entry').forEach(e=>{
+    e.style.display=(tag==='all'||(e.getAttribute('data-tags')||'').includes(tag))?'':'none';
+  });
+  document.querySelectorAll('.pub-group').forEach(g=>{
+    g.style.display=[...g.querySelectorAll('.pub-entry')].some(e=>e.style.display!=='none')?'':'none';
+  });
+}
+
+/* ── TURBULENCE CANVAS ── */
+(function(){
+  const c=document.getElementById('turbulence');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,pts,t=0;
+  function resize(){
+    W=c.width=c.parentElement.offsetWidth;
+    H=c.height=c.parentElement.offsetHeight;
+    pts=[];
+    const N=Math.floor((W*H)/6000);
+    for(let i=0;i<N;i++){
+      pts.push({
+        x:Math.random()*W, y:Math.random()*H,
+        vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.6,
+        r:Math.random()*1.8+0.4,
+        life:Math.random()*300+60,
+        age:Math.floor(Math.random()*300)
+      });
+    }
+  }
+  function noise(x,y,t){
+    return Math.sin(x*0.012+t*0.4)*Math.cos(y*0.009-t*0.3)+
+           Math.sin(x*0.025-t*0.5)*Math.cos(y*0.02+t*0.2)*0.5+
+           Math.sin(x*0.007+y*0.007+t*0.15)*0.3;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t+=0.008;
+    pts.forEach(p=>{
+      p.age++;
+      if(p.age>p.life){
+        p.x=Math.random()*W; p.y=Math.random()*H;
+        p.age=0; p.life=Math.random()*300+60;
+      }
+      const n=noise(p.x,p.y,t);
+      const angle=n*Math.PI*2;
+      const speed=0.5+Math.abs(n)*0.9;
+      p.x+=Math.cos(angle)*speed+p.vx;
+      p.y+=Math.sin(angle)*speed+p.vy;
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      const life_frac=p.age/p.life;
+      const fade=life_frac<0.15?life_frac/0.15:life_frac>0.8?(1-life_frac)/0.2:1;
+      const hue=190+n*40;
+      const sat=60+Math.abs(n)*30;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r*fade,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${hue},${sat}%,70%,${fade*0.7})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();
+  window.addEventListener('resize',resize);
+  draw();
+})();
+</script>
+</body>
+</html>
