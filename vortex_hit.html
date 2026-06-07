@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vortex Deformation in HIT</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Share+Tech+Mono&display=swap');
+
+  :root {
+    --bg: #04060f;
+    --panel: #080c1a;
+    --accent1: #00d4ff;
+    --accent2: #ff4d6d;
+    --accent3: #b8ff57;
+    --text: #c8d8e8;
+    --muted: #4a6080;
+    --border: #1a2a40;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  header {
+    padding: 24px 40px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.15em;
+    color: var(--accent1);
+    text-shadow: 0 0 20px rgba(0,212,255,0.4);
+  }
+
+  header span {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 0;
+    height: calc(100vh - 70px);
+  }
+
+  .canvas-area {
+    position: relative;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .time-overlay {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-size: 0.7rem;
+    color: var(--accent1);
+    text-shadow: 0 0 10px rgba(0,212,255,0.5);
+  }
+
+  .time-overlay .t-val {
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .mode-indicator {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 0.65rem;
+    color: var(--accent3);
+    text-align: right;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    background: var(--panel);
+    overflow-y: auto;
+  }
+
+  .sidebar-section {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-section h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .val-display {
+    float: right;
+    color: var(--accent1);
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+    outline: none;
+    border-radius: 1px;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent1);
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0,212,255,0.6);
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  button {
+    flex: 1;
+    padding: 8px 4px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  button:hover {
+    border-color: var(--accent1);
+    color: var(--accent1);
+    box-shadow: 0 0 10px rgba(0,212,255,0.2);
+  }
+
+  button.active {
+    background: rgba(0,212,255,0.1);
+    border-color: var(--accent1);
+    color: var(--accent1);
+  }
+
+  .physics-panel {
+    font-size: 0.62rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .physics-panel .eq {
+    color: var(--text);
+    background: rgba(255,255,255,0.03);
+    padding: 6px 10px;
+    border-left: 2px solid var(--accent2);
+    margin: 8px 0;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+  }
+
+  .physics-panel .highlight {
+    color: var(--accent3);
+  }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.63rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    padding: 10px;
+  }
+
+  .stat-label {
+    font-size: 0.55rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .stat-val {
+    font-size: 0.9rem;
+    color: var(--accent1);
+  }
+
+  .stage-desc {
+    font-size: 0.62rem;
+    color: var(--text);
+    line-height: 1.7;
+    padding: 10px;
+    background: rgba(0,212,255,0.04);
+    border: 1px solid rgba(0,212,255,0.1);
+    min-height: 60px;
+  }
+
+  /* scrollbar */
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Vortex Deformation · HIT</h1>
+  <span>Homogeneous Isotropic Turbulence — Vortex Tube Dynamics</span>
+</header>
+
+<div class="layout">
+  <div class="canvas-area">
+    <canvas id="c"></canvas>
+    <div class="time-overlay">
+      <span class="t-val" id="tval">t/τ = 0.00</span>
+      <span id="stage-label">INITIAL VORTEX RING</span>
+    </div>
+    <div class="mode-indicator" id="modeLabel">VELOCITY FIELD</div>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <h3>Simulation Control</h3>
+      <div class="controls">
+        <div>
+          <label>TURBULENCE INTENSITY  <span class="val-display" id="tiVal">0.35</span></label>
+          <input type="range" id="ti" min="0.05" max="0.8" step="0.01" value="0.35">
+        </div>
+        <div>
+          <label>Re<sub>λ</sub> (Taylor)  <span class="val-display" id="reVal">150</span></label>
+          <input type="range" id="re" min="30" max="400" step="10" value="150">
+        </div>
+        <div>
+          <label>SPEED  <span class="val-display" id="spVal">1.0×</span></label>
+          <input type="range" id="sp" min="0.1" max="3" step="0.1" value="1.0">
+        </div>
+        <div class="btn-row">
+          <button id="btnPlay" class="active">▶ PLAY</button>
+          <button id="btnReset">↺ RESET</button>
+        </div>
+        <div class="btn-row">
+          <button id="btnVel" class="active">VELOCITY</button>
+          <button id="btnVort">VORTICITY</button>
+          <button id="btnQ">Q-CRIT</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Live Statistics</h3>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="stat-label">ENSTROPHY</div>
+          <div class="stat-val" id="enstStat">1.00</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">DISS. RATE ε</div>
+          <div class="stat-val" id="epsStat">0.00</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">STRAIN S<sub>ij</sub></div>
+          <div class="stat-val" id="strainStat">0.00</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">COHERENCE</div>
+          <div class="stat-val" id="cohStat">1.00</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Current Stage</h3>
+      <div class="stage-desc" id="stageDesc">
+        Initial vortex tube — coherent, axisymmetric. Strain and rotation are balanced. No significant deformation yet.
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Key Physics</h3>
+      <div class="physics-panel">
+        <div>Vorticity transport equation:</div>
+        <div class="eq">Dω/Dt = <span class="highlight">ω·∇u</span> + ν∇²ω</div>
+        <div>The <span class="highlight">vortex stretching</span> term ω·∇u amplifies vorticity along strain eigenvectors. Tubes stretch → thin → cascade energy to smaller scales.</div>
+        <div class="eq">⟨ω_i S_ij ω_j⟩ > 0</div>
+        <div>Vorticity preferentially aligns with the <span class="highlight">intermediate</span> strain eigenvector in HIT (Ashurst et al. 1987).</div>
+        <br>
+        <div>Biot-Savart coupling between tubes induces <span class="highlight">reconnection</span> events — topology changes that break coherent structures into rings and filaments.</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Legend</h3>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#00d4ff; box-shadow:0 0 6px #00d4ff"></div>
+          <span>Primary vortex tube / high ω</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#ff4d6d; box-shadow:0 0 6px #ff4d6d"></div>
+          <span>Secondary/reconnected structures</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#b8ff57; box-shadow:0 0 6px #b8ff57"></div>
+          <span>Background velocity/Q-criterion</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#ffffff44"></div>
+          <span>Passive tracer particles</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// ── Simulation state ──────────────────────────────────────────────
+let t = 0;
+let playing = true;
+let speed = 1.0;
+let turbInt = 0.35;
+let reLambda = 150;
+let viewMode = 'vel'; // vel | vort | q
+
+const stages = [
+  { t: 0,   label: 'INITIAL RING',      desc: 'Initial vortex tube — coherent, axisymmetric. Strain and rotation balanced. No significant deformation.' },
+  { t: 0.5, label: 'STRAIN INDUCTION',  desc: 'Background turbulence induces strain. The vortex begins to tilt and elongate. Vortex stretching term ω·∇u becomes non-negligible.' },
+  { t: 1.5, label: 'STRETCHING',        desc: 'Vortex tube stretched along principal strain axis. Cross-section narrows; enstrophy grows. Energy cascade begins from large to small scales.' },
+  { t: 2.5, label: 'KINKING & FOLDING', desc: 'Kelvin-Helmholtz instability causes kinking. Tube folds on itself; Biot-Savart self-induction drives antiparallel approach for reconnection.' },
+  { t: 3.5, label: 'RECONNECTION',      desc: 'Vortex reconnection: topology change produces vortex rings and filaments. Viscosity enables cross-diffusion at the collision region.' },
+  { t: 4.5, label: 'CASCADE / DECAY',   desc: 'Coherent structure destroyed. Energy distributed across small-scale filaments. Dissipation peaks. Kolmogorov scales emerge.' },
+];
+
+// ── Background turbulence velocity field ─────────────────────────
+// Superposition of Fourier modes (randomised phases, fixed at init)
+const N_MODES = 28;
+const modes = [];
+function initModes() {
+  modes.length = 0;
+  const rng = (a,b) => a + Math.random()*(b-a);
+  for (let i=0; i<N_MODES; i++) {
+    const k = Math.pow(2, rng(0.5, 3.5));
+    const theta = rng(0, 2*Math.PI);
+    const phi   = rng(0, 2*Math.PI);
+    const amp   = rng(0.3, 1.0) / Math.sqrt(k);
+    const omega = rng(0.3, 1.2) * Math.sqrt(k);
+    modes.push({ k, theta, phi, amp, omega, phase: rng(0,2*Math.PI) });
+  }
+}
+initModes();
+
+function bgVelocity(x, y, t) {
+  // normalised coords
+  let u=0, v=0;
+  const scale = turbInt * 60;
+  for (const m of modes) {
+    const kx = m.k * Math.cos(m.theta);
+    const ky = m.k * Math.sin(m.theta);
+    const arg = kx*x + ky*y + m.omega*t + m.phase;
+    const a = m.amp * scale;
+    u += a * (-Math.sin(m.phi)) * Math.cos(arg);
+    v += a * ( Math.cos(m.phi)) * Math.cos(arg);
+  }
+  return {u, v};
+}
+
+// ── Main vortex tube: parameterised curve in 2D projection ──────
+// We project 3D onto 2D; the "depth" dimension introduces the
+// characteristic kinking, folding, and reconnection appearance.
+const N_SEGS = 120;
+let tubePoints = [];
+
+function initTube(W, H) {
+  tubePoints = [];
+  const cx = W/2, cy = H/2;
+  const R = Math.min(W,H)*0.22;
+  for (let i=0; i<=N_SEGS; i++) {
+    const s = i/N_SEGS;
+    const angle = s * 2*Math.PI;
+    tubePoints.push({
+      x: cx + R*Math.cos(angle),
+      y: cy + R*Math.sin(angle),
+      vx: 0, vy: 0,
+      s,  // arc parameter
+      alive: true
+    });
+  }
+}
+
+function updateTube(dt, W, H) {
+  const cx = W/2, cy = H/2;
+  const tNorm = Math.min(t, 5.5);
+
+  // Effective Re controls instability growth rate
+  const instRate = 0.04 + (reLambda/400)*0.08;
+
+  for (let i=0; i<=N_SEGS; i++) {
+    const p = tubePoints[i];
+    const s = p.s;
+    const angle = s * 2*Math.PI;
+
+    // 1. Base ring shape
+    const R0 = Math.min(W,H)*0.22;
+
+    // 2. Strain elongation (t ~ 1-2.5): ring becomes ellipse, then banana
+    const strainAmp = Math.min(Math.max(tNorm - 0.5, 0), 2.0) * turbInt * 0.6;
+    const elongX = 1.0 + strainAmp * 0.55;
+    const elongY = 1.0 - strainAmp * 0.25;
+
+    // 3. Kinking: Kelvin-Helmholtz modes (n=2,3,4)
+    const kinkGrowth = Math.max(tNorm - 1.5, 0);
+    let kinkR = 0;
+    for (const n of [2,3,4]) {
+      const kAmp = instRate * kinkGrowth * Math.exp(-kinkGrowth*0.5) * (1/n);
+      kinkR += kAmp * R0 * Math.sin(n*angle + n*0.4*t + n*1.1);
+    }
+
+    // 4. Folding / global tilt (t ~ 2.5-3.5)
+    const foldProgress = Math.max(tNorm - 2.5, 0);
+    const foldAmp = Math.min(foldProgress, 1.0) * turbInt * 0.5;
+    const foldX = foldAmp * R0 * Math.sin(angle + 0.3*t);
+    const foldY = foldAmp * R0 * Math.cos(2*angle + 0.2*t);
+
+    // 5. Reconnection fragmentation (t ~ 3.5+)
+    const reconProgress = Math.max(tNorm - 3.5, 0);
+    const fragAmp = Math.min(reconProgress, 1.5) * turbInt * 0.35;
+    const fragX = fragAmp * R0 * Math.sin(5*angle + 1.5*t);
+    const fragY = fragAmp * R0 * Math.cos(5*angle + 1.3*t);
+
+    // 5b. Decay: structure dissolves outward
+    const decayAmp = Math.max(tNorm - 4.5, 0) * 0.4;
+    const decayR = 1.0 + decayAmp * (0.5 + 0.5*Math.sin(7*angle));
+
+    const R = (R0 + kinkR) * decayR;
+
+    p.x = cx + (R*Math.cos(angle)*elongX + foldX + fragX);
+    p.y = cy + (R*Math.sin(angle)*elongY + foldY + fragY);
+  }
+}
+
+// ── Passive particles ─────────────────────────────────────────────
+const N_PARTICLES = 200;
+let particles = [];
+
+function initParticles(W, H) {
+  particles = [];
+  for (let i=0; i<N_PARTICLES; i++) {
+    particles.push({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      age: Math.random()*100,
+      size: 1 + Math.random()*1.5,
+      alpha: 0.2 + Math.random()*0.35
+    });
+  }
+}
+
+function updateParticles(dt, W, H) {
+  for (const p of particles) {
+    const {u,v} = bgVelocity(p.x*0.01, p.y*0.01, t*0.5);
+    // Also add induced velocity from vortex ring (simple approximation)
+    const vortVel = vortexInducedVel(p.x, p.y, W, H);
+    p.x += (u + vortVel.u) * dt * 25;
+    p.y += (v + vortVel.v) * dt * 25;
+    p.age++;
+    if (p.x<0) p.x+=W; if (p.x>W) p.x-=W;
+    if (p.y<0) p.y+=H; if (p.y>H) p.y-=H;
+  }
+}
+
+function vortexInducedVel(px, py, W, H) {
+  // Sum Biot-Savart contributions from tube segments (simplified 2D)
+  let u=0,v=0;
+  const Gamma = 500 * (1 - 0.15*Math.min(t,5));
+  const step = 4;
+  for (let i=0; i<N_SEGS; i+=step) {
+    const p = tubePoints[i];
+    const dx = px - p.x, dy = py - p.y;
+    const r2 = dx*dx + dy*dy + 400;
+    u += Gamma * (-dy) / (2*Math.PI*r2);
+    v += Gamma * ( dx) / (2*Math.PI*r2);
+  }
+  return {u,v};
+}
+
+// ── Background velocity vector field grid ─────────────────────────
+function drawVelocityField(W, H) {
+  const GX=22, GY=16;
+  const dx=W/GX, dy=H/GY;
+  ctx.save();
+  ctx.globalAlpha = 0.25;
+  for (let ix=0; ix<GX; ix++) {
+    for (let iy=0; iy<GY; iy++) {
+      const x=dx*(ix+0.5), y=dy*(iy+0.5);
+      const bg = bgVelocity(x*0.01, y*0.01, t*0.5);
+      const vi = vortexInducedVel(x, y, W, H);
+      const u = bg.u + vi.u*0.002, v = bg.v + vi.v*0.002;
+      const mag = Math.sqrt(u*u+v*v);
+      if (mag < 0.01) continue;
+      const len = Math.min(mag*0.35, 18);
+      const ux=u/mag, uy=v/mag;
+      const hue = viewMode==='vort' ? 200 + mag*30 : (viewMode==='q'?120:190);
+      ctx.strokeStyle = `hsl(${hue},80%,65%)`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(x-ux*len*0.3, y-uy*len*0.3);
+      ctx.lineTo(x+ux*len*0.7, y+uy*len*0.7);
+      ctx.stroke();
+      // arrowhead
+      const ax=x+ux*len*0.7, ay=y+uy*len*0.7;
+      const px=-uy, py=ux;
+      ctx.beginPath();
+      ctx.moveTo(ax,ay);
+      ctx.lineTo(ax-ux*4+px*3, ay-uy*4+py*3);
+      ctx.lineTo(ax-ux*4-px*3, ay-uy*4-py*3);
+      ctx.fillStyle = `hsl(${hue},80%,65%)`;
+      ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
+// ── Vorticity heatmap (approx numerical curl of field) ────────────
+function drawVorticityField(W, H) {
+  const step=20;
+  for (let x=0; x<W; x+=step) {
+    for (let y=0; y<H; y+=step) {
+      const h=step*0.01;
+      const vR=bgVelocity((x+step)*0.01, y*0.01, t*0.5);
+      const vL=bgVelocity((x-step)*0.01, y*0.01, t*0.5);
+      const vU=bgVelocity(x*0.01, (y-step)*0.01, t*0.5);
+      const vD=bgVelocity(x*0.01, (y+step)*0.01, t*0.5);
+      const curl=(vR.v-vL.v - (vD.u-vU.u))/(2*h*0.8);
+      const intensity = Math.min(Math.abs(curl)/8, 1);
+      const hue = curl>0?200:0;
+      ctx.fillStyle = `hsla(${hue},75%,55%,${intensity*0.4})`;
+      ctx.fillRect(x,y,step,step);
+    }
+  }
+}
+
+// ── Q-criterion field (approximated) ──────────────────────────────
+function drawQField(W, H) {
+  const step=24;
+  for (let x=0; x<W; x+=step) {
+    for (let y=0; y<H; y+=step) {
+      const s=step*0.01;
+      const vR=bgVelocity((x+step)*0.01, y*0.01, t*0.5);
+      const vL=bgVelocity((x-step)*0.01, y*0.01, t*0.5);
+      const vU=bgVelocity(x*0.01, (y-step)*0.01, t*0.5);
+      const vD=bgVelocity(x*0.01, (y+step)*0.01, t*0.5);
+      const dudx=(vR.u-vL.u)/(2*s), dvdy=(vD.v-vU.v)/(2*s);
+      const dudy=(vD.u-vU.u)/(2*s), dvdx=(vR.v-vL.v)/(2*s);
+      const S2 = dudx*dudx+dvdy*dvdy+0.5*(dudy+dvdx)*(dudy+dvdx);
+      const Om2= 0.5*(dvdx-dudy)*(dvdx-dudy);
+      const Q = Om2-S2;
+      if (Q>0) {
+        const intens=Math.min(Q/15,1);
+        ctx.fillStyle=`hsla(120,80%,55%,${intens*0.45})`;
+        ctx.fillRect(x,y,step,step);
+      }
+    }
+  }
+}
+
+// ── Draw the vortex tube ──────────────────────────────────────────
+function drawTube(W, H) {
+  const tNorm = Math.min(t, 5.5);
+  const reconProgress = Math.max(tNorm - 3.5, 0);
+  const decayProgress = Math.max(tNorm - 4.5, 0);
+
+  // Tube cross-section radius evolves (stretching narrows it)
+  const stretchFactor = Math.min(Math.max(1 - (tNorm-0.5)*0.15, 0.15), 1.0);
+  const tubeR = Math.max(4, 12*stretchFactor);
+
+  // Vorticity colour: blue (low) → cyan (medium) → white (high stretch)
+  const strainVal = Math.min((tNorm-0.5)/2.0, 1.0);
+
+  // Draw tube as filled path with glow
+  for (let pass=0; pass<3; pass++) {
+    const alpha = [0.08,0.15,0.6][pass];
+    const expand = [8,4,0][pass];
+    const r = tubeR + expand;
+
+    if (tubePoints.length < 3) return;
+
+    // Main tube
+    ctx.beginPath();
+    ctx.moveTo(tubePoints[0].x, tubePoints[0].y);
+    for (let i=1; i<=N_SEGS; i++) {
+      const p = tubePoints[i % (N_SEGS+1)];
+      ctx.lineTo(p.x, p.y);
+    }
+    ctx.closePath();
+
+    const hue = 195 - strainVal*40;
+    const light = 50 + strainVal*30;
+    ctx.strokeStyle = `hsla(${hue},90%,${light}%,${alpha})`;
+    ctx.lineWidth = r*2 + (pass===0?12:0);
+    ctx.lineJoin='round';
+    ctx.stroke();
+  }
+
+  // Solid tube line
+  ctx.beginPath();
+  ctx.moveTo(tubePoints[0].x, tubePoints[0].y);
+  for (let i=1; i<=N_SEGS; i++) {
+    ctx.lineTo(tubePoints[i%(N_SEGS+1)].x, tubePoints[i%(N_SEGS+1)].y);
+  }
+  ctx.closePath();
+  const g = ctx.createLinearGradient(W*0.2,H*0.2,W*0.8,H*0.8);
+  g.addColorStop(0,'rgba(0,212,255,0.95)');
+  g.addColorStop(0.5,'rgba(120,220,255,0.85)');
+  g.addColorStop(1,'rgba(0,150,255,0.95)');
+  ctx.strokeStyle = g;
+  ctx.lineWidth = tubeR*1.8;
+  ctx.stroke();
+
+  // Secondary structures post-reconnection
+  if (reconProgress > 0) {
+    const n = Math.floor(reconProgress * 5);
+    for (let k=0; k<n; k++) {
+      const seedAngle = (k/5)*2*Math.PI + 0.7;
+      const cx2 = W/2 + Math.cos(seedAngle)*Math.min(W,H)*0.28;
+      const cy2 = H/2 + Math.sin(seedAngle)*Math.min(W,H)*0.28;
+      const R2 = Math.min(W,H)*(0.05 + 0.03*k) * Math.min(reconProgress,1.2);
+      const alpha2 = Math.min(reconProgress, 1.0);
+      const th = 220 + k*20;
+
+      for (let pass=0;pass<2;pass++) {
+        ctx.beginPath();
+        ctx.arc(cx2, cy2, R2*(1+pass*0.5), 0, 2*Math.PI);
+        ctx.strokeStyle=`hsla(${th},80%,65%,${alpha2*(pass===0?0.1:0.7)})`;
+        ctx.lineWidth = pass===0?8:2.5;
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Dissipation filaments (late time)
+  if (decayProgress > 0) {
+    for (let k=0; k<8; k++) {
+      const angleBase = (k/8)*2*Math.PI;
+      const r0 = Math.min(W,H)*0.18;
+      ctx.beginPath();
+      for (let seg=0; seg<20; seg++) {
+        const frac = seg/19;
+        const angle = angleBase + frac*3.5;
+        const r = r0*(1-frac*0.5) + 15*Math.sin(seg*1.4+t);
+        const fx = W/2 + r*Math.cos(angle);
+        const fy = H/2 + r*Math.sin(angle);
+        seg===0 ? ctx.moveTo(fx,fy):ctx.lineTo(fx,fy);
+      }
+      const a=Math.min(decayProgress*0.5,0.5);
+      ctx.strokeStyle=`rgba(184,255,87,${a})`;
+      ctx.lineWidth=0.8;
+      ctx.stroke();
+    }
+  }
+}
+
+// ── Draw particles ────────────────────────────────────────────────
+function drawParticles() {
+  for (const p of particles) {
+    // colour by proximity to tube (simple)
+    let minD=1e9;
+    for (let i=0; i<N_SEGS; i+=6) {
+      const tp=tubePoints[i];
+      const d=Math.hypot(p.x-tp.x, p.y-tp.y);
+      if(d<minD)minD=d;
+    }
+    const near = Math.max(0, 1-minD/80);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, 2*Math.PI);
+    ctx.fillStyle=`rgba(${Math.round(200+55*near)},${Math.round(220-80*near)},${Math.round(255-100*near)},${p.alpha})`;
+    ctx.fill();
+  }
+}
+
+// ── HUD annotation: draw stretching arrows ────────────────────────
+function drawAnnotations(W, H) {
+  const tNorm = Math.min(t, 5.5);
+  const cx=W/2, cy=H/2;
+
+  // Strain arrows visible during stretch phase
+  if (tNorm>0.5 && tNorm<4.0) {
+    const strainAmt = Math.min((tNorm-0.5)/2.0,1.0);
+    ctx.save();
+    ctx.globalAlpha = strainAmt*0.7;
+    const arr = (x1,y1,x2,y2,col)=>{
+      ctx.strokeStyle=col; ctx.fillStyle=col;
+      ctx.lineWidth=1.5;
+      ctx.setLineDash([4,4]);
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+      ctx.setLineDash([]);
+      const ang=Math.atan2(y2-y1,x2-x1);
+      ctx.beginPath();
+      ctx.moveTo(x2,y2);
+      ctx.lineTo(x2-10*Math.cos(ang-0.4),y2-10*Math.sin(ang-0.4));
+      ctx.lineTo(x2-10*Math.cos(ang+0.4),y2-10*Math.sin(ang+0.4));
+      ctx.closePath();ctx.fill();
+    };
+    const d=Math.min(W,H)*0.32;
+    arr(cx,cy-d, cx,cy-d-30, '#b8ff57');
+    arr(cx,cy+d, cx,cy+d+30, '#b8ff57');
+    arr(cx-d,cy, cx-d-30,cy, '#ff4d6d');
+    arr(cx+d,cy, cx+d+30,cy, '#ff4d6d');
+    ctx.restore();
+
+    // Label
+    ctx.save();
+    ctx.globalAlpha=strainAmt*0.6;
+    ctx.fillStyle='#b8ff57';
+    ctx.font='10px Share Tech Mono';
+    ctx.fillText('STRETCH', cx+5, cy-d-12);
+    ctx.fillStyle='#ff4d6d';
+    ctx.fillText('COMPRESS', cx+d+5, cy-10);
+    ctx.restore();
+  }
+}
+
+// ── Compute live stats ────────────────────────────────────────────
+function computeStats() {
+  const tNorm = Math.min(t, 5.5);
+  // Enstrophy: peaks during stretching, decays after reconnection
+  const enst = Math.max(0.05,
+    tNorm < 3.5
+      ? 1 + turbInt*2*Math.sin(Math.max(tNorm-0.5,0)*0.8)
+      : 1 + turbInt*2*Math.sin(2.4)*Math.exp(-(tNorm-3.5)*0.7));
+
+  // Dissipation: peaks slightly after enstrophy
+  const eps = Math.max(0,
+    tNorm < 4.0
+      ? turbInt*1.5*Math.sin(Math.max(tNorm-1,0)*0.7)
+      : turbInt*1.5*Math.sin(1.5)*Math.exp(-(tNorm-4.0)*0.8));
+
+  // Strain rate
+  const strain = Math.min(turbInt*(0.5 + tNorm*0.4)*Math.exp(-Math.max(tNorm-3.5,0)*0.5), 2.0);
+
+  // Coherence
+  const coh = Math.max(0.05, 1 - Math.min(tNorm/5.0,1)*0.95);
+
+  return {enst, eps, strain, coh};
+}
+
+// ── Stage logic ───────────────────────────────────────────────────
+function getStage() {
+  for (let i=stages.length-1;i>=0;i--) {
+    if (t >= stages[i].t) return stages[i];
+  }
+  return stages[0];
+}
+
+// ── Main render loop ──────────────────────────────────────────────
+let lastTime = null;
+function resize() {
+  const area = canvas.parentElement;
+  canvas.width = area.clientWidth;
+  canvas.height = area.clientHeight;
+  initTube(canvas.width, canvas.height);
+  initParticles(canvas.width, canvas.height);
+}
+
+function frame(ts) {
+  if (!lastTime) lastTime=ts;
+  const rawDt = Math.min((ts-lastTime)/1000, 0.05);
+  lastTime=ts;
+
+  const W=canvas.width, H=canvas.height;
+  const dt = playing ? rawDt*speed : 0;
+  t += dt * 0.55;
+  if (t > 6.0) t = 0;
+
+  // Clear
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(4,6,15,0.92)';
+  ctx.fillRect(0,0,W,H);
+
+  // Background field
+  if (viewMode==='vort') drawVorticityField(W,H);
+  else if (viewMode==='q') drawQField(W,H);
+  else drawVelocityField(W,H);
+
+  // Update & draw particles
+  updateParticles(dt, W, H);
+  drawParticles();
+
+  // Update & draw tube
+  updateTube(dt, W, H);
+  drawTube(W, H);
+
+  // Annotations
+  drawAnnotations(W, H);
+
+  // HUD updates
+  document.getElementById('tval').textContent = `t/τ = ${t.toFixed(2)}`;
+  const stage = getStage();
+  document.getElementById('stage-label').textContent = stage.label;
+  document.getElementById('stageDesc').textContent = stage.desc;
+  document.getElementById('modeLabel').textContent =
+    viewMode==='vort'?'VORTICITY FIELD':viewMode==='q'?'Q-CRITERION':'VELOCITY FIELD';
+
+  const stats = computeStats();
+  document.getElementById('enstStat').textContent = stats.enst.toFixed(2);
+  document.getElementById('epsStat').textContent  = stats.eps.toFixed(3);
+  document.getElementById('strainStat').textContent=stats.strain.toFixed(3);
+  document.getElementById('cohStat').textContent  = stats.coh.toFixed(2);
+
+  requestAnimationFrame(frame);
+}
+
+// ── Controls ──────────────────────────────────────────────────────
+document.getElementById('ti').addEventListener('input', e=>{
+  turbInt=parseFloat(e.target.value);
+  document.getElementById('tiVal').textContent=turbInt.toFixed(2);
+});
+document.getElementById('re').addEventListener('input', e=>{
+  reLambda=parseInt(e.target.value);
+  document.getElementById('reVal').textContent=reLambda;
+});
+document.getElementById('sp').addEventListener('input', e=>{
+  speed=parseFloat(e.target.value);
+  document.getElementById('spVal').textContent=speed.toFixed(1)+'×';
+});
+document.getElementById('btnPlay').addEventListener('click', ()=>{
+  playing=!playing;
+  document.getElementById('btnPlay').textContent = playing?'▶ PLAY':'⏸ PAUSE';
+});
+document.getElementById('btnReset').addEventListener('click', ()=>{
+  t=0; initModes();
+  initTube(canvas.width, canvas.height);
+  initParticles(canvas.width, canvas.height);
+});
+
+function setMode(m){
+  viewMode=m;
+  ['btnVel','btnVort','btnQ'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById(m==='vel'?'btnVel':m==='vort'?'btnVort':'btnQ').classList.add('active');
+}
+document.getElementById('btnVel').addEventListener('click',()=>setMode('vel'));
+document.getElementById('btnVort').addEventListener('click',()=>setMode('vort'));
+document.getElementById('btnQ').addEventListener('click',()=>setMode('q'));
+
+window.addEventListener('resize', ()=>{
+  resize();
+});
+
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
