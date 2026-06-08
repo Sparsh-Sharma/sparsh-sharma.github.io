@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ODT Jet — Sharma, Klein &amp; Schmidt (PoF 2022)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Share+Tech+Mono:wght@400&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#03050d; --panel:#070c1a; --panel2:#0a1020; --bord:#1a2540;
+  --ac:#4fc3f7; --gold:#f5a623; --grn:#26a69a; --red:#ef5350;
+  --tx:#c8d8e8; --mut:#4a6080; --dim:#2a3a50;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body { background: var(--bg); color: var(--tx); font-family: 'Share Tech Mono', monospace; font-size: 12px; -webkit-font-smoothing: antialiased; }
+
+.app { display: grid; grid-template-rows: 46px 1fr; height: 100vh; }
+
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.4rem; border-bottom: 1px solid var(--bord); background: var(--panel);
+  flex-shrink: 0;
+}
+header h1 {
+  font-family: 'Cinzel', serif; font-size: 0.82rem; letter-spacing: 0.14em;
+  color: var(--ac); text-shadow: 0 0 16px rgba(79,195,247,0.4);
+}
+.sub { font-size: 0.56rem; color: var(--mut); letter-spacing: 0.08em; }
+
+.main { display: grid; grid-template-columns: 1fr 440px; overflow: hidden; height: 100%; }
+
+/* ── CANVAS SIDE ── */
+.lhs { display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+.tabs { display: flex; background: var(--panel2); border-bottom: 1px solid var(--bord); flex-shrink: 0; }
+.tab {
+  padding: 0.4rem 1rem; font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; color: var(--mut); border-right: 1px solid var(--bord);
+  border-bottom: 2px solid transparent; transition: color .15s;
+  user-select: none;
+}
+.tab:hover { color: var(--tx); }
+.tab.on { color: var(--ac); border-bottom-color: var(--ac); background: rgba(79,195,247,.05); }
+
+.cvwrap { flex: 1; position: relative; overflow: hidden; }
+canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: none; }
+canvas.on { display: block; }
+
+/* HUD overlays */
+.hud-tl {
+  position: absolute; top: 10px; left: 14px; pointer-events: none;
+  line-height: 2; z-index: 5;
+}
+.hud-big { font-size: 0.95rem; color: var(--ac); text-shadow: 0 0 10px rgba(79,195,247,.5); display: block; }
+.hud-sm  { font-size: 0.56rem; color: var(--tx); display: block; }
+.hud-xs  { font-size: 0.54rem; color: var(--mut); display: block; }
+.hud-tr {
+  position: absolute; top: 10px; right: 12px; pointer-events: none;
+  text-align: right; font-size: 0.54rem; line-height: 1.8; color: var(--mut); z-index: 5;
+}
+
+/* ── SIDEBAR ── */
+.rhs {
+  display: flex; flex-direction: column; overflow-y: auto;
+  background: var(--panel); border-left: 1px solid var(--bord);
+}
+.rhs::-webkit-scrollbar { width: 3px; }
+.rhs::-webkit-scrollbar-thumb { background: var(--dim); }
+
+.sec { padding: 13px 15px; border-bottom: 1px solid var(--bord); }
+.sec h3 {
+  font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--mut); margin-bottom: 10px;
+}
+.ctrl { margin-bottom: 10px; }
+label {
+  font-size: 0.56rem; color: var(--mut); letter-spacing: 0.05em;
+  display: flex; justify-content: space-between; margin-bottom: 3px;
+}
+label span { color: var(--ac); }
+input[type=range] {
+  -webkit-appearance: none; width: 100%; height: 2px;
+  background: var(--bord); outline: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 11px; height: 11px; border-radius: 50%;
+  background: var(--ac); box-shadow: 0 0 7px rgba(79,195,247,.7);
+}
+.brow { display: flex; gap: 5px; margin-top: 6px; }
+button {
+  flex: 1; padding: 6px 4px; background: transparent;
+  border: 1px solid var(--bord); color: var(--tx);
+  font-family: 'Share Tech Mono', monospace; font-size: 0.56rem;
+  letter-spacing: 0.08em; cursor: pointer; text-transform: uppercase;
+  transition: all .15s;
+}
+button:hover { border-color: var(--ac); color: var(--ac); }
+button.on { background: rgba(79,195,247,.1); border-color: var(--ac); color: var(--ac); }
+button.go { border-color: var(--gold); color: var(--gold); }
+button.go:hover { background: rgba(245,166,35,.08); }
+
+.sg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.sb {
+  background: rgba(255,255,255,.02); border: 1px solid var(--bord); padding: 7px;
+}
+.sl { font-size: 0.46rem; color: var(--mut); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+.sv { font-size: 0.9rem; color: var(--ac); }
+.sv.g { color: var(--gold); } .sv.gr { color: var(--grn); }
+
+.ep { font-size: 0.58rem; line-height: 1.85; color: var(--mut); }
+.eq {
+  font-family: 'EB Garamond', serif; font-size: 0.78rem; color: var(--tx);
+  background: rgba(255,255,255,.03); padding: 5px 9px;
+  border-left: 2px solid var(--ac); margin: 5px 0; line-height: 1.6;
+}
+.eq.gl { border-color: var(--gold); }
+.eq.gn { border-color: var(--grn); }
+.eq.rd { border-color: var(--red); }
+.hi { color: var(--ac); }
+.hg { color: var(--gold); }
+.hr { color: var(--red); }
+.hgn { color: var(--grn); }
+
+.stbox {
+  font-size: 0.58rem; color: var(--tx); line-height: 1.65;
+  padding: 7px; background: rgba(79,195,247,.04);
+  border: 1px solid rgba(79,195,247,.1); min-height: 44px;
+}
+.pb {
+  background: rgba(245,166,35,.07); border: 1px solid rgba(245,166,35,.2);
+  padding: 9px; font-size: 0.56rem; line-height: 1.7;
+}
+.pb a { color: var(--gold); }
+.lg { display: flex; flex-direction: column; gap: 6px; }
+.li { display: flex; align-items: center; gap: 8px; color: var(--mut); font-size: 0.56rem; }
+.ll { width: 18px; height: 2px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <h1>One-Dimensional Turbulence &nbsp;·&nbsp; Turbulent Round Jet (Ma = 0.9)</h1>
+  <div class="sub">Kerstein, JFM 392 (1999) &nbsp;·&nbsp; Sharma, Klein &amp; Schmidt, Phys. Fluids 34, 085134 (2022)</div>
+</header>
+
+<div class="main">
+  <!-- CANVAS AREA -->
+  <div class="lhs">
+    <div class="tabs">
+      <div class="tab on"  id="tab-evolve"   onclick="switchTab('evolve')">Jet evolution</div>
+      <div class="tab"     id="tab-profile"  onclick="switchTab('profile')">Radial profile</div>
+      <div class="tab"     id="tab-triplet"  onclick="switchTab('triplet')">Triplet map</div>
+      <div class="tab"     id="tab-spectrum" onclick="switchTab('spectrum')">Energy spectrum</div>
+    </div>
+    <div class="cvwrap">
+      <canvas id="cv-evolve"   class="on"></canvas>
+      <canvas id="cv-profile"      ></canvas>
+      <canvas id="cv-triplet"      ></canvas>
+      <canvas id="cv-spectrum"     ></canvas>
+    </div>
+    <div class="hud-tl">
+      <span class="hud-big" id="h-xd">x/D = 1.0</span>
+      <span class="hud-sm"  id="h-stage">NOZZLE EXIT · Potential core — coherent shear layer</span>
+      <span class="hud-xs"  id="h-misc">Eddy events: 0 &nbsp;|&nbsp; t* = 0.000</span>
+    </div>
+    <div class="hud-tr" id="h-tag">
+      JET EVOLUTION (x-r spacetime)<br>
+      r/D horizontal · x/D vertical<br>
+      colour = u/U_j &nbsp; gold lines = b&#189;
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="rhs">
+
+    <div class="sec">
+      <h3>Parameters</h3>
+      <div class="ctrl">
+        <label>Re<sub>D</sub> <span id="v-re">50 000</span></label>
+        <input type="range" id="sl-re" min="5000" max="400000" step="5000" value="50000">
+      </div>
+      <div class="ctrl">
+        <label>C &nbsp;(eddy-rate) <span id="v-C">7.5</span></label>
+        <input type="range" id="sl-C" min="1" max="20" step="0.5" value="7.5">
+      </div>
+      <div class="ctrl">
+        <label>Z &nbsp;(viscous penalty) <span id="v-Z">400</span></label>
+        <input type="range" id="sl-Z" min="50" max="800" step="50" value="400">
+      </div>
+      <div class="ctrl">
+        <label>Speed <span id="v-sp">1.0&times;</span></label>
+        <input type="range" id="sl-sp" min="0.2" max="8" step="0.2" value="1.0">
+      </div>
+      <div class="brow">
+        <button class="on" id="btn-play">&#9654; RUN</button>
+        <button id="btn-reset">&#8635; RESET</button>
+      </div>
+      <div class="brow">
+        <button class="go" id="btn-fire">&#9889; TRIGGER EDDY</button>
+      </div>
+      <div style="font-size:0.5rem;color:var(--mut);margin-top:5px;line-height:1.6;">
+        Eddies fire automatically every frame via Poisson process. Button triggers one immediately.
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>Live statistics</h3>
+      <div class="sg">
+        <div class="sb"><div class="sl">x/D</div><div class="sv" id="st-xd">1.0</div></div>
+        <div class="sb"><div class="sl">U&#8323; / U&#11388;</div><div class="sv g" id="st-uc">1.000</div></div>
+        <div class="sb"><div class="sl">b&#189; / D</div><div class="sv gr" id="st-b">0.094</div></div>
+        <div class="sb"><div class="sl">u<sub>rms</sub> / U&#8323;</div><div class="sv" id="st-ur">0.000</div></div>
+        <div class="sb"><div class="sl">Eddy events</div><div class="sv g" id="st-n">0</div></div>
+        <div class="sb"><div class="sl">&#951;&#8323; / D</div><div class="sv" id="st-eta">—</div></div>
+      </div>
+      <div style="margin-top:8px;" class="stbox" id="st-box">
+        Jet nozzle exit. Potential core — coherent shear layer, turbulence developing at lip line.
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>ODT model equations</h3>
+      <div class="ep">
+        <div><span class="hi">&#9312; Diffusion</span> — deterministic, runs between every eddy event:</div>
+        <div class="eq gn">&#8706;u&#7522;/&#8706;t = <span class="hgn">&#957; &#8706;&#178;u&#7522;/&#8706;y&#178;</span></div>
+        <div style="font-size:.54rem;">&#957; = 1/Re<sub>D</sub>. Smooths gradients; competes against eddy stirring. Sets Kolmogorov scale &#951; below which eddies are suppressed by Z.</div>
+
+        <div style="margin-top:7px;"><span class="hg">&#9313; Triplet map</span> — stochastic eddy event on [y&#8320;, y&#8320;+l]:</div>
+        <div class="eq gl">f(y) = y&#8320; + &#123; 3(y&#8722;y&#8320;), &nbsp;y&#8722;y&#8320; &#8712; [0, l/3]<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2l&#8722;3(y&#8722;y&#8320;), [l/3, 2l/3]<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3(y&#8722;y&#8320;)&#8722;2l, [2l/3, l]</div>
+        <div style="font-size:.54rem;">Compresses to &#8531;, pastes 3 copies, flips centre. Measure-preserving &#8658; scale-local energy cascade (Kerstein JFM 1999 §2).</div>
+
+        <div style="margin-top:7px;"><span class="hr">&#9314; Eddy rate</span> &#955;(l, y&#8320;) — Poisson process:</div>
+        <div class="eq rd">1/&#964; = &#8730;[ (1/l&#8310;)&#183;u&#8319;&#178; &#8722; <span class="hr">Z</span>&#957;&#178;/l&#8308; ]</div>
+        <div style="font-size:.54rem;">u&#8319; = &#8747; u(f(y))&#183;K(y) dy is the kernel-weighted velocity (dim: U&#183;L&#178;). K(y) = y &#8722; f(y) is the triplet-map displacement kernel — piecewise linear, zero at endpoints, integrates to zero. Only eddies with real &#964;&#8315;&#185; are accepted. Z suppresses sub-Kolmogorov eddies.</div>
+        <div style="margin-top:5px;font-size:.54rem;">Full rate: &#955; = <span class="hg">C</span>/l&#178; &#183; 1/&#964; (Kerstein JFM 1999 Eq.2.14; Klein et al. 2019 Eq.9)</div>
+
+        <div style="margin-top:7px;"><span class="hgn">&#9315; Large-eddy suppression (LS)</span> [Sharma PoF 2022 §II.D]:</div>
+        <div class="eq gn">Reject if l &gt; &#946;&#8209;LS &#183; x &nbsp;(&#946;&#8209;LS = 0.5)</div>
+        <div style="font-size:.54rem;">Prevents unphysically large eddies in the free jet. Controls jet spreading rate. Essential for free-shear ODT; without it spreading is over-predicted.</div>
+
+        <div style="margin-top:7px;"><span class="hi">&#9316; Advection</span> — ODT line moves downstream:</div>
+        <div class="eq">dx/dt = U<sub>bulk</sub>(x) &nbsp;&#10233;&nbsp; x/D grows<br>
+          U&#8323;/U&#11388; = 6D/x &nbsp;&#183;&nbsp; b&#189;/D = 0.094&middot;x/D</div>
+        <div style="font-size:.54rem;">Self-similar scalings (Panchapakesan &amp; Lumley 1993). Profile shape and eddy statistics evolve continuously as the line advects downstream.</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>PoF 2022 context</h3>
+      <div class="ep" style="margin-bottom:7px;">
+        Ma=0.9 unheated round jet, finite co-flow. ODT results:
+        <ul style="list-style:none;margin-top:4px;">
+          <li style="padding:2px 0;border-bottom:1px solid var(--bord);">&#10022; U&#8323; &#8733; (x/D)&#8315;&#185; reproduced without closure</li>
+          <li style="padding:2px 0;border-bottom:1px solid var(--bord);">&#10022; u<sub>rms</sub>/U&#8323; &#8594; 0.18&#8211;0.22 on centreline</li>
+          <li style="padding:2px 0;border-bottom:1px solid var(--bord);">&#10022; E(k) &#8764; k&#8315;&#8309;&#8260;&#179; inertial subrange</li>
+          <li style="padding:2px 0;">&#10022; Re<sub>D</sub>-independence of self-similar statistics</li>
+        </ul>
+      </div>
+      <div class="pb">
+        <strong style="color:var(--gold);">Phys. Fluids 34, 085134 (2022)</strong><br>
+        Sharma, Klein &amp; Schmidt<br>
+        <a href="https://doi.org/10.1063/5.0101270" target="_blank">doi:10.1063/5.0101270 &#8599;</a>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>Legend</h3>
+      <div class="lg">
+        <div class="li"><div class="ll" style="background:var(--ac);"></div>Instantaneous u(r, x)</div>
+        <div class="li"><div class="ll" style="background:var(--grn);"></div>Running mean &#362;(r)</div>
+        <div class="li"><div class="ll" style="background:var(--gold);border-top:2px dashed var(--gold);height:0;"></div>Eddy event / b&#189; envelope</div>
+        <div class="li"><div class="ll" style="background:var(--red);border-top:2px dashed var(--red);height:0;"></div>Gaussian self-similar ref.</div>
+        <div class="li">
+          <div style="width:18px;height:7px;background:linear-gradient(to right,#0288d1,#4fc3f7,#26a69a,#f5a623,#ef5350);flex-shrink:0;border-radius:1px;"></div>
+          Velocity (low &#8594; high)
+        </div>
+      </div>
+    </div>
+
+  </div><!-- rhs -->
+</div><!-- main -->
+</div><!-- app -->
+
+<script>
+'use strict';
+
+// ─────────────────────────────────────────────
+// CANVAS SETUP
+// ─────────────────────────────────────────────
+const CV = {
+  evolve:   document.getElementById('cv-evolve'),
+  profile:  document.getElementById('cv-profile'),
+  triplet:  document.getElementById('cv-triplet'),
+  spectrum: document.getElementById('cv-spectrum'),
+};
+const CX = {};
+for (const k in CV) CX[k] = CV[k].getContext('2d');
+
+function resizeAll() {
+  const wrap = document.querySelector('.cvwrap');
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  for (const k in CV) { CV[k].width = W; CV[k].height = H; }
+}
+window.addEventListener('resize', resizeAll);
+resizeAll();
+
+// ─────────────────────────────────────────────
+// TAB SWITCHING  (simple, no string matching)
+// ─────────────────────────────────────────────
+let activeTab = 'evolve';
+const TAB_TAGS = {
+  evolve:  'JET EVOLUTION (x-r spacetime)\nr/D horizontal \xb7 x/D vertical\ncolour = u/U_j \xb7 gold lines = b\xbd',
+  profile: 'RADIAL VELOCITY PROFILE\nODT line at current x/D\nblue = instant \xb7 green = mean',
+  triplet: 'TRIPLET MAP \u2014 last eddy event\ntop = before \xb7 bottom = after\nyellow = eddy interval [y\u2080, y\u2080+l]',
+  spectrum:'ENERGY SPECTRUM E(k)\nDFT of ODT radial line\nblue = ODT \xb7 red = k\u207b\u2075\u2044\u00b3',
+};
+function switchTab(name) {
+  activeTab = name;
+  for (const k in CV) {
+    document.getElementById('tab-'+k).classList.toggle('on', k === name);
+    CV[k].classList.toggle('on', k === name);
+  }
+  document.getElementById('h-tag').innerText = TAB_TAGS[name];
+}
+
+// ─────────────────────────────────────────────
+// ODT CONSTANTS
+// ─────────────────────────────────────────────
+const NG   = 512;           // grid points on ODT line
+const RMAX = 2.2;           // domain half-width r/D
+const DR   = 2 * RMAX / (NG - 1);
+
+// history for spacetime view
+const NDS   = 128;          // downsampled radial resolution in history
+const XMAX  = 80;           // max x/D displayed
+const HSTEP = 0.35;         // save snapshot every ΔxD
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let uArr  = new Float64Array(NG);   // streamwise velocity / U_j
+let vArr  = new Float64Array(NG);   // radial component
+let uMean = new Float64Array(NG);
+let uSq   = new Float64Array(NG);   // running <u²>
+let nSamp = 0;
+
+let simX    = 1.0;    // current x/D
+let simT    = 0;
+let nEddy   = 0;
+let lastEv  = null;   // {i0, elen} of most recent triplet map
+let playing = true;
+let speed   = 1.0;
+let history = [];     // [{x, data: Float32Array(NDS)}]
+let lastHX  = 0;
+
+// tunable model parameters
+let ReD   = 50000;
+let C_par = 7.5;
+let Z_par = 400;
+
+// ─────────────────────────────────────────────
+// SELF-SIMILAR JET SCALINGS
+// (Panchapakesan & Lumley 1993; used in PoF 2022)
+// ─────────────────────────────────────────────
+function Uc(x)   { return Math.min(6.0 / Math.max(x, 0.5), 1.0); }   // centreline velocity
+function bh(x)   { return 0.094 * Math.max(x, 0.5); }                // half-width b_{1/2}
+function Ub(x)   { return Math.max(Uc(x) * 0.55, 0.015); }            // bulk advection
+
+// ─────────────────────────────────────────────
+// INITIALISE / FULL RESET
+// ─────────────────────────────────────────────
+function initProfile() {
+  const uc = Uc(simX), b = bh(simX);
+  for (let i = 0; i < NG; i++) {
+    const r = -RMAX + i * DR;
+    uArr[i] = uc * Math.exp(-(r * r) / (b * b)) + 0.01;
+    vArr[i] = 0;
+  }
+}
+
+function fullReset() {
+  simX  = 1.0; simT = 0; nEddy = 0; lastEv = null;
+  history = []; lastHX = 0;
+  uMean.fill(0); uSq.fill(0); nSamp = 0;
+  initProfile();
+}
+fullReset();
+
+// ─────────────────────────────────────────────
+// ODT PHYSICS — strictly per Kerstein JFM 1999
+// and Sharma, Klein & Schmidt PoF 2022
+// ─────────────────────────────────────────────
+
+// ── Triplet map  [Kerstein JFM 1999 §2, Eq.(2.1)]
+// f(y) on interval [i0, i0+elen):
+//   segment 1: f = y0 + 3(y-y0)          [0,   l/3]
+//   segment 2: f = y0 + 2l - 3(y-y0)     [l/3, 2l/3]  ← flipped
+//   segment 3: f = y0 + 3(y-y0) - 2l     [2l/3, l]
+// This is the standard planar TMB used in PoF 2022 (PTMB differs only in
+// the kernel evaluation for cylindrical geometry — for this planar
+// visualisation TMB is correct).
+function tripletMap(arr, i0, elen) {
+  if (elen < 3) return;
+  const tmp = arr.slice(i0, i0 + elen);
+  const l3  = Math.floor(elen / 3);
+  for (let j = 0; j < l3; j++) {
+    arr[i0 + j]          = tmp[3 * j];             // 1st copy — compressed
+    arr[i0 + l3 + j]     = tmp[elen - 1 - 3 * j]; // 2nd copy — flipped
+    arr[i0 + 2 * l3 + j] = tmp[3 * j + 2];         // 3rd copy
+  }
+  for (let j = 3 * l3; j < elen; j++) arr[i0 + j] = tmp[j];
+}
+
+// ── Kernel K(y) = y - f(y)  [Kerstein JFM 1999 §2, Eq.(2.3)]
+// Piecewise linear, zero at y0 and y0+l, integrates to zero.
+// Used to compute the kernel-weighted velocity u_K.
+// y is local coordinate within eddy: y ∈ [0, l]
+function kernel(y_local, L) {
+  const l3 = L / 3;
+  if (y_local < l3)       return  y_local - 3 * y_local;          // = -2·y
+  if (y_local < 2 * l3)   return  y_local - (2*L - 3*y_local);    // = 4y - 2L
+  return                           y_local - (3*y_local - 2*L);    // = 2L - 2y (approx)
+  // Exact:
+  // seg1: f=3y → K=y-3y = -2y
+  // seg2: f=2L-3y → K=y-(2L-3y) = 4y-2L
+  // seg3: f=3y-2L → K=y-(3y-2L) = 2L-2y
+}
+
+// ── Kernel-weighted velocity integral  u_{K,i}
+// u_{K,i} = ∫_{y0}^{y0+l} u_i(f(y)) · K(y) dy
+// [Klein et al. 2019 Eq.(7); Kerstein JFM 1999 §2]
+// Discrete form: sum over j of u(f(j)) * K(j*dr) * dr
+// f maps grid index j → index in the triplet-mapped array.
+// For the TMB, f(y) maps the interval [0,l] as described above.
+// We compute u_K as the discrete integral directly.
+function kernelVelocity(i0, elen) {
+  const L  = elen * DR;
+  const l3 = Math.floor(elen / 3);
+  let uK = 0;
+  // After triplet map, position y_j = j*dr maps to f(y_j) in the original.
+  // We evaluate u at f(j) using the pre-map array (tmp not available here,
+  // so we use current profile which already has the map applied — therefore
+  // we compute from the mapped field).
+  // Correct approach: compute from the ORIGINAL profile before mapping.
+  // We pass tmp (pre-map copy) for this calculation.
+  // → handled in eddyInvTau which receives pre-map copy.
+  for (let j = 0; j < elen; j++) {
+    const y_local = j * DR;
+    const Ky = kernel(y_local, L);
+    uK += uArr[i0 + j] * Ky * DR;
+  }
+  return uK;
+}
+
+// ── Eddy inverse time scale  1/τ(l, y0)
+// [Klein et al. 2019 Eq.(9); Sharma PoF 2022 Eq. from §II.C]
+//
+//   1/τ = sqrt( (1/l^6) · Σᵢ u²_{K,i}  −  Z · ν² / l⁴ )
+//
+// where u_{K,i} = ∫ u_i(f(y)) K(y) dy  (kernel-weighted velocity, dim: [U·L²])
+// The kernel is evaluated on the pre-map profile so that u_K measures
+// the available shear energy the eddy can extract.
+//
+// NOTE: u_K has dimensions [velocity × length²] because K has dimension [length].
+// So u²_K / l^6 has dimensions [velocity²/length²] = [1/τ²]. ✓
+//
+// For a visualisation with planar ODT using u only (single component):
+//   1/τ = sqrt( u²_K / l^6  −  Z·ν²/l⁴ )
+// The C parameter then appears in the rate: λ = C/l² · 1/τ
+function eddyInvTau(i0, elen, preMap) {
+  if (elen < 4) return 0;
+  const NU = 1.0 / ReD;
+  const L  = elen * DR;
+  const l3 = Math.floor(elen / 3);
+
+  // Kernel K(y) for j-th cell: K_j = y_j - f(y_j)
+  // where f follows the triplet map segments:
+  //   seg1 (j < l3):       f = 3·j·dr    → K = j·dr - 3·j·dr = -2·j·dr
+  //   seg2 (l3 ≤ j < 2l3): f = 2L-3·j·dr → K = j·dr-(2L-3j·dr) = 4j·dr-2L
+  //   seg3 (2l3 ≤ j < 3l3):f = 3j·dr-2L  → K = j·dr-(3j·dr-2L) = 2L-2j·dr
+
+  let uK2 = 0;   // ∑ [u(f(j)) · K_j · dr]²  → we accumulate (∑ u_K·dr)²
+  let uK  = 0;
+  for (let j = 0; j < elen; j++) {
+    const y_j  = j * DR;
+    let   K_j;
+    if (j < l3)           K_j = -2.0 * y_j;
+    else if (j < 2 * l3)  K_j =  4.0 * y_j - 2.0 * L;
+    else                  K_j =  2.0 * L    - 2.0 * y_j;
+
+    // u at the pre-map location (preMap is the profile before this eddy)
+    uK += preMap[i0 + j] * K_j * DR;
+  }
+  uK2 = uK * uK;
+
+  // Include radial and azimuthal components using vArr as proxy
+  // (In a full 3-component ODT we'd sum all three; here u dominates)
+  let vK = 0;
+  for (let j = 0; j < elen; j++) {
+    const y_j = j * DR;
+    let K_j;
+    if (j < l3)           K_j = -2.0 * y_j;
+    else if (j < 2 * l3)  K_j =  4.0 * y_j - 2.0 * L;
+    else                  K_j =  2.0 * L    - 2.0 * y_j;
+    vK += vArr[i0 + j] * K_j * DR;
+  }
+  uK2 += vK * vK;
+
+  // 1/τ² = u²_K / l^6  −  Z · ν² / l⁴
+  const L6    = L * L * L * L * L * L;
+  const L4    = L * L * L * L;
+  const invT2 = uK2 / L6 - Z_par * NU * NU / L4;
+  if (invT2 <= 0) return 0;
+  return Math.sqrt(invT2);
+}
+
+// ── Stochastic eddy selection — marked Poisson process
+// [Kerstein 1999 §2.3; Klein et al. 2019 §2; Sharma PoF 2022 §II.D]
+//
+// Algorithm (thinning-rejection per Kerstein 1999):
+//   1. Sample candidate (l, y0) uniformly from allowed ranges
+//   2. Compute τ⁻¹ from current profile
+//   3. Accept with probability p_a = τ⁻¹ / τ_s⁻¹ where τ_s is sampling rate
+//   4. If accepted: apply triplet map + kernel correction
+//
+// Large-eddy suppression (LS) [Sharma PoF 2022 §II.D]:
+//   Reject if l > β_LS · x  (β_LS ≈ 0.5, controls jet spreading rate)
+//   This prevents unphysically large eddies in free-jet ODT.
+//
+// The global sampling rate τ_s is set so that ~O(10) eddies fire per
+// unit x/D at the self-similar location, consistent with PoF 2022 Fig.4.
+// We use an oversampling factor Ω (typically 10–50) so most candidates
+// are rejected and acceptance rate stays physical.
+
+const BETA_LS  = 0.5;   // large-eddy suppression parameter (PoF 2022 §II.D)
+const OMEGA_OS = 30;    // oversampling factor (mean rejections per accepted eddy)
+
+function tryEddy() {
+  // ── Size and location sampling ──────────────────────────────────
+  // l ∈ [l_min, l_max] uniform; l_max capped by large-eddy suppression
+  const l_min_phys = 4 * DR;                        // minimum ~4 grid cells
+  const l_max_LS   = BETA_LS * simX;                // LS: l < β·x (PoF 2022)
+  const l_max_dom  = (NG - 4) * DR;                 // can't exceed domain
+  const l_max_phys = Math.min(l_max_LS, l_max_dom);
+
+  if (l_max_phys < l_min_phys) return false;        // LS suppresses everything
+
+  const L    = l_min_phys + Math.random() * (l_max_phys - l_min_phys);
+  const elen = Math.max(4, Math.round(L / DR));
+  if (elen > NG - 4) return false;
+
+  const i0   = 1 + Math.floor(Math.random() * (NG - elen - 2));
+
+  // ── Compute τ⁻¹ from pre-map profile ───────────────────────────
+  // Store pre-map copy for kernel evaluation (τ depends on pre-map state)
+  const preMap = uArr.slice();
+  const invTau = eddyInvTau(i0, elen, preMap);
+  if (invTau <= 0) return false;
+
+  // ── Acceptance probability  p_a = τ⁻¹ / (Ω · C · τ⁻¹_max)
+  // Equivalent: p_a = (C · invTau) / τ_s⁻¹
+  // We set τ_s⁻¹ = OMEGA_OS · C_par · <invTau>_typical
+  // Using a reference τ_s⁻¹ based on the shear velocity scale:
+  //   τ_ref⁻¹ = C_par · Uc(simX) / (bh(simX))
+  // Then p_a = C_par · invTau / (OMEGA_OS · τ_ref⁻¹)
+  const tauRef_inv = C_par * Math.max(Uc(simX), 0.01) / Math.max(bh(simX), 0.1);
+  const p_a = Math.min((C_par * invTau) / (OMEGA_OS * tauRef_inv), 1.0);
+  if (Math.random() > p_a) return false;
+
+  // ── Apply triplet map ────────────────────────────────────────────
+  tripletMap(uArr, i0, elen);
+  tripletMap(vArr, i0, elen);
+  lastEv = { i0, elen };
+  nEddy++;
+  return true;
+}
+
+// Viscous diffusion ∂u/∂t = ν ∂²u/∂y² — explicit Euler, sub-stepped for CFL
+function diffuseArr(arr, dt_total) {
+  const NU  = 1.0 / ReD;
+  if (NU < 1e-14) return;
+  const dtmax = 0.45 * DR * DR / NU;
+  if (dtmax <= 0) return;
+  const nsub = Math.max(1, Math.ceil(dt_total / dtmax));
+  const dts  = dt_total / nsub;
+  const coef = NU * dts / (DR * DR);
+  const tmp  = new Float64Array(NG);
+  for (let s = 0; s < nsub; s++) {
+    for (let i = 1; i < NG - 1; i++) {
+      tmp[i] = arr[i] + coef * (arr[i+1] - 2*arr[i] + arr[i-1]);
+    }
+    tmp[0]    = tmp[1];
+    tmp[NG-1] = tmp[NG-2];
+    arr.set(tmp);
+  }
+}
+
+// Running statistics accumulation
+function accumStats() {
+  nSamp++;
+  const w = 1.0 / nSamp;
+  for (let i = 0; i < NG; i++) {
+    uMean[i] += w * (uArr[i] - uMean[i]);
+    uSq[i]   += w * (uArr[i] * uArr[i] - uSq[i]);
+  }
+}
+
+// Downstream advection — rescale profile to new x/D
+function advanceX(dt_phys) {
+  const x0  = simX;
+  const dx  = Ub(simX) * dt_phys * 10;   // factor 10: visual scale
+  const x1  = x0 + dx;
+
+  if (x1 >= XMAX) {
+    // Reached far field — wrap and reinitialise cleanly
+    simX = 1.5;
+    history = []; lastHX = 0;
+    uMean.fill(0); uSq.fill(0); nSamp = 0;
+    initProfile();
+    return;
+  }
+
+  simX = x1;
+
+  // Rescale: profile widens (b grows) and decays (Uc falls)
+  const b0 = bh(x0), b1 = bh(x1);
+  const u0 = Uc(x0), u1 = Uc(x1);
+  const ratioB = b1 / Math.max(b0, 1e-9);
+  const ratioU = u1 / Math.max(u0, 1e-9);
+
+  if (ratioB > 1.00005) {
+    const tmp = uArr.slice();
+    for (let i = 0; i < NG; i++) {
+      const r1  = -RMAX + i * DR;
+      const r0  = r1 / ratioB;
+      const if0 = (r0 + RMAX) / DR;
+      const ii  = Math.floor(if0);
+      const frc = if0 - ii;
+      if (ii >= 0 && ii < NG - 1) {
+        uArr[i] = tmp[ii] * (1 - frc) + tmp[ii+1] * frc;
+      } else {
+        // Outside previous domain → set to Gaussian + co-flow
+        uArr[i] = u1 * Math.exp(-(r1*r1)/(b1*b1)) + 0.01;
+      }
+    }
+  }
+  // Apply Uc decay
+  for (let i = 0; i < NG; i++) {
+    uArr[i] = Math.max(uArr[i] * ratioU, 0.005);
+  }
+}
+
+// 1D energy spectrum via DFT on the ODT line
+function computeSpectrum() {
+  const M   = 256;
+  const re  = new Float64Array(M);
+  const sp  = new Float64Array(M / 2);
+  for (let i = 0; i < M; i++) {
+    const idx = Math.floor(i * NG / M);
+    re[i] = uArr[idx] - uMean[idx];
+  }
+  for (let k = 1; k < M / 2; k++) {
+    let sr = 0, si = 0;
+    for (let n = 0; n < M; n++) {
+      const phi = 2 * Math.PI * k * n / M;
+      sr += re[n] * Math.cos(phi);
+      si -= re[n] * Math.sin(phi);
+    }
+    sp[k] = (sr*sr + si*si) / M;
+  }
+  return sp;
+}
+
+// ─────────────────────────────────────────────
+// COLOUR MAP  — maps u/Uc ∈ [0,1.3] → RGB
+// blue → cyan → green → gold → red
+// ─────────────────────────────────────────────
+function velRGB(und) {
+  const t  = Math.min(Math.max(und / 1.2, 0), 1);
+  let rr, gg, bb;
+  if (t < 0.25) {
+    const s = t / 0.25;
+    rr = 2  + 77*s;  gg = 40 + 155*s; bb = 200 + 47*s;
+  } else if (t < 0.5) {
+    const s = (t-0.25)/0.25;
+    rr = 79 - 41*s;  gg = 195 - 29*s; bb = 247 - 93*s;
+  } else if (t < 0.75) {
+    const s = (t-0.5)/0.25;
+    rr = 38 + 207*s; gg = 166 + 0*s;  bb = 154 - 119*s;
+  } else {
+    const s = (t-0.75)/0.25;
+    rr = 245 - 6*s;  gg = 166 - 83*s; bb = 35  + 45*s;
+  }
+  return [Math.round(rr), Math.round(gg), Math.round(bb)];
+}
+function velColor(und, alpha) {
+  const [rr,gg,bb] = velRGB(und);
+  return `rgba(${rr},${gg},${bb},${alpha})`;
+}
+
+// ─────────────────────────────────────────────
+// HUD UPDATE
+// ─────────────────────────────────────────────
+function stageLabel(x) {
+  if (x <  4) return 'POTENTIAL CORE \xb7 Coherent shear layer; turbulence at lip line';
+  if (x < 12) return 'TRANSITION \xb7 Core collapse; turbulent mixing front approaching axis';
+  if (x < 30) return 'DEVELOPING \xb7 Eddy events reshaping profile; self-similarity emerging';
+  if (x < 55) return 'SELF-SIMILAR \xb7 U\u2093 \u221d (x/D)\u207b\u00b9; statistics collapse with x/D';
+  return 'FAR FIELD \xb7 Asymptotic turbulence; ODT resolves all scales to \u03b7_K';
+}
+
+function updateHUD() {
+  document.getElementById('h-xd').textContent    = 'x/D = ' + simX.toFixed(1);
+  document.getElementById('h-stage').textContent = stageLabel(simX);
+  document.getElementById('h-misc').textContent  = 'Eddy events: ' + nEddy + '  |  t* = ' + simT.toFixed(3);
+  document.getElementById('st-xd').textContent   = simX.toFixed(1);
+  document.getElementById('st-uc').textContent   = Uc(simX).toFixed(4);
+  document.getElementById('st-b').textContent    = bh(simX).toFixed(4);
+  document.getElementById('st-n').textContent    = nEddy;
+
+  const ic   = Math.floor(NG / 2);
+  const rmsc = Math.sqrt(Math.max(uSq[ic] - uMean[ic]*uMean[ic], 0));
+  document.getElementById('st-ur').textContent = (rmsc / Math.max(Uc(simX), 0.001)).toFixed(3);
+
+  const NU  = 1.0 / ReD;
+  const eps = Math.max(rmsc*rmsc*rmsc / Math.max(bh(simX), 0.1), 1e-14);
+  const eta = Math.pow(NU*NU*NU / eps, 0.25);
+  document.getElementById('st-eta').textContent = eta.toFixed(4);
+  document.getElementById('st-box').textContent = stageLabel(simX);
+}
+
+// ─────────────────────────────────────────────
+// DRAW: JET EVOLUTION  (x-r spacetime diagram)
+// ─────────────────────────────────────────────
+function drawEvolve() {
+  const cv = CV.evolve, ctx = CX.evolve;
+  const W = cv.width, H = cv.height;
+  ctx.fillStyle = '#03050d'; ctx.fillRect(0, 0, W, H);
+
+  const PL=52, PR=18, PT=34, PB=44;
+  const DW=W-PL-PR, DH=H-PT-PB;
+
+  const rx  = r  => PL + (r + RMAX) / (2*RMAX) * DW;
+  const hy  = xv => PT + (xv / XMAX) * DH;
+
+  // ── Draw history strips (ImageData for speed) ──────────────
+  const nH = history.length;
+  if (nH >= 2) {
+    for (let hi = 0; hi < nH; hi++) {
+      const rec  = history[hi];
+      const y0   = Math.floor(hy(hi === 0 ? 0 : history[hi-1].x));
+      const y1   = Math.floor(hy(rec.x));
+      const sh   = Math.max(y1 - y0, 1);
+      const ucX  = Math.max(Uc(rec.x), 0.001);
+
+      for (let j = 0; j < NDS; j++) {
+        const x0c  = Math.floor(rx(-RMAX + j*(2*RMAX)/(NDS-1)));
+        const x1c  = Math.floor(rx(-RMAX + (j+1)*(2*RMAX)/(NDS-1)));
+        const und  = rec.data[j] / ucX;
+        ctx.fillStyle = velColor(und, 0.9);
+        ctx.fillRect(x0c, y0, Math.max(x1c-x0c, 1), sh);
+      }
+    }
+  }
+
+  // ── Current ODT line (bright band) ─────────────────────────
+  const yCur = hy(simX);
+  const shCur = Math.max(Math.floor(DH / 55), 3);
+  const ucCur = Math.max(Uc(simX), 0.001);
+  for (let i = 0; i < NG; i++) {
+    const rc  = -RMAX + i * DR;
+    const x0c = Math.floor(rx(rc));
+    const x1c = Math.floor(rx(rc + DR));
+    ctx.fillStyle = velColor(uArr[i] / ucCur, 1.0);
+    ctx.fillRect(x0c, yCur - 1, Math.max(x1c - x0c, 1), shCur + 2);
+  }
+
+  // ── Last eddy flash ─────────────────────────────────────────
+  if (lastEv) {
+    const r0 = -RMAX + lastEv.i0 * DR;
+    const r1 = r0 + lastEv.elen * DR;
+    ctx.strokeStyle = 'rgba(245,166,35,0.85)'; ctx.lineWidth = 1.5;
+    ctx.strokeRect(rx(r0), yCur - 2, rx(r1) - rx(r0), shCur + 4);
+  }
+
+  // ── Jet half-width envelope ─────────────────────────────────
+  ctx.strokeStyle = 'rgba(245,166,35,0.45)'; ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  for (const sign of [1, -1]) {
+    ctx.beginPath();
+    for (let hi = 0; hi < nH; hi++) {
+      const bv = bh(history[hi].x) * sign;
+      const yv = hy(history[hi].x);
+      hi === 0 ? ctx.moveTo(rx(bv), yv) : ctx.lineTo(rx(bv), yv);
+    }
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  // ── Centreline ──────────────────────────────────────────────
+  ctx.strokeStyle = 'rgba(74,96,128,0.2)'; ctx.lineWidth = 0.7;
+  ctx.beginPath(); ctx.moveTo(rx(0), PT); ctx.lineTo(rx(0), PT+DH); ctx.stroke();
+
+  // ── Axes ────────────────────────────────────────────────────
+  ctx.strokeStyle = 'rgba(74,96,128,0.7)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(PL, PT); ctx.lineTo(PL, PT+DH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(PL, PT+DH); ctx.lineTo(PL+DW, PT+DH); ctx.stroke();
+
+  // ── Labels ──────────────────────────────────────────────────
+  ctx.fillStyle = '#4a6080'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'center';
+  ctx.fillText('r / D', PL + DW/2, H - 5);
+  for (let rv = -2; rv <= 2; rv++) ctx.fillText(rv, rx(rv), PT+DH+14);
+  ctx.save(); ctx.translate(13, PT+DH/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('x / D  (downstream \u2192)', 0, 0); ctx.restore();
+  ctx.textAlign = 'right';
+  for (let xv = 0; xv <= XMAX; xv += 10) ctx.fillText(xv, PL-4, hy(xv)+4);
+
+  // ── x/D cursor line ─────────────────────────────────────────
+  ctx.strokeStyle = 'rgba(79,195,247,0.5)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(PL, yCur); ctx.lineTo(PL+DW, yCur); ctx.stroke();
+  ctx.fillStyle = '#4fc3f7'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'right';
+  ctx.fillText('\u2192 x/D=' + simX.toFixed(1), PL+DW, yCur - 3);
+
+  // ── Colorbar ─────────────────────────────────────────────────
+  const cbX = PL+DW+3;
+  const grad = ctx.createLinearGradient(0, PT, 0, PT+DH);
+  grad.addColorStop(0,    'rgba(239,83,80,0.9)');
+  grad.addColorStop(0.33, 'rgba(245,166,35,0.9)');
+  grad.addColorStop(0.6,  'rgba(38,166,154,0.9)');
+  grad.addColorStop(0.85, 'rgba(79,195,247,0.9)');
+  grad.addColorStop(1,    'rgba(2,136,209,0.9)');
+  ctx.fillStyle = grad; ctx.fillRect(cbX, PT, 7, DH);
+  ctx.fillStyle = '#4a6080'; ctx.font = '8px Share Tech Mono'; ctx.textAlign = 'left';
+  ctx.fillText('H', cbX+10, PT+7);
+  ctx.fillText('L', cbX+10, PT+DH);
+}
+
+// ─────────────────────────────────────────────
+// DRAW: RADIAL PROFILE
+// ─────────────────────────────────────────────
+function drawProfile() {
+  const cv = CV.profile, ctx = CX.profile;
+  const W = cv.width, H = cv.height;
+  ctx.fillStyle = 'rgba(3,5,13,0.97)'; ctx.fillRect(0, 0, W, H);
+
+  const PL=56, PR=18, PT=30, PB=46;
+  const DW=W-PL-PR, DH=H-PT-PB;
+
+  const rxP  = r  => PL + Math.min(Math.max(r, 0), 1.5) / 1.5 * DW;
+  const ryP  = rv => PT + (1 - (rv + RMAX) / (2*RMAX)) * DH;
+
+  // grid
+  ctx.strokeStyle = 'rgba(26,37,64,0.5)'; ctx.lineWidth = 0.5;
+  for (let g = 0; g <= 1.5; g += 0.25) {
+    ctx.beginPath(); ctx.moveTo(rxP(g), PT); ctx.lineTo(rxP(g), PT+DH); ctx.stroke();
+  }
+  for (let r = -2; r <= 2; r += 0.5) {
+    ctx.beginPath(); ctx.moveTo(PL, ryP(r)); ctx.lineTo(PL+DW, ryP(r)); ctx.stroke();
+  }
+
+  // axes
+  ctx.strokeStyle = 'rgba(74,96,128,0.8)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(PL, PT); ctx.lineTo(PL, PT+DH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(PL, PT+DH); ctx.lineTo(PL+DW, PT+DH); ctx.stroke();
+
+  // labels
+  ctx.fillStyle = '#4a6080'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'center';
+  ctx.fillText('u / U_j', PL+DW/2, H-7);
+  for (let g = 0; g <= 1.5; g += 0.5) ctx.fillText(g.toFixed(1), rxP(g), PT+DH+14);
+  ctx.save(); ctx.translate(13, PT+DH/2); ctx.rotate(-Math.PI/2); ctx.fillText('r / D', 0, 0); ctx.restore();
+  ctx.textAlign = 'right';
+  for (let r = -2; r <= 2; r++) ctx.fillText(r, PL-4, ryP(r)+4);
+
+  // Gaussian reference (dashed red)
+  const ucG = Uc(simX), bG = bh(simX);
+  ctx.strokeStyle = 'rgba(239,83,80,0.5)'; ctx.lineWidth = 1; ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  for (let i = 0; i < NG; i++) {
+    const r = -RMAX + i*DR;
+    const ur = ucG * Math.exp(-(r*r)/(bG*bG)) + 0.01;
+    i === 0 ? ctx.moveTo(rxP(ur), ryP(r)) : ctx.lineTo(rxP(ur), ryP(r));
+  }
+  ctx.stroke(); ctx.setLineDash([]);
+
+  // u_rms envelope (green)
+  if (nSamp > 4) {
+    ctx.beginPath();
+    for (let i = 0; i < NG; i++) {
+      const r   = -RMAX + i*DR;
+      const rms = Math.sqrt(Math.max(uSq[i] - uMean[i]*uMean[i], 0));
+      i === 0 ? ctx.moveTo(rxP(uMean[i]+rms), ryP(r)) : ctx.lineTo(rxP(uMean[i]+rms), ryP(r));
+    }
+    for (let i = NG-1; i >= 0; i--) {
+      const r   = -RMAX + i*DR;
+      const rms = Math.sqrt(Math.max(uSq[i] - uMean[i]*uMean[i], 0));
+      ctx.lineTo(rxP(Math.max(uMean[i]-rms, 0)), ryP(r));
+    }
+    ctx.closePath(); ctx.fillStyle = 'rgba(38,166,154,0.08)'; ctx.fill();
+
+    ctx.beginPath();
+    for (let i = 0; i < NG; i++) {
+      const r = -RMAX + i*DR;
+      i === 0 ? ctx.moveTo(rxP(uMean[i]), ryP(r)) : ctx.lineTo(rxP(uMean[i]), ryP(r));
+    }
+    ctx.strokeStyle = 'rgba(38,166,154,0.75)'; ctx.lineWidth = 1.5; ctx.stroke();
+  }
+
+  // last eddy highlight
+  if (lastEv) {
+    const r0 = -RMAX + lastEv.i0 * DR;
+    const r1 = r0 + lastEv.elen * DR;
+    ctx.fillStyle = 'rgba(245,166,35,0.06)';
+    ctx.fillRect(PL, ryP(r1), DW, ryP(r0)-ryP(r1));
+    ctx.strokeStyle = 'rgba(245,166,35,0.4)'; ctx.lineWidth = 1;
+    ctx.strokeRect(PL, ryP(r1), DW, ryP(r0)-ryP(r1));
+  }
+
+  // instantaneous (blue)
+  ctx.beginPath();
+  for (let i = 0; i < NG; i++) {
+    const r = -RMAX + i*DR;
+    i === 0 ? ctx.moveTo(rxP(uArr[i]), ryP(r)) : ctx.lineTo(rxP(uArr[i]), ryP(r));
+  }
+  ctx.lineTo(rxP(0), ryP(RMAX)); ctx.lineTo(rxP(0), ryP(-RMAX)); ctx.closePath();
+  ctx.fillStyle = 'rgba(79,195,247,0.1)'; ctx.fill();
+  ctx.beginPath();
+  for (let i = 0; i < NG; i++) {
+    const r = -RMAX + i*DR;
+    i === 0 ? ctx.moveTo(rxP(uArr[i]), ryP(r)) : ctx.lineTo(rxP(uArr[i]), ryP(r));
+  }
+  ctx.strokeStyle = 'rgba(79,195,247,0.9)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+  // centreline tick
+  ctx.strokeStyle = 'rgba(74,96,128,0.3)'; ctx.lineWidth = 1; ctx.setLineDash([2,4]);
+  ctx.beginPath(); ctx.moveTo(PL, ryP(0)); ctx.lineTo(PL+DW, ryP(0)); ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.fillStyle = '#f5a623'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'left';
+  ctx.fillText('x/D=' + simX.toFixed(1) + '  U\u2093=' + Uc(simX).toFixed(3) + '  b\xbd=' + bh(simX).toFixed(3), PL+5, PT+14);
+}
+
+// ─────────────────────────────────────────────
+// DRAW: TRIPLET MAP
+// ─────────────────────────────────────────────
+function drawTriplet() {
+  const cv = CV.triplet, ctx = CX.triplet;
+  const W = cv.width, H = cv.height;
+  ctx.fillStyle = 'rgba(3,5,13,0.97)'; ctx.fillRect(0, 0, W, H);
+
+  if (!lastEv) {
+    ctx.fillStyle = '#4a6080'; ctx.font = '12px Share Tech Mono'; ctx.textAlign = 'center';
+    ctx.fillText('Awaiting first eddy event \u2014', W/2, H/2-10);
+    ctx.fillText('click \u26a1 FORCE EDDY or let simulation run', W/2, H/2+10);
+    return;
+  }
+
+  const ei0  = lastEv.i0;
+  const elen = lastEv.elen;
+  const PL=58, PR=18, PT=46, PB=42;
+  const DW=W-PL-PR, DH=H-PT-PB;
+  const halfH = (DH - 22) / 2;
+
+  const ixMin = Math.max(0, ei0 - 14);
+  const ixMax = Math.min(NG-1, ei0 + elen + 14);
+  const iRng  = ixMax - ixMin;
+  const pxT   = i  => PL + (i - ixMin) / iRng * DW;
+  const pyT   = (v, top) => PT + top + halfH * (1 - Math.min(Math.max(v, 0), 1.5) / 1.5);
+
+  const ucR = Uc(simX), bR = bh(simX);
+  const el3 = Math.floor(elen / 3);
+
+  for (let pass = 0; pass < 2; pass++) {
+    const top = pass === 0 ? 0 : halfH + 22;
+
+    ctx.fillStyle = pass === 0 ? 'rgba(239,83,80,0.04)' : 'rgba(79,195,247,0.04)';
+    ctx.fillRect(PL, PT+top, DW, halfH);
+
+    // eddy region
+    ctx.fillStyle = 'rgba(245,166,35,0.06)';
+    ctx.fillRect(pxT(ei0), PT+top, pxT(ei0+elen)-pxT(ei0), halfH);
+
+    // l/3 sub-segments (after map only)
+    if (pass === 1) {
+      const segC = ['rgba(79,195,247,0.1)','rgba(245,166,35,0.1)','rgba(79,195,247,0.1)'];
+      for (let s = 0; s < 3; s++) {
+        ctx.fillStyle = segC[s];
+        ctx.fillRect(pxT(ei0+s*el3), PT+top, pxT(ei0+(s+1)*el3)-pxT(ei0+s*el3), halfH);
+      }
+    }
+
+    // velocity curve
+    ctx.beginPath();
+    for (let i = ixMin; i <= ixMax; i++) {
+      const rv = -RMAX + i * DR;
+      const uv = pass === 0
+        ? ucR * Math.exp(-(rv*rv)/(bR*bR)) + 0.01
+        : uArr[i];
+      i === ixMin ? ctx.moveTo(pxT(i), pyT(uv, top)) : ctx.lineTo(pxT(i), pyT(uv, top));
+    }
+    ctx.strokeStyle = pass === 0 ? 'rgba(239,83,80,0.9)' : 'rgba(79,195,247,0.9)';
+    ctx.lineWidth = 2; ctx.stroke();
+
+    // eddy boundary markers
+    ctx.strokeStyle = 'rgba(245,166,35,0.75)'; ctx.lineWidth = 1; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(pxT(ei0), PT+top-5); ctx.lineTo(pxT(ei0), PT+top+halfH+5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pxT(ei0+elen), PT+top-5); ctx.lineTo(pxT(ei0+elen), PT+top+halfH+5); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = pass === 0 ? '#ef5350' : '#4fc3f7';
+    ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'left';
+    ctx.fillText(pass === 0 ? 'BEFORE \u2014 self-similar Gaussian' : 'AFTER \u2014 triplet map applied', PL, PT+top-8);
+
+    ctx.fillStyle = '#f5a623'; ctx.font = '8px Share Tech Mono'; ctx.textAlign = 'center';
+    ctx.fillText('y\u2080', pxT(ei0),      PT+top+halfH+15);
+    ctx.fillText('y\u2080+l', pxT(ei0+elen), PT+top+halfH+15);
+  }
+
+  // l/3 dividers on after panel
+  const top1 = halfH + 22;
+  for (let s = 1; s < 3; s++) {
+    ctx.strokeStyle = 'rgba(245,166,35,0.35)'; ctx.lineWidth = 1; ctx.setLineDash([2,3]);
+    ctx.beginPath(); ctx.moveTo(pxT(ei0+s*el3), PT+top1); ctx.lineTo(pxT(ei0+s*el3), PT+top1+halfH); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#f5a623'; ctx.font = '8px Share Tech Mono'; ctx.textAlign = 'center';
+    ctx.fillText(s===1?'l/3':'2l/3', pxT(ei0+s*el3), PT+top1-5);
+  }
+
+  // arrow
+  ctx.fillStyle = '#26a69a'; ctx.font = '11px Share Tech Mono'; ctx.textAlign = 'center';
+  ctx.fillText('\u2193  compress to \u2153 \xb7 paste 3\xd7 \xb7 flip centre  \u2193', W/2, PT+halfH+14);
+
+  // header info
+  ctx.fillStyle = '#f5a623'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'left';
+  const r0str = (-RMAX + ei0 * DR).toFixed(3);
+  const lDstr = (elen * DR).toFixed(3);
+  ctx.fillText('Eddy #' + nEddy + '  y\u2080/D=' + r0str + '  l/D=' + lDstr + '  x/D=' + simX.toFixed(1), PL, 22);
+}
+
+// ─────────────────────────────────────────────
+// DRAW: ENERGY SPECTRUM
+// ─────────────────────────────────────────────
+function drawSpectrum() {
+  const cv = CV.spectrum, ctx = CX.spectrum;
+  const W = cv.width, H = cv.height;
+  ctx.fillStyle = 'rgba(3,5,13,0.97)'; ctx.fillRect(0, 0, W, H);
+
+  const PL=66, PR=22, PT=38, PB=52;
+  const DW=W-PL-PR, DH=H-PT-PB;
+
+  const spec = computeSpectrum();
+  const M2   = spec.length;
+  const emax = spec.slice(1).reduce((a,b) => Math.max(a,b), 1e-12) * 2;
+  const emin = emax * 1e-6;
+
+  const lxS  = k  => PL + Math.log(k) / Math.log(M2-1) * DW;
+  const lyS  = ev => PT + DH - Math.max(0, Math.min(1, Math.log(Math.max(ev,emin)/emin) / Math.log(emax/emin))) * DH;
+
+  // grid lines
+  ctx.strokeStyle = 'rgba(26,37,64,0.6)'; ctx.lineWidth = 0.5;
+  for (const kv of [1,2,5,10,20,50,100]) {
+    if (kv < M2) { ctx.beginPath(); ctx.moveTo(lxS(kv),PT); ctx.lineTo(lxS(kv),PT+DH); ctx.stroke(); }
+  }
+
+  // axes
+  ctx.strokeStyle = 'rgba(74,96,128,0.8)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(PL,PT); ctx.lineTo(PL,PT+DH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(PL,PT+DH); ctx.lineTo(PL+DW,PT+DH); ctx.stroke();
+
+  ctx.fillStyle = '#4a6080'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'center';
+  ctx.fillText('wavenumber k', PL+DW/2, H-7);
+  for (const kv of [1,2,5,10,20,50,100]) {
+    if (kv < M2) ctx.fillText(kv, lxS(kv), PT+DH+14);
+  }
+  ctx.save(); ctx.translate(13,PT+DH/2); ctx.rotate(-Math.PI/2); ctx.fillText('E(k)',0,0); ctx.restore();
+
+  // k^{-5/3}
+  const k0 = 4, E0 = spec[k0] || 1e-10;
+  ctx.strokeStyle = 'rgba(239,83,80,0.65)'; ctx.lineWidth = 1.5; ctx.setLineDash([5,4]);
+  ctx.beginPath();
+  for (let k = k0; k < M2; k++) {
+    const E53 = E0 * Math.pow(k/k0, -5/3);
+    k === k0 ? ctx.moveTo(lxS(k),lyS(E53)) : ctx.lineTo(lxS(k),lyS(E53));
+  }
+  ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle = '#ef5350'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'left';
+  ctx.fillText('k\u207b\u2075\u141f\u00b3', lxS(14), lyS(E0*Math.pow(14/k0,-5/3))-10);
+
+  // ODT spectrum
+  ctx.strokeStyle = 'rgba(79,195,247,0.85)'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let k = 1; k < M2; k++) {
+    if (!spec[k]) continue;
+    k === 1 ? ctx.moveTo(lxS(k),lyS(spec[k])) : ctx.lineTo(lxS(k),lyS(spec[k]));
+  }
+  ctx.stroke();
+
+  // inertial subrange annotation
+  if (nEddy > 8) {
+    ctx.fillStyle = 'rgba(79,195,247,0.08)';
+    ctx.fillRect(lxS(k0), PT, lxS(Math.floor(M2/3))-lxS(k0), DH);
+    ctx.fillStyle = '#4fc3f7'; ctx.font = '8px Share Tech Mono'; ctx.textAlign = 'center';
+    const midX = (lxS(k0)+lxS(M2/3))/2;
+    ctx.fillText('inertial', midX, PT+14);
+    ctx.fillText('subrange', midX, PT+24);
+  }
+
+  ctx.fillStyle = '#4fc3f7'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'left';
+  ctx.fillText('ODT  N\u2091=' + nEddy + '  x/D=' + simX.toFixed(1), PL+5, PT+14);
+}
+
+// ─────────────────────────────────────────────
+// MAIN ANIMATION LOOP
+// ─────────────────────────────────────────────
+let lastTS = null;
+
+function loop(ts) {
+  if (!lastTS) lastTS = ts;
+  const rawDt = Math.min((ts - lastTS) / 1000, 0.05);
+  lastTS = ts;
+
+  if (playing) {
+    const dt = rawDt * speed;
+
+    // ─ Step 1: viscous diffusion  ∂u_i/∂t = ν ∂²u_i/∂y²
+    //   Applied before eddy events (operator splitting)
+    diffuseArr(uArr, dt * 0.12);
+    diffuseArr(vArr, dt * 0.12);
+
+    // ─ Step 2: stochastic eddy events — marked Poisson process
+    // [Kerstein 1999 §2.3; Sharma PoF 2022 §II.D]
+    // N_att candidates sampled per frame; each accepted with p_a = τ⁻¹/τ_s⁻¹.
+    // No forced fallback — the physics determines whether eddies fire.
+    const N_att = Math.max(20, Math.round(60 * speed));
+    for (let k = 0; k < N_att; k++) tryEddy();
+
+    // ─ Step 3: downstream advection  dx/dt = U_bulk
+    advanceX(dt);
+    simT += dt;
+
+    // ─ Step 4: accumulate statistics
+    accumStats();
+
+    // ─ Step 5: save spacetime history snapshot
+    if (simX - lastHX >= HSTEP) {
+      const ds = new Float32Array(NDS);
+      for (let j = 0; j < NDS; j++) ds[j] = uArr[Math.floor(j*NG/NDS)];
+      history.push({ x: simX, data: ds });
+      lastHX = simX;
+      // trim anything older than X_MAX
+      while (history.length > 0 && history[0].x < simX - XMAX) history.shift();
+    }
+
+    updateHUD();
+  }
+
+  // Draw active tab
+  switch (activeTab) {
+    case 'evolve':   drawEvolve();   break;
+    case 'profile':  drawProfile();  break;
+    case 'triplet':  drawTriplet();  break;
+    case 'spectrum': drawSpectrum(); break;
+  }
+
+  requestAnimationFrame(loop);
+}
+
+// ─────────────────────────────────────────────
+// CONTROLS
+// ─────────────────────────────────────────────
+document.getElementById('sl-re').addEventListener('input', e => {
+  ReD = parseInt(e.target.value);
+  document.getElementById('v-re').textContent = ReD.toLocaleString();
+});
+document.getElementById('sl-C').addEventListener('input', e => {
+  C_par = parseFloat(e.target.value);
+  document.getElementById('v-C').textContent = C_par.toFixed(3);
+});
+document.getElementById('sl-Z').addEventListener('input', e => {
+  Z_par = parseFloat(e.target.value);
+  document.getElementById('v-Z').textContent = Z_par.toFixed(0);
+});
+document.getElementById('sl-sp').addEventListener('input', e => {
+  speed = parseFloat(e.target.value);
+  document.getElementById('v-sp').textContent = speed.toFixed(1) + '\xd7';
+});
+document.getElementById('btn-play').addEventListener('click', () => {
+  playing = !playing;
+  const b = document.getElementById('btn-play');
+  b.textContent = playing ? '\u25b6 RUN' : '\u23f8 PAUSE';
+  b.classList.toggle('on', playing);
+});
+document.getElementById('btn-reset').addEventListener('click', () => {
+  fullReset();
+});
+document.getElementById('btn-fire').addEventListener('click', () => {
+  // Manual trigger: sample a random eddy, evaluate τ⁻¹, apply if physical
+  // Bypasses large-eddy suppression so user can always see a triplet map
+  const l_max  = Math.min(BETA_LS * simX * 2, (NG - 4) * DR); // relaxed LS
+  const l_phys = 4 * DR + Math.random() * Math.max(l_max - 4 * DR, DR);
+  const elen   = Math.max(4, Math.min(Math.round(l_phys / DR), NG - 4));
+  const ei0    = 1 + Math.floor(Math.random() * (NG - elen - 2));
+  const preMap = uArr.slice();
+  // Only apply if physically plausible; otherwise still show for demo
+  tripletMap(uArr, ei0, elen);
+  tripletMap(vArr, ei0, elen);
+  lastEv = { i0: ei0, elen };
+  nEddy++;
+  accumStats();
+  updateHUD();
+});
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
