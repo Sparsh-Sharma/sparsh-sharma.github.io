@@ -1228,10 +1228,53 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
         </div>
       </div>
 
-      <!-- ── PLACEHOLDER: future simulations ── -->
+      <!-- ── SIMULATION 02: ODT ROUND JET ── -->
+      <div class="sim-card">
+        <div class="sim-card-header">
+          <div class="sim-card-meta">
+            <span class="sim-card-tag">ODT &middot; Round Jet</span>
+            <div class="sim-card-title">One-Dimensional Turbulence &mdash; Turbulent Round Jet (PoF 2022)</div>
+          </div>
+          <a class="sim-open-btn" href="./odt_jet.html" target="_blank">Open fullscreen &#8599;</a>
+        </div>
+        <div class="sim-card-body">
+          <div class="sim-frame-wrap">
+            <iframe src="./odt_jet.html" title="ODT Round Jet Simulation" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+            <div class="sim-frame-label">Interactive &middot; Jet evolution &middot; Radial profile &middot; Triplet map &middot; Energy spectrum &middot; Adjust Re<sub>D</sub>, C, Z</div>
+          </div>
+          <div class="sim-explainer">
+            <div>
+              <span class="sim-section-h">What this shows</span>
+              <p style="font-size:13px;line-height:1.7;">The ODT model (Kerstein JFM 1999) applied to a turbulent round jet at Ma&nbsp;=&nbsp;0.9. A radial ODT line is advected downstream with stochastic triplet-map eddy events and viscous diffusion between events &mdash; the exact framework from my Cambridge postdoc (Sharma, Klein &amp; Schmidt, PoF 2022).</p>
+            </div>
+            <div>
+              <span class="sim-section-h">Governing equations</span>
+              <div class="sim-eq">&part;u<sub>i</sub>/&part;t = &nu;&nbsp;&part;&sup2;u<sub>i</sub>/&part;y&sup2;</div>
+              <p style="font-size:12px;color:var(--text3);margin-top:0.5rem;line-height:1.6;">Deterministic diffusion &mdash; operator splitting, runs between every eddy event.</p>
+              <div class="sim-eq red" style="margin-top:0.75rem;">1/&tau; = &radic;[ u&sup2;<sub>K</sub>/l&sup6; &minus; Z&nu;&sup2;/l&sup4; ]</div>
+              <p style="font-size:12px;color:var(--text3);margin-top:0.5rem;line-height:1.6;">Eddy timescale from kernel-weighted velocity u<sub>K</sub> = &int;u(f(y))&middot;K(y)dy. Eddies with l &gt; &beta;x rejected (large-eddy suppression, PoF 2022 &sect;II.D). C&nbsp;=&nbsp;7.5, Z&nbsp;=&nbsp;400.</p>
+            </div>
+            <div>
+              <span class="sim-section-h">Four interactive views</span>
+              <ul class="sim-stages">
+                <li class="sim-stage"><span class="sim-stage-t" style="min-width:80px;">Jet evolution</span><span class="sim-stage-d">x&ndash;r spacetime &mdash; profile from nozzle exit to far field</span></li>
+                <li class="sim-stage"><span class="sim-stage-t" style="min-width:80px;">Radial profile</span><span class="sim-stage-d">Instantaneous u(r), running mean, u<sub>rms</sub> envelope, Gaussian reference</span></li>
+                <li class="sim-stage"><span class="sim-stage-t" style="min-width:80px;">Triplet map</span><span class="sim-stage-d">Before/after of last eddy &mdash; compress &frac13;, paste &times;3, flip centre</span></li>
+                <li class="sim-stage"><span class="sim-stage-t" style="min-width:80px;">Spectrum</span><span class="sim-stage-d">E(k) from ODT line DFT vs k<sup>&minus;5/3</sup> Kolmogorov reference</span></li>
+              </ul>
+            </div>
+            <div>
+              <span class="sim-section-h">Connection to my research</span>
+              <p style="font-size:13px;line-height:1.7;">ODT reproduces self-similar statistics (U<sub>c</sub>&nbsp;&prop;&nbsp;(x/D)<sup>&minus;1</sup>, u<sub>rms</sub>/U<sub>c</sub>&nbsp;&asymp;&nbsp;0.18&ndash;0.22) and E(k)&nbsp;&sim;&nbsp;k<sup>&minus;5/3</sup> without eddy-viscosity closure &mdash; validating it as a physics-faithful foundation for jet noise source estimation. <a href="https://doi.org/10.1063/5.0101270" target="_blank" style="font-family:var(--mono);font-size:11px;">Sharma, Klein &amp; Schmidt, PoF 2022 &#8599;</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PLACEHOLDER ── -->
       <div class="sim-coming">
         <h3>More simulations coming</h3>
-        <p>ODT jet turbulence · LBM turbulence–airfoil interaction · Porous cylinder vortex shedding</p>
+        <p>LBM turbulence&ndash;airfoil coherence &middot; Porous cylinder vortex shedding &middot; Stochastic leading-edge noise BEM</p>
       </div>
 
     </div>
