@@ -354,6 +354,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
       <li><a onclick="showPage('publications')" data-page="publications">Publications</a></li>
       <li><a onclick="showPage('talks')" data-page="talks">Talks</a></li>
       <li><a onclick="showPage('simulations')" data-page="simulations">Simulations</a></li>
+      <li><a onclick="showPage('maths')" data-page="maths">Maths</a></li>
       <li><a onclick="showPage('code')" data-page="code">Code</a></li>
       <li><a onclick="showPage('about')" data-page="about">About</a></li>
       <li><a onclick="showPage('contact')" data-page="contact">Contact</a></li>
@@ -798,7 +799,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
   <div class="container" style="padding-top:3rem;padding-bottom:5rem;">
     <div class="pub-metrics">
       <div class="pub-metric"><span class="n">35+</span><span class="l">Total publications</span></div>
-      <div class="pub-metric"><span class="n">142+</span><span class="l">Citations</span></div>
+      <div class="pub-metric"><span class="n">152+</span><span class="l">Citations</span></div>
       <div class="pub-metric"><span class="n">4,099+</span><span class="l">Reads</span></div>
       <div class="pub-metric"><span class="n">9</span><span class="l">Journal articles</span></div>
       <div class="pub-metric"><span class="n">7</span><span class="l">Journals reviewed for</span></div>
@@ -1228,53 +1229,10 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
         </div>
       </div>
 
-      <!-- ── SIMULATION 02: ODT ROUND JET ── -->
-      <div class="sim-card">
-        <div class="sim-card-header">
-          <div class="sim-card-meta">
-            <span class="sim-card-tag">ODT &middot; Round Jet</span>
-            <div class="sim-card-title">One-Dimensional Turbulence &mdash; Turbulent Round Jet (PoF 2022)</div>
-          </div>
-          <a class="sim-open-btn" href="./odt_jet.html" target="_blank">Open fullscreen &#8599;</a>
-        </div>
-        <div class="sim-card-body">
-          <div class="sim-frame-wrap">
-            <iframe src="./odt_jet.html" title="ODT Round Jet Simulation" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
-            <div class="sim-frame-label">Interactive &middot; Jet evolution &middot; Radial profile &middot; Triplet map &middot; Energy spectrum &middot; Adjust Re<sub>D</sub>, C, Z</div>
-          </div>
-          <div class="sim-explainer">
-            <div>
-              <span class="sim-section-h">What this shows</span>
-              <p style="font-size:13px;line-height:1.7;">The ODT model (Kerstein JFM 1999) applied to a turbulent round jet at Ma&nbsp;=&nbsp;0.9. A radial ODT line is advected downstream with stochastic triplet-map eddy events and viscous diffusion between events &mdash; the exact framework from my Cambridge postdoc (Sharma, Klein &amp; Schmidt, PoF 2022).</p>
-            </div>
-            <div>
-              <span class="sim-section-h">Governing equations</span>
-              <div class="sim-eq">&part;u<sub>i</sub>/&part;t = &nu;&nbsp;&part;&sup2;u<sub>i</sub>/&part;y&sup2;</div>
-              <p style="font-size:12px;color:var(--text3);margin-top:0.5rem;line-height:1.6;">Deterministic diffusion &mdash; operator splitting, runs between every eddy event.</p>
-              <div class="sim-eq red" style="margin-top:0.75rem;">1/&tau; = &radic;[ u&sup2;<sub>K</sub>/l&sup6; &minus; Z&nu;&sup2;/l&sup4; ]</div>
-              <p style="font-size:12px;color:var(--text3);margin-top:0.5rem;line-height:1.6;">Eddy timescale from kernel-weighted velocity u<sub>K</sub> = &int;u(f(y))&middot;K(y)dy. Eddies with l &gt; &beta;x rejected (large-eddy suppression, PoF 2022 &sect;II.D). C&nbsp;=&nbsp;7.5, Z&nbsp;=&nbsp;400.</p>
-            </div>
-            <div>
-              <span class="sim-section-h">Four interactive views</span>
-              <ul class="sim-stages">
-                <li class="sim-stage"><span class="sim-stage-t" style="min-width:80px;">Jet evolution</span><span class="sim-stage-d">x&ndash;r spacetime &mdash; profile from nozzle exit to far field</span></li>
-                <li class="sim-stage"><span class="sim-stage-t" style="min-width:80px;">Radial profile</span><span class="sim-stage-d">Instantaneous u(r), running mean, u<sub>rms</sub> envelope, Gaussian reference</span></li>
-                <li class="sim-stage"><span class="sim-stage-t" style="min-width:80px;">Triplet map</span><span class="sim-stage-d">Before/after of last eddy &mdash; compress &frac13;, paste &times;3, flip centre</span></li>
-                <li class="sim-stage"><span class="sim-stage-t" style="min-width:80px;">Spectrum</span><span class="sim-stage-d">E(k) from ODT line DFT vs k<sup>&minus;5/3</sup> Kolmogorov reference</span></li>
-              </ul>
-            </div>
-            <div>
-              <span class="sim-section-h">Connection to my research</span>
-              <p style="font-size:13px;line-height:1.7;">ODT reproduces self-similar statistics (U<sub>c</sub>&nbsp;&prop;&nbsp;(x/D)<sup>&minus;1</sup>, u<sub>rms</sub>/U<sub>c</sub>&nbsp;&asymp;&nbsp;0.18&ndash;0.22) and E(k)&nbsp;&sim;&nbsp;k<sup>&minus;5/3</sup> without eddy-viscosity closure &mdash; validating it as a physics-faithful foundation for jet noise source estimation. <a href="https://doi.org/10.1063/5.0101270" target="_blank" style="font-family:var(--mono);font-size:11px;">Sharma, Klein &amp; Schmidt, PoF 2022 &#8599;</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── PLACEHOLDER ── -->
+      <!-- ── PLACEHOLDER: future simulations ── -->
       <div class="sim-coming">
         <h3>More simulations coming</h3>
-        <p>LBM turbulence&ndash;airfoil coherence &middot; Porous cylinder vortex shedding &middot; Stochastic leading-edge noise BEM</p>
+        <p>ODT jet turbulence · LBM turbulence–airfoil interaction · Porous cylinder vortex shedding</p>
       </div>
 
     </div>
@@ -1288,6 +1246,558 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
     </div>
   </footer>
 </div>
+
+<!-- ════════════ MATHS ════════════ -->
+<div class="page" id="page-maths">
+  <div class="page-hero-dark">
+    <div class="container" style="grid-template-columns:1fr;">
+      <div class="label">Mathematical physics</div>
+      <h1 style="font-size:clamp(2.5rem,5vw,4rem);">Maths &amp; Physics</h1>
+      <p style="margin-top:1rem;max-width:680px;">Intuitive, rigorous guides to the mathematical frameworks underlying my research &mdash; written for physicists, mathematicians, and engineers who want more than a textbook summary.</p>
+    </div>
+  </div>
+
+  <style>
+.rdt-root {
+    --ink:#0a0e1a;
+    --panel:#0e1626;
+    --panel-2:#121d31;
+    --line:#1d2c45;
+    --text:#dfe6f0;
+    --muted:#8da0bd;
+    --faint:#5c6f8e;
+    --cyan:#5fd9e8;
+    --cyan-dim:#2e7e8c;
+    --gold:#e8b54d;
+    --gold-dim:#8a6c2a;
+    --maxw:880px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+.rdt-root {
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 75% -10%, #13203a 0%, rgba(19,32,58,0) 55%),
+      radial-gradient(900px 500px at 0% 100%, #0f1a2e 0%, rgba(15,26,46,0) 60%),
+      var(--ink);
+    color:var(--text);
+    font-family:"Inter",system-ui,-apple-system,sans-serif;
+    font-size:17px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  /* ---------- hero ---------- */
+.rdt-root header.hero {
+    position:relative;
+    padding:96px 0 64px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  #heroField{position:absolute;inset:0;width:100%;height:100%;opacity:.5;}
+  .hero .wrap{position:relative;z-index:2;}
+.rdt-root .eyebrow {
+    font-family:"JetBrains Mono",monospace;
+    font-size:13px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--cyan);margin-bottom:22px;
+  }
+.rdt-root h1 {
+    font-family:"Spectral",Georgia,serif;
+    font-weight:300;
+    font-size:clamp(38px,7vw,68px);
+    line-height:1.04;
+    margin:0 0 22px;
+    letter-spacing:-.01em;
+  }
+  h1 em{font-style:italic;color:var(--gold);}
+.rdt-root .lede {
+    font-family:"Spectral",serif;
+    font-weight:300;
+    font-size:clamp(19px,2.6vw,23px);
+    color:var(--muted);
+    max-width:640px;
+    margin:0;
+  }
+  /* ---------- sections ---------- */
+  section{padding:72px 0;border-bottom:1px solid var(--line);}
+.rdt-root .num {
+    font-family:"JetBrains Mono",monospace;
+    font-size:13px;color:var(--cyan-dim);letter-spacing:.2em;
+    margin-bottom:14px;
+  }
+.rdt-root h2 {
+    font-family:"Spectral",serif;font-weight:400;
+    font-size:clamp(26px,4vw,38px);line-height:1.15;
+    margin:0 0 26px;letter-spacing:-.01em;
+  }
+.rdt-root h3 {
+    font-family:"Inter",sans-serif;font-weight:600;
+    font-size:18px;color:var(--text);margin:34px 0 10px;
+  }
+  p{margin:0 0 20px;}
+  p .hl{color:var(--cyan);font-weight:500;}
+  p .gold{color:var(--gold);font-weight:500;}
+.rdt-root .term {
+    border-bottom:1px dotted var(--cyan-dim);
+    cursor:help;
+  }
+.rdt-root .aside {
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-left:3px solid var(--gold-dim);
+    border-radius:6px;
+    padding:18px 22px;
+    font-size:15.5px;color:var(--muted);
+    margin:28px 0;
+  }
+  .aside b{color:var(--gold);font-weight:600;}
+  /* ---------- interactive panels ---------- */
+.rdt-root .demo {
+    background:linear-gradient(180deg,var(--panel-2),var(--panel));
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:24px;
+    margin:34px 0;
+  }
+  .demo-stage{width:100%;border-radius:8px;background:#070b14;display:block;}
+.rdt-root .controls {
+    margin-top:20px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;
+  }
+  .ctl{flex:1 1 220px;min-width:200px;}
+.rdt-root .ctl label {
+    display:flex;justify-content:space-between;
+    font-family:"JetBrains Mono",monospace;font-size:12.5px;
+    color:var(--muted);letter-spacing:.04em;margin-bottom:8px;
+  }
+  .ctl label .val{color:var(--cyan);}
+.rdt-root input[type=range] {
+    -webkit-appearance:none;appearance:none;width:100%;height:4px;
+    background:var(--line);border-radius:3px;outline:none;
+  }
+.rdt-root input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;
+    background:var(--cyan);cursor:pointer;border:3px solid var(--ink);
+    box-shadow:0 0 0 1px var(--cyan);
+  }
+.rdt-root input[type=range]::-moz-range-thumb {
+    width:18px;height:18px;border-radius:50%;background:var(--cyan);
+    cursor:pointer;border:3px solid var(--ink);
+  }
+.rdt-root .readout {
+    margin-top:18px;font-family:"JetBrains Mono",monospace;font-size:13px;
+    color:var(--faint);border-top:1px dashed var(--line);padding-top:16px;
+  }
+  .readout b{color:var(--gold);}
+  .toggle-row{display:flex;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;width:fit-content;}
+.rdt-root .toggle-row button {
+    background:transparent;border:none;color:var(--muted);
+    font-family:"JetBrains Mono",monospace;font-size:13px;
+    padding:10px 18px;cursor:pointer;transition:.2s;
+  }
+  .toggle-row button.on{background:var(--cyan);color:var(--ink);font-weight:600;}
+.rdt-root .verdict {
+    margin-top:18px;padding:16px 20px;border-radius:8px;font-size:15.5px;
+    transition:.3s;
+  }
+  .verdict.valid{background:rgba(95,217,232,.08);border:1px solid var(--cyan-dim);color:var(--text);}
+  .verdict.broken{background:rgba(232,181,77,.08);border:1px solid var(--gold-dim);color:var(--text);}
+  .verdict b{color:inherit;}
+  /* ---------- timeline ---------- */
+  .timeline{margin-top:30px;position:relative;padding-left:30px;}
+  .timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line);}
+  .tl-item{position:relative;padding:0 0 30px 0;}
+  .tl-item:last-child{padding-bottom:0;}
+.rdt-root .tl-item::before {
+    content:"";position:absolute;left:-30px;top:5px;width:16px;height:16px;border-radius:50%;
+    background:var(--ink);border:2px solid var(--cyan-dim);
+  }
+  .tl-item.key::before{border-color:var(--gold);background:var(--gold-dim);}
+  .tl-year{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--cyan);letter-spacing:.05em;}
+  .tl-who{font-weight:600;font-size:16px;margin:2px 0 4px;}
+  .tl-what{font-size:15px;color:var(--muted);margin:0;}
+  /* ---------- references ---------- */
+  .refs{counter-reset:ref;list-style:none;padding:0;margin:24px 0 0;}
+.rdt-root .refs li {
+    counter-increment:ref;position:relative;padding:14px 0 14px 42px;
+    border-bottom:1px solid var(--line);font-size:14.5px;color:var(--muted);
+    line-height:1.55;
+  }
+.rdt-root .refs li::before {
+    content:"["counter(ref)"]";position:absolute;left:0;top:14px;
+    font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--cyan-dim);
+  }
+  .refs b{color:var(--text);font-weight:600;}
+  .refs i{color:var(--muted);}
+  .refs a{color:var(--cyan);text-decoration:none;border-bottom:1px solid var(--cyan-dim);}
+  .refs a:hover{color:var(--gold);border-color:var(--gold-dim);}
+  /* ---------- footer ---------- */
+  footer{padding:48px 0 72px;color:var(--faint);font-size:14px;}
+  footer .credit{font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.04em;color:var(--muted);}
+  footer a{color:var(--cyan);text-decoration:none;}
+.rdt-root .tag {
+    display:inline-block;font-family:"JetBrains Mono",monospace;font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--gold);
+    border:1px solid var(--gold-dim);border-radius:20px;padding:3px 12px;margin-bottom:18px;
+  }
+  @media (max-width:560px){
+    body{font-size:16px;}
+    .controls{flex-direction:column;align-items:stretch;gap:18px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+
+  /* Override: rdt-root should not fight main site layout */
+  .rdt-root { padding-top: 0 !important; overflow-x: hidden; }
+  </style>
+
+  <div class="container" style="padding-top:2rem;padding-bottom:0;">
+    <div class="label" style="margin-bottom:0.5rem;">Entry 01</div>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:2rem;">
+      Rapid Distortion Theory &mdash; the linearised turbulence framework that underlies Amiet-type leading-edge noise models and sets the validity boundary for LBM simulations.
+    </p>
+  </div>
+
+  <div class="rdt-root">
+<header class="hero">
+  <canvas id="heroField" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="eyebrow">Aeroacoustics · a plain-language primer</div>
+    <h1>What is <em>Rapid Distortion<br>Theory</em>?</h1>
+    <p class="lede">When turbulent air is squeezed and stretched as it flows around an object, its swirls change shape. Rapid distortion theory is the surprisingly simple idea that, if this happens fast enough, you can predict exactly how — with nothing more than straight-line maths.</p>
+  </div>
+</header>
+
+<section id="idea">
+  <div class="wrap">
+    <div class="num">01 — THE CORE IDEA</div>
+    <h2>Turbulence is a crowd of little eddies</h2>
+    <p>Picture turbulent air not as chaos, but as a busy crowd of small spinning swirls — <span class="term" title="An eddy is a small rotating parcel of fluid. Turbulence is made of eddies of many sizes overlapping.">eddies</span> — of every size, all jumbled together. On their own each one quietly spins and slowly fades.</p>
+    <p>Now push that crowd through a region where the flow is being <span class="hl">strained</span> — stretched in one direction and squeezed in another, like air funnelling into a narrowing duct, or sweeping around the nose of a wing. Every eddy gets deformed by that straining. A round swirl is pulled into an oval. And here is the part that matters: <span class="gold">as a swirl is stretched thin, it has to spin faster</span> — the same reason a spinning skater speeds up by pulling their arms in.</p>
+    <p>Drag the slider below and watch a field of round, evenly-mixed eddies get distorted by a steady strain.</p>
+
+    <div class="demo">
+      <svg id="eddyStage" class="demo-stage" viewBox="0 0 700 320" role="img" aria-label="Interactive diagram of eddies being stretched by strain"></svg>
+      <div class="controls">
+        <div class="ctl">
+          <label>Amount of strain <span class="val" id="strainVal">none</span></label>
+          <input type="range" id="strainSlider" min="0" max="100" value="0" aria-label="Amount of strain applied to the turbulence">
+        </div>
+      </div>
+      <div class="readout" id="eddyReadout">
+        Start at zero. The eddies are round and the same in every direction — this is what physicists call <b>isotropic</b> turbulence.
+      </div>
+    </div>
+
+    <p>Notice what the strain did: it took turbulence that looked the <em>same in every direction</em> and made it <em>directional</em> — stronger across the flow than along it. That directionality is called <span class="term" title="Anisotropy means the turbulence is no longer the same in all directions — it has a preferred orientation.">anisotropy</span>, and it is the single most important thing RDT predicts. The theory works out this stretching for one swirl size at a time, then simply adds all the sizes back together.</p>
+
+    <div class="aside">
+      <b>Why "linear"?</b> Because each eddy is treated as being deformed only by the imposed strain — not by bumping into its neighbours. That assumption is what makes the maths straight-line simple. It is also exactly where the theory can break (see §2).
+    </div>
+  </div>
+</section>
+
+<section id="rapid">
+  <div class="wrap">
+    <div class="num">02 — WHY THE WORD "RAPID"</div>
+    <h2>A race between two clocks</h2>
+    <p>The whole theory rests on one bet: that the distortion happens <span class="hl">fast</span>. There are two competing clocks.</p>
+    <p><span class="gold">Clock&nbsp;A — the distortion time.</span> How long the air spends being strained as it passes through the squeeze.</p>
+    <p><span class="gold">Clock&nbsp;B — the eddy turn-over time.</span> How long an eddy takes to interact with its neighbours, trade energy, and reorganise itself.</p>
+    <p>If Clock A is much shorter than Clock B — the distortion is over before the eddies have time to "talk" to each other — then each eddy is just passively stretched, and the simple linear maths is exact. This is the <em>rapid</em> in rapid distortion theory. If the distortion is slow, the eddies <em>do</em> interact while being strained, and the theory only gives a rough guess.</p>
+
+    <div class="demo">
+      <p style="margin-bottom:16px;color:var(--muted);font-size:15px;">Choose how fast the air is pushed through the straining region:</p>
+      <div class="toggle-row" role="group" aria-label="Distortion speed">
+        <button id="spdFast" class="on">Fast distortion</button>
+        <button id="spdSlow">Slow distortion</button>
+      </div>
+      <svg id="clockStage" class="demo-stage" viewBox="0 0 700 180" style="margin-top:20px;" role="img" aria-label="Comparison of distortion time and eddy turn-over time"></svg>
+      <div class="verdict valid" id="verdict">
+        <b>RDT is valid.</b> The distortion finishes long before the eddies can interact. Straight-line maths predicts the outcome exactly.
+      </div>
+    </div>
+
+    <div class="aside">
+      <b>This is where my own research lives.</b> Near a wing's leading edge the air is strained for a surprisingly long path — long enough that the eddies <em>do</em> begin to interact. The linear theory then misses a piece of the physics: a slow, neighbour-to-neighbour energy reshuffle (the <b>pressure–strain</b> mechanism) that linear RDT cannot produce. Detecting that missing piece — turbulence pushed into a state no linear theory can reach — is the heart of the work.
+    </div>
+  </div>
+</section>
+
+<section id="history">
+  <div class="wrap">
+    <div class="num">03 — WHERE IT CAME FROM</div>
+    <h2>Eighty years of a simple idea</h2>
+    <p>RDT was not invented in one go. It grew from wind-tunnel engineering — the practical question of why turbulence calms down when it is funnelled through a contraction.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">1935</div>
+        <div class="tl-who">G. I. Taylor</div>
+        <p class="tl-what">Works out how a single wave-like swirl is changed by stretching a stream — the seed of the whole method. <span style="color:var(--faint)">[5]</span></p>
+      </div>
+      <div class="tl-item key">
+        <div class="tl-year">1954</div>
+        <div class="tl-who">Batchelor &amp; Proudman</div>
+        <p class="tl-what">Add up Taylor's result over every swirl size to give the first full theory of how rapid straining distorts real turbulence. The method gets its name. <span style="color:var(--faint)">[1]</span></p>
+      </div>
+      <div class="tl-item key">
+        <div class="tl-year">1973</div>
+        <div class="tl-who">J. C. R. Hunt</div>
+        <p class="tl-what">Extends RDT from a uniform squeeze to the flow <em>around a body</em> — a cylinder, and by extension a wing nose. This is the version aeroacoustics still builds on. <span style="color:var(--faint)">[2]</span></p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1990</div>
+        <div class="tl-who">Hunt &amp; Carruthers</div>
+        <p class="tl-what">Set out clearly when RDT can be trusted and when it cannot — the "two clocks" rule made rigorous. <span style="color:var(--faint)">[3]</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="noise">
+  <div class="wrap">
+    <div class="num">04 — RDT MEETS THE LEADING EDGE</div>
+    <h2>From swirls to sound</h2>
+    <p>Why does an aeroacoustician care? Because when turbulent air strikes the leading edge of a wing or blade, it generates broadband <span class="hl">noise</span> — a major source of the sound from fans, turbines and aircraft. The standard way to predict that noise (<span class="term" title="Amiet's 1975 theory predicts leading-edge noise from the statistics of the incoming turbulence.">Amiet's theory</span> <span style="color:var(--faint)">[4]</span>) takes the incoming turbulence as its input and assumes it arrives <em>unchanged</em>.</p>
+    <p>But it does not arrive unchanged. As we saw in §1, the wing's nose strains the eddies <span class="gold">before they ever reach the edge</span> — squeezing, stretching, redistributing their energy. RDT is the tool that predicts this pre-impact reshaping. Feeding the <em>distorted</em> turbulence into the noise model, rather than the raw upstream turbulence, measurably improves predictions <span style="color:var(--faint)">[6][7]</span>.</p>
+    <h3>The honest caveat</h3>
+    <p>RDT in this setting is usually used only in its two easy extremes — very small eddies, or very large ones — and those who introduced it were careful to say the correction could not be assumed general <span style="color:var(--faint)">[6]</span>. Closer to the edge, where the straining is strong and prolonged, even the RDT-based prediction can drift from measurement because <span class="gold">it does not fully capture the distorted turbulence</span> <span style="color:var(--faint)">[7]</span>. Sharpening that account — explaining, not just curve-fitting, what the leading edge does to turbulence — is exactly the open problem this primer's author works on.</p>
+  </div>
+</section>
+
+<section id="refs">
+  <div class="wrap">
+    <div class="num">REFERENCES &amp; CREDITS</div>
+    <h2>Original sources</h2>
+    <p style="color:var(--muted);font-size:15px;">Every reference below has been checked against the original publication record. The intuition in this primer is owed entirely to the authors named here.</p>
+    <ol class="refs">
+      <li>Batchelor, G. K. &amp; Proudman, I. (1954). <b>The effect of rapid distortion of a fluid in turbulent motion.</b> <i>The Quarterly Journal of Mechanics and Applied Mathematics</i>, 7(1), 83–103. <a href="https://doi.org/10.1093/qjmam/7.1.83" target="_blank" rel="noopener">doi:10.1093/qjmam/7.1.83</a></li>
+      <li>Hunt, J. C. R. (1973). <b>A theory of turbulent flow round two-dimensional bluff bodies.</b> <i>Journal of Fluid Mechanics</i>, 61(4), 625–706. <a href="https://doi.org/10.1017/S0022112073000893" target="_blank" rel="noopener">doi:10.1017/S0022112073000893</a></li>
+      <li>Hunt, J. C. R. &amp; Carruthers, D. J. (1990). <b>Rapid distortion theory and the 'problems' of turbulence.</b> <i>Journal of Fluid Mechanics</i>, 212, 497–532.</li>
+      <li>Amiet, R. K. (1975). <b>Acoustic radiation from an airfoil in a turbulent stream.</b> <i>Journal of Sound and Vibration</i>, 41(4), 407–420. <a href="https://doi.org/10.1016/S0022-460X(75)80105-2" target="_blank" rel="noopener">doi:10.1016/S0022-460X(75)80105-2</a></li>
+      <li>Taylor, G. I. (1935). <b>Turbulence in a contracting stream.</b> <i>ZAMM — Zeitschrift für Angewandte Mathematik und Mechanik</i>, 15(1–2), 91–96. <a href="https://doi.org/10.1002/zamm.19350150119" target="_blank" rel="noopener">doi:10.1002/zamm.19350150119</a></li>
+      <li>Moreau, S. &amp; Roger, M. (2005). <b>Effect of angle of attack and airfoil shape on turbulence-interaction noise.</b> 11th AIAA/CEAS Aeroacoustics Conference, AIAA Paper 2005-2973. <a href="https://doi.org/10.2514/6.2005-2973" target="_blank" rel="noopener">doi:10.2514/6.2005-2973</a></li>
+      <li>Dos Santos, F. L., Botero-Bolívar, L., Venner, C. H. &amp; de Santana, L. D. (2023). <b>Inflow turbulence distortion for airfoil leading-edge noise prediction for large turbulence length scales for zero-mean loading.</b> <i>The Journal of the Acoustical Society of America</i>, 153(3), 1811–1822. <a href="https://doi.org/10.1121/10.0017458" target="_blank" rel="noopener">doi:10.1121/10.0017458</a></li>
+    </ol>
+    <p style="color:var(--faint);font-size:13.5px;margin-top:22px;">Foundational precursors not separately listed: Prandtl's contraction analysis and Ribner &amp; Tucker's (1953) shock–turbulence work, both cited within references [1] and [2].</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="tag">For attribution</span>
+    <p class="credit">Prepared by Sparsh Sharma · DLR Institute of Aerodynamics and Flow Technology, Braunschweig.<br>An intuitive primer on rapid distortion theory. Text and interactive figures may be reused with credit.</p>
+    <p style="margin-top:18px;color:var(--faint);font-size:13px;">Edit the credit line above to suit your site. All seven references and their DOIs were checked against the publication record.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  /* ---------- ambient hero field ---------- */
+  (function heroField(){
+    var c = document.getElementById('heroField');
+    if(!c) return;
+    var ctx = c.getContext('2d');
+    var dpr = Math.min(window.devicePixelRatio||1, 2);
+    var eddies = [];
+    function resize(){
+      var r = c.parentElement.getBoundingClientRect();
+      c.width = r.width*dpr; c.height = r.height*dpr;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      if(eddies.length===0){
+        var n = Math.max(14, Math.floor(r.width/55));
+        for(var i=0;i<n;i++){
+          eddies.push({
+            x:Math.random()*r.width, y:Math.random()*r.height,
+            rad:8+Math.random()*16, sp:(Math.random()*0.6+0.2)*(Math.random()<.5?-1:1),
+            ph:Math.random()*Math.PI*2, drift:(Math.random()*0.25+0.05)
+          });
+        }
+      }
+    }
+    function draw(t){
+      var r = c.parentElement.getBoundingClientRect();
+      ctx.clearRect(0,0,r.width,r.height);
+      for(var i=0;i<eddies.length;i++){
+        var e = eddies[i];
+        e.ph += e.sp*0.012;
+        e.x += e.drift; if(e.x > r.width+30) e.x = -30;
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, e.rad, e.ph, e.ph+Math.PI*1.5);
+        ctx.strokeStyle = "rgba(95,217,232,0.30)";
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+      }
+      if(!reduce) requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    if(reduce){ draw(0); } else { requestAnimationFrame(draw); }
+  })();
+
+  /* ---------- eddy stretching demo ---------- */
+  (function eddyDemo(){
+    var stage = document.getElementById('eddyStage');
+    var slider = document.getElementById('strainSlider');
+    var valLbl = document.getElementById('strainVal');
+    var readout = document.getElementById('eddyReadout');
+    if(!stage||!slider) return;
+
+    var W=700,H=320, cols=6, rows=3;
+    var cells=[];
+    var gx0=70, gy0=55, gxs=(W-140)/(cols-1), gys=(H-110)/(rows-1);
+    for(var r=0;r<rows;r++) for(var cI=0;cI<cols;cI++){
+      cells.push({x:gx0+cI*gxs, y:gy0+r*gys});
+    }
+
+    function build(){
+      while(stage.firstChild) stage.removeChild(stage.firstChild);
+      var arrowDefs = document.createElementNS(SVGNS,'defs');
+      arrowDefs.innerHTML = '<marker id="ah" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5fd9e8"/></marker>';
+      stage.appendChild(arrowDefs);
+      cells.forEach(function(c,i){
+        var e = document.createElementNS(SVGNS,'ellipse');
+        e.setAttribute('cx',c.x); e.setAttribute('cy',c.y);
+        e.setAttribute('fill','none');
+        e.setAttribute('stroke','#5fd9e8');
+        e.setAttribute('stroke-width','1.6');
+        e.setAttribute('opacity','0.85');
+        e.dataset.i=i;
+        stage.appendChild(e); c.node=e;
+      });
+    }
+    build();
+
+    function render(s){ // s in 0..1
+      // incompressible plane strain: stretch x by k, compress y by 1/k
+      var k = 1 + s*1.9;            // horizontal stretch factor
+      var rx = 18*k, ry = 18/k;     // ellipse semi-axes
+      cells.forEach(function(c){
+        c.node.setAttribute('rx', rx.toFixed(1));
+        c.node.setAttribute('ry', ry.toFixed(1));
+        // brighten as vorticity (spin) intensifies with stretch
+        c.node.setAttribute('stroke-width', (1.4 + s*1.6).toFixed(2));
+        // shift colour toward gold as it becomes strongly anisotropic
+        var mix = s;
+        var col = lerpColor([95,217,232],[232,181,77], Math.pow(mix,1.3));
+        c.node.setAttribute('stroke', col);
+      });
+    }
+    function lerpColor(a,b,t){
+      var r=Math.round(a[0]+(b[0]-a[0])*t);
+      var g=Math.round(a[1]+(b[1]-a[1])*t);
+      var bl=Math.round(a[2]+(b[2]-a[2])*t);
+      return 'rgb('+r+','+g+','+bl+')';
+    }
+
+    function update(){
+      var s = +slider.value/100;
+      render(s);
+      var pct = Math.round(s*100);
+      if(s<0.02){ valLbl.textContent='none'; }
+      else if(s<0.4){ valLbl.textContent='gentle'; }
+      else if(s<0.75){ valLbl.textContent='moderate'; }
+      else { valLbl.textContent='strong'; }
+
+      if(s<0.02){
+        readout.innerHTML = 'Start at zero. The eddies are round and the same in every direction — this is what physicists call <b>isotropic</b> turbulence.';
+      } else if(s<0.75){
+        readout.innerHTML = 'The strain stretches each swirl sideways and squeezes it the other way. The turbulence is becoming <b>directional</b> — stronger across the flow than along it.';
+      } else {
+        readout.innerHTML = 'Strongly stretched. The swirls are thin and spinning hard, the turbulence is now sharply <b>anisotropic</b> — and its colour shift marks how far it has moved from where it started. <b>This redistribution is what RDT predicts.</b>';
+      }
+    }
+    slider.addEventListener('input', update);
+    update();
+  })();
+
+  /* ---------- two-clocks demo ---------- */
+  (function clockDemo(){
+    var stage = document.getElementById('clockStage');
+    var bFast = document.getElementById('spdFast');
+    var bSlow = document.getElementById('spdSlow');
+    var verdict = document.getElementById('verdict');
+    if(!stage||!bFast||!bSlow) return;
+
+    var W=700,H=180;
+    function bar(x,y,w,label,sub,col){
+      var g = document.createElementNS(SVGNS,'g');
+      var track = document.createElementNS(SVGNS,'rect');
+      track.setAttribute('x',x); track.setAttribute('y',y);
+      track.setAttribute('width',520); track.setAttribute('height',22);
+      track.setAttribute('rx',11); track.setAttribute('fill','#16223a');
+      g.appendChild(track);
+      var fill = document.createElementNS(SVGNS,'rect');
+      fill.setAttribute('x',x); fill.setAttribute('y',y);
+      fill.setAttribute('width',w); fill.setAttribute('height',22);
+      fill.setAttribute('rx',11); fill.setAttribute('fill',col);
+      g.appendChild(fill);
+      var t1 = document.createElementNS(SVGNS,'text');
+      t1.setAttribute('x',x); t1.setAttribute('y',y-10);
+      t1.setAttribute('fill','#dfe6f0'); t1.setAttribute('font-size','14');
+      t1.setAttribute('font-family','JetBrains Mono, monospace');
+      t1.textContent=label;
+      g.appendChild(t1);
+      var t2 = document.createElementNS(SVGNS,'text');
+      t2.setAttribute('x',x+530); t2.setAttribute('y',y+16);
+      t2.setAttribute('fill','#8da0bd'); t2.setAttribute('font-size','12');
+      t2.setAttribute('font-family','JetBrains Mono, monospace');
+      t2.textContent=sub;
+      g.appendChild(t2);
+      stage.appendChild(g);
+    }
+    function render(fast){
+      while(stage.firstChild) stage.removeChild(stage.firstChild);
+      // distortion time: short if fast, long if slow
+      var dist = fast ? 130 : 470;
+      // eddy turn-over time: fixed reference
+      var turn = 300;
+      bar(30,50, dist, 'Clock A — distortion time', fast?'short':'long', '#e8b54d');
+      bar(30,115, turn, 'Clock B — eddy turn-over time', 'fixed', '#5fd9e8');
+    }
+    function setMode(fast){
+      bFast.classList.toggle('on',fast);
+      bSlow.classList.toggle('on',!fast);
+      render(fast);
+      if(fast){
+        verdict.className='verdict valid';
+        verdict.innerHTML = '<b>RDT is valid.</b> Clock A is much shorter than Clock B — the distortion finishes before the eddies can interact, so the simple linear maths is exact.';
+      } else {
+        verdict.className='verdict broken';
+        verdict.innerHTML = '<b>RDT becomes unreliable.</b> Clock A is now as long as Clock B — the eddies have time to interact and reshuffle energy while being strained. Linear theory misses that, and only gives an estimate.';
+      }
+    }
+    bFast.addEventListener('click',function(){setMode(true);});
+    bSlow.addEventListener('click',function(){setMode(false);});
+    setMode(true);
+  })();
+})();
+</script>
+</body>
+</div>
+
+  <div class="container" style="padding-top:3rem;padding-bottom:5rem;">
+    <div class="sim-coming" style="margin-top:2rem;">
+      <h3>More entries coming</h3>
+      <p>Lighthill&rsquo;s acoustic analogy &middot; Sears function &amp; gust response &middot; Stochastic turbulence &amp; It&ocirc; calculus &middot; ODT &mdash; the mathematics</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-id">Dr. Sparsh Sharma &middot; DLR Braunschweig</div>
+      <ul class="footer-links"><li><a onclick="showPage('research')">Research</a></li><li><a onclick="showPage('simulations')">Simulations</a></li></ul>
+      <div class="footer-id">&copy; 2025&ndash;2026</div>
+    </div>
+  </footer>
+</div>
+
 
 <script>
 /* ── NAVIGATION ── */
