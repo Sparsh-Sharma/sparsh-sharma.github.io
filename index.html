@@ -240,7 +240,7 @@ canvas#turbulence{position:absolute;inset:0;width:100%;height:100%;opacity:0.35;
 .code-link{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.05em;}
 
 /* ── GITHUB ACTIVITY ── */
-.gh-activity{margin-top:3rem;border:1px solid var(--border);background:var(--surface);padding:2rem;}
+.gh-activity{border:1px solid var(--border);background:var(--surface);padding:2rem;}
 .gh-activity-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;}
 .gh-total{font-family:var(--mono);font-size:11px;color:var(--text2);}
 .gh-total .n{color:var(--accent);font-size:1.1rem;}
@@ -1153,14 +1153,6 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
 <div class="page" id="page-code">
   <div class="page-hero-dark"><div class="container" style="grid-template-columns:1fr;"><div class="label">Open code & tools</div><h1 style="font-size:clamp(2.5rem,5vw,4rem);">Software & code</h1><p style="margin-top:1rem;">Research code on <a href="https://github.com/Sparsh-Sharma" target="_blank">github.com/Sparsh-Sharma</a></p></div></div>
   <div class="container" style="padding-top:3rem;padding-bottom:5rem;">
-    <div class="code-grid">
-      <div class="code-card"><div class="code-card-tag">Turbulence synthesis</div><h3>Synthetic Vorton Turbulence Model</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">NumPy</span></div><p>Generates turbulent inflow conditions using Gaussian-profile vortex elements. Produces statistically correct energy spectra for leading-edge noise simulations.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/Synthetic-Vorton-Turbulence-Model" target="_blank">GitHub →</a></div></div>
-      <div class="code-card"><div class="code-card-tag">Lagrangian solver</div><h3>Vortex Particle Solver (Euler Equations)</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">C++</span></div><p>2D meshless Lagrangian solver for incompressible Euler equations. Core tool for the time-domain leading-edge noise framework.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/Lagrangian-Solver-for-Euler-Equations" target="_blank">GitHub →</a></div></div>
-      <div class="code-card"><div class="code-card-tag">Aeroacoustics</div><h3>FW-H Acoustic Solver</h3><div class="lang-pills"><span class="lang-pill">Python</span></div><p>Computes directivity patterns of radiated sound pressure from airfoils using the Ffowcs Williams–Hawkings acoustic analogy.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/Ffowcs-Williams-Hawkings-Acoustic-analogy" target="_blank">GitHub →</a></div></div>
-      <div class="code-card"><div class="code-card-tag">Aeroacoustics · OpenFOAM</div><h3>fwhFoam — FW-H Solver for OpenFOAM</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">OpenFOAM</span></div><p>Ffowcs Williams–Hawkings acoustic solver built for OpenFOAM cases — far-field noise prediction from scale-resolving simulations, with companion post-processing scripts.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/fwhFoam" target="_blank">GitHub →</a></div></div>
-      <div class="code-card"><div class="code-card-tag">Stochastic turbulence</div><h3>ODT-RDT — Strain-Coupled ODT</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">TeX</span></div><p>Rapid-distortion extension of one-dimensional turbulence — the strain-coupled ODT formulation accompanying the 2026 preprint arXiv:2608.12048.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/ODT-RDT" target="_blank">GitHub →</a></div></div>
-    </div>
-
     <div class="gh-activity">
       <div class="gh-activity-head">
         <div>
@@ -1174,6 +1166,14 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
       </div>
       <div class="gh-legend" id="gh-legend" style="display:none;">Less <i style="background:#1a2535;"></i><i style="background:rgba(79,195,247,0.25);"></i><i style="background:rgba(79,195,247,0.5);"></i><i style="background:rgba(79,195,247,0.75);"></i><i style="background:#4fc3f7;"></i> More</div>
       <div style="margin-top:1rem;"><a class="code-link" href="https://github.com/Sparsh-Sharma" target="_blank">Full profile on GitHub →</a></div>
+    </div>
+
+    <div class="code-grid">
+      <div class="code-card"><div class="code-card-tag">Turbulence synthesis</div><h3>Synthetic Vorton Turbulence Model</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">NumPy</span></div><p>Generates turbulent inflow conditions using Gaussian-profile vortex elements. Produces statistically correct energy spectra for leading-edge noise simulations.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/Synthetic-Vorton-Turbulence-Model" target="_blank">GitHub →</a></div></div>
+      <div class="code-card"><div class="code-card-tag">Lagrangian solver</div><h3>Vortex Particle Solver (Euler Equations)</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">C++</span></div><p>2D meshless Lagrangian solver for incompressible Euler equations. Core tool for the time-domain leading-edge noise framework.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/Lagrangian-Solver-for-Euler-Equations" target="_blank">GitHub →</a></div></div>
+      <div class="code-card"><div class="code-card-tag">Aeroacoustics</div><h3>FW-H Acoustic Solver</h3><div class="lang-pills"><span class="lang-pill">Python</span></div><p>Computes directivity patterns of radiated sound pressure from airfoils using the Ffowcs Williams–Hawkings acoustic analogy.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/Ffowcs-Williams-Hawkings-Acoustic-analogy" target="_blank">GitHub →</a></div></div>
+      <div class="code-card"><div class="code-card-tag">Aeroacoustics · OpenFOAM</div><h3>fwhFoam — FW-H Solver for OpenFOAM</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">OpenFOAM</span></div><p>Ffowcs Williams–Hawkings acoustic solver built for OpenFOAM cases — far-field noise prediction from scale-resolving simulations, with companion post-processing scripts.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/fwhFoam" target="_blank">GitHub →</a></div></div>
+      <div class="code-card"><div class="code-card-tag">Stochastic turbulence</div><h3>ODT-RDT — Strain-Coupled ODT</h3><div class="lang-pills"><span class="lang-pill">Python</span><span class="lang-pill">TeX</span></div><p>Rapid-distortion extension of one-dimensional turbulence — the strain-coupled ODT formulation accompanying the 2026 preprint arXiv:2608.12048.</p><div class="code-card-foot"><a class="code-link" href="https://github.com/Sparsh-Sharma/ODT-RDT" target="_blank">GitHub →</a></div></div>
     </div>
 
     <div style="margin-top:3rem;border:1px solid var(--border);padding:2rem;background:var(--surface);">
